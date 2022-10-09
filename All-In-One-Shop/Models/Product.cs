@@ -13,7 +13,7 @@ namespace All_In_One_Shop.Models
         [StringLength(200)]
         public string? Description { get; set; }
 
-        [StringLength(100)]
+        [StringLength(110)]
 
         public string ProductImageURL { get; set; }
 
