@@ -78,7 +78,19 @@ namespace All_In_One_Shop.Controllers
         [HttpPost]
         public async Task<ActionResult<Storage>> PostStorage(Storage storage)
         {
-            _context.Storages.Add(storage);
+            storage.ProductQuantity++;
+
+            Storage targetStorage = _context.Storages.FirstOrDefault(s => s.ProductId == storage.ProductId);
+
+            if (targetStorage == null)
+            {
+                _context.Storages.Add(storage);
+            }
+            else
+            {
+                targetStorage.ProductQuantity++;
+            }
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetStorage", new { id = storage.Id }, storage);
