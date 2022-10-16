@@ -12,5 +12,10 @@ namespace All_In_One_Shop.Models
         public Product? Product { get; set; }
 
         public int? ProductQuantity { get; set; } = 0;
+
+        [StringLength(50)]
+        public string ProductLocation { get; set; } = string.Empty;
+
+        public string ProductRatings { get; set; } = string.Empty;
     }
 }

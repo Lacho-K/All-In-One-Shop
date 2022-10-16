@@ -80,7 +80,7 @@ namespace All_In_One_Shop.Controllers
         {
             storage.ProductQuantity++;
 
-            Storage targetStorage = _context.Storages.FirstOrDefault(s => s.ProductId == storage.ProductId);
+            var targetStorage = _context.Storages.FirstOrDefault(s => s.ProductId == storage.ProductId);
 
             if (targetStorage == null)
             {
@@ -89,6 +89,8 @@ namespace All_In_One_Shop.Controllers
             else
             {
                 targetStorage.ProductQuantity++;
+                targetStorage.ProductLocation = storage.ProductLocation;
+                targetStorage.ProductRatings = storage.ProductRatings;
             }
 
             await _context.SaveChangesAsync();
