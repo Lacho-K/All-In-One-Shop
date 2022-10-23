@@ -12,7 +12,7 @@
         SmallElectronics,
         AirConditioning,
         HouseholdItems,
-        ToolsAndMachines
+        ToolsAndMachines,
 
     }
 }
