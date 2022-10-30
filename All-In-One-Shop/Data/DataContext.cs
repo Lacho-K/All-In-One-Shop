@@ -9,6 +9,8 @@ namespace All_In_One_Shop.Data
 
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<ProductType> ProductsTypes { get; set; }
+
         public DbSet<Storage> Storages { get; set; }
     }
 }
