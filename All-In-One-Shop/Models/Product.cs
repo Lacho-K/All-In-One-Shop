@@ -17,7 +17,9 @@ namespace All_In_One_Shop.Models
 
         public string ProductImageURL { get; set; } = string.Empty;
 
-        public ProductTypes ProductType { get; set; }
+        public int ProductTypeId { get; set; }
+
+        public ProductType? ProductType { get; set; }
 
         public decimal Price { get; set; }
     }
