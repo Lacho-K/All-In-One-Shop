@@ -1,0 +1,28 @@
+<table class="table table-accent">
+    <thead>
+        <th>StorageId</th>
+        <th>ProductId</th>
+        <th>ProductName</th>
+        <th>ProductDescription</th>
+        <th>ProductImageURL</th>
+        <th>ProductType</th>
+        <th>ProductPrice</th>
+        <th>ProductQuantity</th>
+        <th>ProductLocation</th>
+        <th>ProductRatings</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let storage of storagesList$|async">     
+            <td>{{storage.id}}</td>       
+            <td>{{storage.productId}}</td>       
+            <td>{{storagesMap.get(storage.productId).name}}</td>
+            <td>{{storagesMap.get(storage.productId).description}}</td>
+            <td>{{storagesMap.get(storage.productId).productImageURL}}</td>
+            <td>{{productTypesMap.get(storagesMap.get(storage.productId).productTypeId)}}</td>
+            <td>{{storagesMap.get(storage.productId).price}}</td>
+            <td>{{storage.productQuantity}}</td>
+            <td>{{storage.productLocation}}</td>
+            <td>{{storage.productRatings}}</td>
+        </tr>
+    </tbody>
+</table>
