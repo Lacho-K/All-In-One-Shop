@@ -1,4 +1,9 @@
-<table class="table table-accent">
+<!-- Add Product trigger modal -->
+<button type="button" class="btn btn-primary mx-auto d-block" style="margin-bottom: 2%" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    Add Product
+</button>
+
+<table class="table table-striped">
     <thead>
         <th>StorageId</th>
         <th>ProductId</th>
@@ -26,3 +31,21 @@
         </tr>
     </tbody>
 </table>
+
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">{{modalTitle}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <app-add-edit-product></app-add-edit-product>
+        </div>
+      </div>
+    </div>
+  </div>
+  

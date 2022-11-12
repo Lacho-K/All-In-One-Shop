@@ -9,14 +9,17 @@ import { ShopApiService } from 'src/app/shop-api.service';
 })
 export class ShowProductComponent implements OnInit {
 
+  // Lists of visualisable objects
   productList$!:Observable<any[]>;
   productTypesList$!:Observable<any[]>;
   storagesList$!:Observable<any[]>;
 
+  // Lists of objects used to map data
   productTypesList:any=[];
   storagesList:any=[];
   productsList:any=[];
-
+  
+  // Maps used to display data associate with foreign keys
   productTypesMap:Map<number, string> = new Map();
   storagesMap:Map<number, any> = new Map();
 
@@ -30,6 +33,13 @@ export class ShowProductComponent implements OnInit {
     this.mapProductTypes();
     this.mapStoragesWithProducts();
   }
+
+  //Variables(properties)
+  modalTitle:string = '';
+  activeAddEditProductComponent:boolean = false;
+  product:any;
+
+
 
   mapProductTypes(){
     this.service.getProductTypesList().subscribe(data => {
