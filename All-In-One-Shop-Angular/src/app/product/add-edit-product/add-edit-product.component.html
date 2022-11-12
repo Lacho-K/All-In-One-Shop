@@ -1,1 +1,33 @@
-<p>add-edit-product works!</p>
+<form>
+
+    <div class="mb-3">
+        <label for="name" class="form-label">Product Name </label>
+        <Input type="text" class="form-control" [(ngModel)]="name" name="name" ngDefaultControl>
+    </div>
+
+    <div class="mb-3">
+        <label for="description" class="form-label">Product Description (optional) </label>
+        <Input type="text" class="form-control" [(ngModel)]="description" name="description" ngDefaultControl>
+    </div>
+
+    <div class="mb-3">
+        <label for="productImageURL" class="form-label">Product Image Url </label>
+        <Input type="text" class="form-control" [(ngModel)]="productImageURL" name="productImageURL" ngDefaultControl>
+    </div>
+
+    <div class="mb-3">
+        <label for="productType">Product Type</label>
+        <!-- <input type="text" class="form-control" name="productTypeId" [(ngModel)]="productTypeId" *ngIf="product.id!=0" disabled > -->
+        <select class="form-control" name="productTypeId" id="productTypeId" [(ngModel)]="productTypeId" *ngIf="product.id==0">
+            <option *ngFor="let type of productTypesList$|async" [value]="type.id">{{type.productTypeStr}}</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="price" class="form-label">Product Price </label>
+        <Input type="text" class="form-control" [(ngModel)]="price" name="price" ngDefaultControl>
+    </div>
+
+    <button (click)="addProduct()" *ngIf="product.id==0" class="btn btn-primary">Add</button>
+    <button (click)="updateProduct()" *ngIf="product.id!=0" class="btn btn-primary">Update</button>
+</form>

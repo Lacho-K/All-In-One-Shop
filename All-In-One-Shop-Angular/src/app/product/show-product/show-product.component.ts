@@ -51,6 +51,24 @@ export class ShowProductComponent implements OnInit {
     })
   }
 
+  modalAdd(){
+    this.product = {
+      id: 0,
+      name: null,
+      description:null,
+      productImageURL:null,
+      productTypeId:null,
+      price:null
+    }
+    this.modalTitle = "Add Product"
+    this.activeAddEditProductComponent = true;
+  }
+
+  modalClose(){
+    this.activeAddEditProductComponent = false;
+    this.productList$ = this.service.getProductsList();
+  }
+
   mapStoragesWithProducts(){
     this.service.getStoragesList().subscribe(storages => {
       this.storagesList = storages;

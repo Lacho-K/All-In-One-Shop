@@ -1,49 +1,53 @@
 <!-- Add Product trigger modal -->
-<button type="button" class="btn btn-primary mx-auto d-block" style="margin-bottom: 2%" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+<button type="button" class="btn btn-primary mx-auto d-block mb-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modalAdd()">
     Add Product
 </button>
 
 <table class="table table-striped">
     <thead>
-        <th>StorageId</th>
         <th>ProductId</th>
         <th>ProductName</th>
         <th>ProductDescription</th>
         <th>ProductImageURL</th>
         <th>ProductType</th>
         <th>ProductPrice</th>
-        <th>ProductQuantity</th>
-        <th>ProductLocation</th>
-        <th>ProductRatings</th>
     </thead>
     <tbody>
-        <tr *ngFor="let storage of storagesList$|async">     
-            <td>{{storage.id}}</td>       
-            <td>{{storage.productId}}</td>       
-            <td>{{storagesMap.get(storage.productId).name}}</td>
-            <td>{{storagesMap.get(storage.productId).description}}</td>
-            <td>{{storagesMap.get(storage.productId).productImageURL}}</td>
-            <td>{{productTypesMap.get(storagesMap.get(storage.productId).productTypeId)}}</td>
-            <td>{{storagesMap.get(storage.productId).price}}</td>
-            <td>{{storage.productQuantity}}</td>
-            <td>{{storage.productLocation}}</td>
-            <td>{{storage.productRatings}}</td>
+        <tr *ngFor="let product of productList$|async">     
+            <td>{{product.id}}</td>       
+            <td>{{product.name}}</td>
+            <td>{{product.description}}</td>
+            <td>{{product.productImageURL}}</td>
+            <td>{{productTypesMap.get(product.productTypeId)}}</td>
+            <td>{{product.price}}</td>
         </tr>
     </tbody>
 </table>
 
+<div class="alert alert-success" role="alert" id="add-success-alert">
+  Product successfully added!
+</div>
+
+<div class="alert alert-success" role="alert" id="update-success-alert">
+  Product successfully updated!
+</div>
+
+<div class="alert alert-success" role="alert" id="delete-success-alert">
+  Product successfully deleted!
+</div>
+
 
   
-  <!-- Modal -->
+  <!-- Add or edit Product Modal -->
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">{{modalTitle}}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modalClose()" id="add-edit-modal-close"></button>
         </div>
         <div class="modal-body">
-          <app-add-edit-product></app-add-edit-product>
+          <app-add-edit-product [product]="product" *ngIf="activeAddEditProductComponent"></app-add-edit-product>
         </div>
       </div>
     </div>
