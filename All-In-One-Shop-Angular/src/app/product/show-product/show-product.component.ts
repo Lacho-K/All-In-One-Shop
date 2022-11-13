@@ -64,6 +64,12 @@ export class ShowProductComponent implements OnInit {
     this.activeAddEditProductComponent = true;
   }
 
+  modalEdit(item:any){
+    this.product = item;
+    this.modalTitle = "Edit Product";
+    this.activeAddEditProductComponent = true;
+  }
+
   modalClose(){
     this.activeAddEditProductComponent = false;
     this.productList$ = this.service.getProductsList();

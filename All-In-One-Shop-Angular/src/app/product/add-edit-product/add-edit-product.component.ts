@@ -28,7 +28,7 @@ export class AddEditProductComponent implements OnInit {
     this.name = this.product.name;
     this.description = this.product.description;
     this.productImageURL = this.product.productImageURL;
-    this.productTypeId = this.productTypeId;
+    this.productTypeId = this.product.productTypeId;
     this.price = this.product.price;
 
     this.productLis$ = this.service.getProductsList();
@@ -64,7 +64,34 @@ export class AddEditProductComponent implements OnInit {
   }
 
   updateProduct(){
+    var product = {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      productImageURL: this.productImageURL,
+      productTypeId: this.productTypeId,
+      price: this.price
+    }
 
+    var id:number = this.id;
+
+    this.service.updateProduct(id, product).subscribe(res => {
+      var closeModalBtn = document.getElementById('add-edit-modal-close');
+      if(closeModalBtn){
+        closeModalBtn.click();
+      }
+
+      var showUpdateSuccess = document.getElementById('update-success-alert');
+      if(showUpdateSuccess){
+        showUpdateSuccess.style.display = "block";
+      }
+
+      setTimeout(function (){
+        if(showUpdateSuccess){
+          showUpdateSuccess.style.display = "none"
+        }
+      }, 4000)
+    })
   }
 
 }
