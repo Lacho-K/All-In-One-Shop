@@ -70,6 +70,30 @@ export class ShowProductComponent implements OnInit {
     this.activeAddEditProductComponent = true;
   }
 
+  deleteProduct(deleteProduct:any){
+    if(confirm(`Are you sure you want to delete this item: "${deleteProduct.name}"`)){
+      this.service.deleteProduct(deleteProduct.id).subscribe(res => {
+        var closeModalBtn = document.getElementById('add-edit-modal-close');
+        
+        if(closeModalBtn){
+          closeModalBtn.click();
+        }
+
+        var showDeleteSuccess = document.getElementById('delete-success-alert');
+        if(showDeleteSuccess){
+          showDeleteSuccess.style.display = "block";
+        }
+
+        setTimeout(function (){
+          if(showDeleteSuccess){
+            showDeleteSuccess.style.display = "none"
+          }
+        }, 4000)
+        this.productList$ = this.service.getProductsList();
+        })
+     }
+  }
+
   modalClose(){
     this.activeAddEditProductComponent = false;
     this.productList$ = this.service.getProductsList();
