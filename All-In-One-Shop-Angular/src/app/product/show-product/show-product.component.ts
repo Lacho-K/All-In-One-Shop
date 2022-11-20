@@ -51,6 +51,20 @@ export class ShowProductComponent implements OnInit {
     })
   }
 
+  mapStoragesWithProducts(){
+    this.service.getStoragesList().subscribe(storages => {
+      this.storagesList = storages;
+
+      this.service.getProductsList().subscribe(products => {
+        this.productsList = products;
+
+        for (let i = 0; i < storages.length && products.length; i++) {
+          this.storagesMap.set(this.storagesList[i].productId, this.productsList[i])
+        }
+      })
+    })
+  }
+
   modalAdd(){
     this.product = {
       id: 0,
@@ -98,19 +112,4 @@ export class ShowProductComponent implements OnInit {
     this.activeAddEditProductComponent = false;
     this.productList$ = this.service.getProductsList();
   }
-
-  mapStoragesWithProducts(){
-    this.service.getStoragesList().subscribe(storages => {
-      this.storagesList = storages;
-
-      this.service.getProductsList().subscribe(products => {
-        this.productsList = products;
-
-        for (let i = 0; i < storages.length && i < products.length; i++) {
-          this.storagesMap.set(this.storagesList[i].productId, this.productsList[i])
-        }
-      })
-    })
-  }
-
 }
