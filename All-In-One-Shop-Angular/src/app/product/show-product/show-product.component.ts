@@ -38,6 +38,7 @@ export class ShowProductComponent implements OnInit {
   modalTitle:string = '';
   activeAddEditProductComponent:boolean = false;
   product:any;
+  storage:any;
 
 
 
@@ -66,6 +67,7 @@ export class ShowProductComponent implements OnInit {
   }
 
   modalAdd(){
+
     this.product = {
       id: 0,
       name: null,
@@ -74,12 +76,22 @@ export class ShowProductComponent implements OnInit {
       productTypeId:null,
       price:null
     }
+
+    this.storage = {
+      id: 0,
+      productId: null,
+      productQuantity: null,
+      productLocation: null,
+      productRatings: null
+    }
+
     this.modalTitle = "Add Product"
     this.activeAddEditProductComponent = true;
   }
 
-  modalEdit(item:any){
-    this.product = item;
+  modalEdit(product:any, storage: any){
+    this.product = product;
+    this.storage = storage;
     this.modalTitle = "Edit Product";
     this.activeAddEditProductComponent = true;
   }
@@ -103,13 +115,13 @@ export class ShowProductComponent implements OnInit {
             showDeleteSuccess.style.display = "none"
           }
         }, 4000)
-        this.productList$ = this.service.getProductsList();
+        this.storagesList$ = this.service.getStoragesList();
         })
      }
   }
 
   modalClose(){
     this.activeAddEditProductComponent = false;
-    this.productList$ = this.service.getProductsList();
+    this.storagesList$ = this.service.getStoragesList();
   }
 }

@@ -27,6 +27,21 @@
         <Input type="text" class="form-control" [(ngModel)]="price" name="price" ngDefaultControl>
     </div>
 
-    <button (click)="addProduct()" *ngIf="product.id==0" class="btn btn-primary">Add</button>
-    <button (click)="updateProduct()" *ngIf="product.id!=0" class="btn btn-primary">Update</button>
+    <div class="mb-3">
+        <label for="productQuantity" class="form-label">Product ProductQuantity </label>
+        <Input type="text" class="form-control" [(ngModel)]="productQuantity" name="productQuantity" ngDefaultControl>
+    </div>
+
+    <div class="mb-3">
+        <label for="productLocation" class="form-label">Product Location </label>
+        <Input type="text" class="form-control" [(ngModel)]="productLocation" name="productLocation" ngDefaultControl>
+    </div>
+
+    <div class="mb-3">
+        <label for="productRatings" class="form-label">Product Ratings </label>
+        <Input type="text" class="form-control" [(ngModel)]="productRatings" name="productRatings" ngDefaultControl>
+    </div>
+
+    <button (click)="addProduct()" *ngIf="storageWithProduct.id==0" class="btn btn-primary">Add</button>
+    <button (click)="updateProduct()" *ngIf="storageWithProduct.id!=0" class="btn btn-primary">Update</button>
 </form>

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { distinctUntilChanged, Observable } from 'rxjs';
 import { ShopApiService  } from 'src/app/shop-api.service';
 
 @Component({
@@ -10,32 +10,47 @@ import { ShopApiService  } from 'src/app/shop-api.service';
 export class AddEditProductComponent implements OnInit {
 
   productLis$! : Observable<any[]>;
+  storageLis$! : Observable<any[]>;
   productTypesList$!: Observable<any[]>;
+  
+  lastAddedProduct!:any;
+
+  //Array of product objects, used to properly assign the product's storage
+  productsList:any=[];
 
   constructor(private service: ShopApiService) { }
 
   
-  @Input() product:any;
+  @Input() storageWithProduct:any;
   id:number = 0;
+  productId:number = 0;
   name:string = '';
   description:string = '';
   productImageURL:string = '';
   productTypeId!:number;
   price:number = 0;
+  productQuantity:number = 0;
+  productLocation:string = '';
+  productRatings:string = '';
   
   ngOnInit(): void {
-    this.id = this.product.id;
-    this.name = this.product.name;
-    this.description = this.product.description;
-    this.productImageURL = this.product.productImageURL;
-    this.productTypeId = this.product.productTypeId;
-    this.price = this.product.price;
+    this.id = this.storageWithProduct.id;
+    this.productId = this.storageWithProduct.productId;
+    this.name = this.storageWithProduct.name;
+    this.description = this.storageWithProduct.description;
+    this.productImageURL = this.storageWithProduct.productImageURL;
+    this.productTypeId = this.storageWithProduct.productTypeId;
+    this.price = this.storageWithProduct.price;
+    this.productQuantity = this.storageWithProduct.productQuantity;
+    this.productLocation = this.storageWithProduct.productLocation;
+    this.productRatings = this.storageWithProduct.productRatings;
 
     this.productLis$ = this.service.getProductsList();
+    this.storageLis$ = this.service.getStoragesList();
     this.productTypesList$ = this.service.getProductTypesList();
   }
 
-  addProduct(){
+  async addProduct(){
     var product = {
       name: this.name,
       description: this.description,
@@ -43,12 +58,29 @@ export class AddEditProductComponent implements OnInit {
       productTypeId: this.productTypeId,
       price: this.price
     }
+    
+    this.lastAddedProduct = await this.addProductAndReturnIt(product);
+        
+    var storage = {
+      productId: this.lastAddedProduct.id,
+      productQuantity: this.productQuantity,
+      productLocation: this.productLocation,
+      productRatings: this.productRatings
+    }
 
+    this.service.addStorage(storage).subscribe(res => {});
+
+  }
+
+  async addProductAndReturnIt(product:any): Promise<any>{
+    return new Promise<any>((resolve) => {
     this.service.addProduct(product).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn){
         closeModalBtn.click();
       }
+    //Returns the last added product
+      resolve(res);
 
       var showAddSuccess = document.getElementById('add-success-alert');
       if(showAddSuccess){
@@ -61,10 +93,11 @@ export class AddEditProductComponent implements OnInit {
         }
       }, 4000)
     })
-  }
+  })
+}
 
   updateProduct(){
-    var product = {
+    var storageWithProduct = {
       id: this.id,
       name: this.name,
       description: this.description,
@@ -75,13 +108,16 @@ export class AddEditProductComponent implements OnInit {
 
     var id:number = this.id;
 
-    this.service.updateProduct(id, product).subscribe(res => {
+    this.service.updateProduct(id, storageWithProduct).subscribe(res => {
+
       var closeModalBtn = document.getElementById('add-edit-modal-close');
+
       if(closeModalBtn){
         closeModalBtn.click();
       }
 
       var showUpdateSuccess = document.getElementById('update-success-alert');
+
       if(showUpdateSuccess){
         showUpdateSuccess.style.display = "block";
       }
