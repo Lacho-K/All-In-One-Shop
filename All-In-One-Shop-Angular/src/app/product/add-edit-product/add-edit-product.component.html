@@ -17,8 +17,7 @@
 
     <div class="mb-3">
         <label for="productType">Product Type</label>
-        <input type="text" class="form-control" name="productTypeId" [(ngModel)]="productTypeId" *ngIf="product.id!=0" disabled >
-        <select class="form-control" name="productTypeId" id="productTypeId" [(ngModel)]="productTypeId" *ngIf="product.id==0">
+        <select class="form-control" name="productTypeId" id="productTypeId" [(ngModel)]="productTypeId">
             <option *ngFor="let type of productTypesList$|async" [value]="type.id">{{type.productTypeStr}}</option>
         </select>
     </div>
