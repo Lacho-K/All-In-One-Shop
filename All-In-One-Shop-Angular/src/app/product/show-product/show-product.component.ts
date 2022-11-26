@@ -99,7 +99,7 @@ export class ShowProductComponent implements OnInit {
 
   deleteProduct(deleteProduct : any, storageAssociatedWithProduct : any){
 
-    if(confirm(`Are you sure you want to delete this item: "${deleteProduct.name}"`))
+    if(confirm(`Are you sure you want to delete this Product:  "${deleteProduct.name}"`))
     {
       this.service.deleteStorage(storageAssociatedWithProduct.id).subscribe(() => {
 

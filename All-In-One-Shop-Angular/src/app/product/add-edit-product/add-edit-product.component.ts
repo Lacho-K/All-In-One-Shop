@@ -50,7 +50,7 @@ export class AddEditProductComponent implements OnInit {
     this.productTypesList$ = this.service.getProductTypesList();
   }
 
-  //TODO: Fix display of table when space in name of product
+//TODO: Fix display of table when space in name of product
   addProduct(){
     var product = {
       name: (this.name as String)?.trim(),
@@ -91,6 +91,7 @@ export class AddEditProductComponent implements OnInit {
     })
   }
 
+//TODO: Fix display of table when space in name of product
   updateProduct(){
 
     var product = {
@@ -112,11 +113,7 @@ export class AddEditProductComponent implements OnInit {
 
     var productId:number = this.productId;
     var storageId:number = this.id;
-
-    console.log(product);
-    console.log(storage);
     
-
     this.service.updateStorage(storageId, storage).subscribe(() => {
 
       this.service.updateProduct(productId, product).subscribe(() => {
