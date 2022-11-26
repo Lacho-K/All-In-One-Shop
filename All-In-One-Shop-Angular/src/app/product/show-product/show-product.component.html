@@ -77,7 +77,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modalClose()" id="add-edit-modal-close"></button>
         </div>
         <div class="modal-body">
-          <app-add-edit-product [storageWithProduct]="storage" *ngIf="activeAddEditProductComponent"></app-add-edit-product>
+          <app-add-edit-product [storage]="storage" [product]="storagesMap.get(storage.productId)" *ngIf="activeAddEditProductComponent"></app-add-edit-product>
         </div>
       </div>
     </div>

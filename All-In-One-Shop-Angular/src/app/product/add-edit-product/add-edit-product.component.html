@@ -42,6 +42,6 @@
         <Input type="text" class="form-control" [(ngModel)]="productRatings" name="productRatings" ngDefaultControl>
     </div>
 
-    <button (click)="addProduct()" *ngIf="storageWithProduct.id==0" class="btn btn-primary">Add</button>
-    <button (click)="updateProduct()" *ngIf="storageWithProduct.id!=0" class="btn btn-primary">Update</button>
+    <button (click)="addProduct()" *ngIf="storage.id==0" class="btn btn-primary">Add</button>
+    <button (click)="updateProduct()" *ngIf="storage.id!=0" class="btn btn-primary">Update</button>
 </form>
