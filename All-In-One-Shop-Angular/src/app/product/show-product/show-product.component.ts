@@ -122,6 +122,16 @@ export class ShowProductComponent implements OnInit {
 
   modalClose(){
     this.activeAddEditProductComponent = false;
+    this.productList$ = this.service.getProductsList();
     this.storagesList$ = this.service.getStoragesList();
+
+    this.mapProductTypes();
+    this.mapStoragesWithProducts();
+
+    console.log(this.activeAddEditProductComponent);
+    console.log(this.productList$.forEach(x => console.log(x)
+    ));
+    console.log(this.storagesList$.forEach(x => console.log(x)
+    ));   
   }
 }

@@ -13,8 +13,6 @@ export class AddEditProductComponent implements OnInit {
   storageLis$! : Observable<any[]>;
   productTypesList$!: Observable<any[]>;
   
-  lastAddedProduct!:any;
-
   //Array of product objects, used to properly assign the product's storage
   productsList:any=[];
 
@@ -58,31 +56,26 @@ export class AddEditProductComponent implements OnInit {
       productTypeId: this.productTypeId,
       price: this.price
     }
-    
-    this.lastAddedProduct = await this.addProductAndReturnIt(product);
-        
-    var storage = {
-      productId: this.lastAddedProduct.id,
-      productQuantity: this.productQuantity,
-      productLocation: this.productLocation,
-      productRatings: this.productRatings
-    }
 
-    this.service.addStorage(storage).subscribe(res => {});
-
-  }
-
-  async addProductAndReturnIt(product:any): Promise<any>{
-    return new Promise<any>((resolve) => {
-    this.service.addProduct(product).subscribe(res => {
+    this.service.addProduct(product).subscribe(lastAddedProduct => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
+      
+      var currentProductStorage = {
+        // casts last product to type 'any' and gets its id
+        productId: (lastAddedProduct as any).id,
+        productQuantity: this.productQuantity,
+        productLocation: this.productLocation,
+        productRatings: this.productRatings
+      }
+
+      this.service.addStorage(currentProductStorage).subscribe();
+
       if(closeModalBtn){
         closeModalBtn.click();
       }
-    //Returns the last added product
-      resolve(res);
 
       var showAddSuccess = document.getElementById('add-success-alert');
+
       if(showAddSuccess){
         showAddSuccess.style.display = "block";
       }
@@ -93,8 +86,7 @@ export class AddEditProductComponent implements OnInit {
         }
       }, 4000)
     })
-  })
-}
+  }
 
   updateProduct(){
     var storageWithProduct = {
