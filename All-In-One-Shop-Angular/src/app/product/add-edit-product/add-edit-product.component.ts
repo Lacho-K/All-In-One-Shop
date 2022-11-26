@@ -111,26 +111,30 @@ export class AddEditProductComponent implements OnInit {
     console.log(storage);
     
 
-    // this.service.updateProduct(id, storageWithProduct).subscribe(res => {
+    this.service.updateStorage(storageId, storage).subscribe(() => {
 
-    //   var closeModalBtn = document.getElementById('add-edit-modal-close');
+      this.service.updateProduct(productId, product).subscribe(() => {
 
-    //   if(closeModalBtn){
-    //     closeModalBtn.click();
-    //   }
+        var closeModalBtn = document.getElementById('add-edit-modal-close');
 
-    //   var showUpdateSuccess = document.getElementById('update-success-alert');
+        if(closeModalBtn){
+          closeModalBtn.click();
+        }
 
-    //   if(showUpdateSuccess){
-    //     showUpdateSuccess.style.display = "block";
-    //   }
+        var showUpdateSuccess = document.getElementById('update-success-alert');
 
-    //   setTimeout(function (){
-    //     if(showUpdateSuccess){
-    //       showUpdateSuccess.style.display = "none"
-    //     }
-    //   }, 4000)
-    // })
+        if(showUpdateSuccess){
+          showUpdateSuccess.style.display = "block";
+        }
+
+        setTimeout(function (){
+          if(showUpdateSuccess){
+            showUpdateSuccess.style.display = "none"
+          }
+        }, 4000)
+
+      });    
+    })
   }
 
 }
