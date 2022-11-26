@@ -50,7 +50,7 @@ export class AddEditProductComponent implements OnInit {
     this.productTypesList$ = this.service.getProductTypesList();
   }
 
-//TODO: Fix display of table when space in name of product
+//TODO: Fix display of table when adding item
   addProduct(){
     var product = {
       name: (this.name as String)?.trim(),
@@ -91,7 +91,6 @@ export class AddEditProductComponent implements OnInit {
     })
   }
 
-//TODO: Fix display of table when space in name of product
   updateProduct(){
 
     var product = {
