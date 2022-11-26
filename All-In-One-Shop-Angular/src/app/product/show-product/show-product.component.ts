@@ -92,32 +92,40 @@ export class ShowProductComponent implements OnInit {
   modalEdit(product:any, storage: any){
     this.product = product;
     this.storage = storage;
-    
+
     this.modalTitle = "Edit Product";
     this.activeAddEditProductComponent = true;
   }
 
-  deleteProduct(deleteProduct:any){
-    if(confirm(`Are you sure you want to delete this item: "${deleteProduct.name}"`)){
-      this.service.deleteProduct(deleteProduct.id).subscribe(res => {
-        var closeModalBtn = document.getElementById('add-edit-modal-close');
-        
-        if(closeModalBtn){
-          closeModalBtn.click();
-        }
+  deleteProduct(deleteProduct : any, storageAssociatedWithProduct : any){
 
-        var showDeleteSuccess = document.getElementById('delete-success-alert');
-        if(showDeleteSuccess){
-          showDeleteSuccess.style.display = "block";
-        }
+    if(confirm(`Are you sure you want to delete this item: "${deleteProduct.name}"`))
+    {
+      this.service.deleteStorage(storageAssociatedWithProduct.id).subscribe(() => {
 
-        setTimeout(function (){
-          if(showDeleteSuccess){
-            showDeleteSuccess.style.display = "none"
+        this.service.deleteProduct(deleteProduct.id).subscribe(res => {
+
+          var closeModalBtn = document.getElementById('add-edit-modal-close');
+          
+          if(closeModalBtn){
+            closeModalBtn.click();
           }
-        }, 4000)
-        this.storagesList$ = this.service.getStoragesList();
-        })
+  
+          var showDeleteSuccess = document.getElementById('delete-success-alert');
+          if(showDeleteSuccess){
+            showDeleteSuccess.style.display = "block";
+          }
+  
+          setTimeout(function (){
+            if(showDeleteSuccess){
+              showDeleteSuccess.style.display = "none"
+            }
+          }, 4000)
+          this.storagesList$ = this.service.getStoragesList();
+
+          })
+      })            
+      
      }
   }
 
