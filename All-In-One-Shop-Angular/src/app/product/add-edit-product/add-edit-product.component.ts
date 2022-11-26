@@ -13,9 +13,6 @@ export class AddEditProductComponent implements OnInit {
   storageLis$! : Observable<any[]>;
   productTypesList$!: Observable<any[]>;
   
-  //Array of product objects, used to properly assign the product's storage
-  productsList:any=[];
-
   constructor(private service: ShopApiService) { }
 
   
@@ -89,8 +86,9 @@ export class AddEditProductComponent implements OnInit {
   }
 
   updateProduct(){
-    var storageWithProduct = {
-      id: this.id,
+
+    var product = {
+      id: this.productId,
       name: this.name,
       description: this.description,
       productImageURL: this.productImageURL,
@@ -98,28 +96,41 @@ export class AddEditProductComponent implements OnInit {
       price: this.price
     }
 
-    var id:number = this.id;
+    var storage = {
+      id: this.id,
+      productId: this.productId,
+      productQuantity: this.productQuantity,
+      productLocation: this.productLocation,
+      productRatings: this.productRatings
+    }
 
-    this.service.updateProduct(id, storageWithProduct).subscribe(res => {
+    var productId:number = this.productId;
+    var storageId:number = this.id;
 
-      var closeModalBtn = document.getElementById('add-edit-modal-close');
+    console.log(product);
+    console.log(storage);
+    
 
-      if(closeModalBtn){
-        closeModalBtn.click();
-      }
+    // this.service.updateProduct(id, storageWithProduct).subscribe(res => {
 
-      var showUpdateSuccess = document.getElementById('update-success-alert');
+    //   var closeModalBtn = document.getElementById('add-edit-modal-close');
 
-      if(showUpdateSuccess){
-        showUpdateSuccess.style.display = "block";
-      }
+    //   if(closeModalBtn){
+    //     closeModalBtn.click();
+    //   }
 
-      setTimeout(function (){
-        if(showUpdateSuccess){
-          showUpdateSuccess.style.display = "none"
-        }
-      }, 4000)
-    })
+    //   var showUpdateSuccess = document.getElementById('update-success-alert');
+
+    //   if(showUpdateSuccess){
+    //     showUpdateSuccess.style.display = "block";
+    //   }
+
+    //   setTimeout(function (){
+    //     if(showUpdateSuccess){
+    //       showUpdateSuccess.style.display = "none"
+    //     }
+    //   }, 4000)
+    // })
   }
 
 }
