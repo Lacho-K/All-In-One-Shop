@@ -48,7 +48,7 @@ export class AddEditProductComponent implements OnInit {
     this.productTypesList$ = this.service.getProductTypesList();
   }
 
-  async addProduct(){
+  addProduct(){
     var product = {
       name: this.name,
       description: this.description,
