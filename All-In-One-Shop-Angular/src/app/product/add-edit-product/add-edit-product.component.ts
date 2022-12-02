@@ -71,23 +71,23 @@ export class AddEditProductComponent implements OnInit {
         productRatings: this.productRatings
       }
 
-      this.service.addStorage(currentProductStorage).subscribe();
-
-      if(closeModalBtn){
-        closeModalBtn.click();
-      }
-
-      var showAddSuccess = document.getElementById('add-success-alert');
-
-      if(showAddSuccess){
-        showAddSuccess.style.display = "block";
-      }
-
-      setTimeout(function (){
-        if(showAddSuccess){
-          showAddSuccess.style.display = "none"
+      this.service.addStorage(currentProductStorage).subscribe(res => {
+        if(closeModalBtn){
+          closeModalBtn.click();
         }
-      }, 4000)
+  
+        var showAddSuccess = document.getElementById('add-success-alert');
+  
+        if(showAddSuccess){
+          showAddSuccess.style.display = "block";
+        }
+  
+        setTimeout(function (){
+          if(showAddSuccess){
+            showAddSuccess.style.display = "none"
+          }
+        }, 4000)
+      });
     })
   }
 
