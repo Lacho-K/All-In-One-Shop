@@ -11,6 +11,7 @@ import { AddEditProductComponent } from './product/add-edit-product/add-edit-pro
 import { ShopApiService } from './shop-api.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
+import { RegisterComponent } from './navbar/register/register.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HomeComponent } from './home/home.component';
     ShowProductComponent,
     AddEditProductComponent,
     NavbarComponent,
-    HomeComponent
+    HomeComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
