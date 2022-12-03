@@ -50,7 +50,6 @@ export class AddEditProductComponent implements OnInit {
     this.productTypesList$ = this.service.getProductTypesList();
   }
 
-//TODO: Fix display of table when adding item
   addProduct(){
     var product = {
       name: (this.name as String)?.trim(),
@@ -71,7 +70,7 @@ export class AddEditProductComponent implements OnInit {
         productRatings: this.productRatings
       }
 
-      this.service.addStorage(currentProductStorage).subscribe(res => {
+      this.service.addStorage(currentProductStorage).subscribe(() => {
         if(closeModalBtn){
           closeModalBtn.click();
         }
