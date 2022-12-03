@@ -9,13 +9,15 @@ import { ProductComponent } from './product/product.component';
 import { ShowProductComponent } from './product/show-product/show-product.component';
 import { AddEditProductComponent } from './product/add-edit-product/add-edit-product.component';
 import { ShopApiService } from './shop-api.service';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductComponent,
     ShowProductComponent,
-    AddEditProductComponent
+    AddEditProductComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
