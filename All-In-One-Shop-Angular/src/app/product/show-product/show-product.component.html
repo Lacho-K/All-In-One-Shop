@@ -3,7 +3,7 @@
     Add Product
 </button>
 
-<div class="card my-1 mx-1 border border-1 border-secondary rounded" style="display: inline-block; width: 18rem;" *ngFor="let storage of storagesList$|async">
+<div class="card my-1 mx-1 border border-1 border-secondary rounded d-inline-block" style="width: 18rem;" *ngFor="let storage of storagesList$|async">
   <img class="card-img-top" src={{storagesMap.get(storage.productId)?.productImageURL}} alt="Image Not Found" onerror="this.src='https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled.png';">
   <div class="card-body">
     <h5 class="card-title">{{storagesMap.get(storage.productId)?.name}}</h5>
