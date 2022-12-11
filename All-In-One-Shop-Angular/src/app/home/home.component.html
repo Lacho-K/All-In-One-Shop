@@ -1,49 +1,31 @@
 <div class="text-center my-4 border border-1 d-block">
-    <h3>Welcome to All In One Shop!</h3>
-    <h3>Recently added items:</h3>
+  <h3>Welcome to All In One Shop!</h3>
+  <h3>Recently added items:</h3>
 </div>
 
 <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-arrow-down d-block mx-auto my-2" viewBox="0 0 16 16">
-    <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+  <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
 </svg>
 
-<div id="carouselExampleDark" class="carousel carousel-dark slide mx-auto" style="width: 70rem;" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-            <!-- Insert storage items here -->
-      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-    <div class="carousel-inner">
-    <!-- Insert storage items here -->
-      <div class="carousel-item active" data-bs-interval="5000">
-        <img src="https://www.gran-turismo.com/images/c/i1W3k7FXLZd7AEE.jpg" class="d-block w-100" alt="...">
-        <div class="carousel-caption d-none d-md-block shadow-none p-3 mb-5 bg-light rounded" style="opacity: 0.6">
-          <h5>First slide label</h5>
-          <p>Some representative placeholder content for the first slide.</p>
-        </div>
-      </div>
-      <div class="carousel-item" data-bs-interval="5000">
-        <img src="https://cdn.thewirecutter.com/wp-content/media/2022/03/elden-ring-2048px-0003.jpg?auto=webp&quality=75&width=1024" class="d-block w-100" alt="...">
-        <div class="carousel-caption d-none d-md-block shadow-none p-3 mb-5 bg-light rounded" style="opacity: 0.6">
-          <h5>Second slide label</h5>
-          <p>Some representative placeholder content for the second slide.</p>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <img src="https://www.motortrend.com/uploads/2022/03/079-GT7-Porsche-911-GT1-Strassenversion-97-Nu%CC%88rburgring.jpg?fit=around%7C875:492" class="d-block w-100" alt="...">
-        <div class="carousel-caption d-none d-md-block shadow-none p-3 mb-5 bg-light rounded" style="opacity: 0.6">
-          <h5>Third slide label</h5>
-          <p>Some representative placeholder content for the third slide.</p>
-        </div>
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
+<div id="carouselDark" class="carousel carousel-dark slide mx-auto" style="width: 70rem;" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselDark" *ngFor="let product of recentProducts$ |async; let i = index" [attr.data-bs-slide-to]="i" [ngClass]="i == 0 ? 'active' : '' "></button>
   </div>
+  <div class="carousel-inner">
+    <div data-bs-interval="5000" *ngFor="let product of recentProducts$ |async; let i = index" [ngClass]="i == 0 ? 'carousel-item active' : 'carousel-item' ">
+      <img class="img-fluid img-thumbnail mx-auto d-block" style="max-height: 32rem;" src={{product.productImageURL}} alt="Image Not Found" onerror="this.src='https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled.png';">
+      <div class="carousel-caption d-none d-md-block shadow-none p-3 mb-3 bg-light rounded" style="opacity: 0.6">
+        <h5>{{product.name}}</h5>
+        <p>Now only for {{product.price}}</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselDark" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselDark" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
