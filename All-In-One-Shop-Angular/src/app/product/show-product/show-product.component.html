@@ -4,11 +4,13 @@
 </button>
 
 <div class="card my-1 mx-1 border border-1 border-secondary rounded d-inline-block" style="width: 18rem;" *ngFor="let storage of storagesList$|async">
-  <img class="card-img-top" src={{storagesMap.get(storage.productId)?.productImageURL}} alt="Image Not Found" onerror="this.src='https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled.png';">
+  <div class="container my-4" style="height: 20rem;">
+    <img class="card-img-top" src={{storagesMap.get(storage.productId)?.productImageURL}} alt="Image Not Found" onerror="this.src='https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled.png';">
   <div class="card-body">
     <h5 class="card-title">{{storagesMap.get(storage.productId)?.name}}</h5>
     <p class="card-text">{{storagesMap.get(storage.productId)?.description == '' || storagesMap.get(storage.productId)?.description == null ? 'No product description' : storagesMap.get(storage.productId)?.description}}</p>
   </div>
+</div>
   <ul class="list-group list-group-flush">
     <li class="list-group-item">Product Type: {{productTypesMap.get(storagesMap.get(storage.productId)?.productTypeId)}}</li>
     <li class="list-group-item">Product Price: {{storagesMap.get(storage.productId)?.price}}</li>
