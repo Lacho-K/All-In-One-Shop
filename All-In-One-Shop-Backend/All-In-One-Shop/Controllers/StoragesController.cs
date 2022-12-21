@@ -52,11 +52,13 @@ namespace All_In_One_Shop.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(storage).State = EntityState.Modified;
-
             try
             {
+                _context.Entry(storage).State = EntityState.Modified;
+
                 await _context.SaveChangesAsync();
+
+                _context.Entry(storage).State = EntityState.Detached;
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,7 +81,11 @@ namespace All_In_One_Shop.Controllers
         public async Task<ActionResult<Storage>> PostStorage(Storage storage)
         {
             _context.Storages.Add(storage);
+
             await _context.SaveChangesAsync();
+
+            _context.Entry(storage).State = EntityState.Detached;
+
 
             return CreatedAtAction("GetStorage", new { id = storage.Id }, storage);
         }

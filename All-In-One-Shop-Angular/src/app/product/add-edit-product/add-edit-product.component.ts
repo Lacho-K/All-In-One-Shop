@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { distinctUntilChanged, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ShopApiService  } from 'src/app/shop-api.service';
 
 @Component({

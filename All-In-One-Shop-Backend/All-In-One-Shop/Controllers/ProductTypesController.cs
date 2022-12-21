@@ -52,11 +52,13 @@ namespace All_In_One_Shop.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(productType).State = EntityState.Modified;
-
             try
             {
+                _context.Entry(productType).State = EntityState.Modified;
+
                 await _context.SaveChangesAsync();
+
+                _context.Entry(productType).State = EntityState.Detached;
             }
             catch (DbUpdateConcurrencyException)
             {

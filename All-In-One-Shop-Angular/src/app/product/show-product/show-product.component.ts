@@ -32,6 +32,14 @@ export class ShowProductComponent implements OnInit {
 
     this.mapProductTypes();
     this.mapStoragesWithProducts();
+
+    this.service.getProductsList().subscribe(data =>{
+      for (let i = 0; i < data.length; i++) {
+        console.log(data[i]);
+        
+      }
+    })
+    
   }
 
   //Variables(properties)
