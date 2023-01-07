@@ -26,14 +26,14 @@ namespace All_In_One_Shop.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return await this._productRepo.GetAll();
+            return await this._productRepo.GetAllProducts();
         }
 
         // GET: api/Products/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var product = await _productRepo.GetById(id);
+            var product = await _productRepo.GetProductById(id);
 
             if (product == null)
             {
@@ -55,11 +55,11 @@ namespace All_In_One_Shop.Controllers
 
             try
             {
-                await _productRepo.Put(id, product);
+                await _productRepo.UpdateProduct(id, product);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_productRepo.Exists(id))
+                if (!_productRepo.ProductExists(id))
                 {
                     return NotFound();
                 }
@@ -77,7 +77,7 @@ namespace All_In_One_Shop.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
-            await _productRepo.Post(product);
+            await _productRepo.AddProduct(product);
 
             return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         }
@@ -86,7 +86,8 @@ namespace All_In_One_Shop.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            var product = await _productRepo.Delete(id);
+            var product = await _productRepo.DeleteProduct(id);
+
             if (product == null)
             {
                 return NotFound();

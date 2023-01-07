@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using All_In_One_Shop.Data;
 using All_In_One_Shop.Models;
+using All_In_One_Shop.Data.Repo.Interfaces;
 
 namespace All_In_One_Shop.Controllers
 {
@@ -14,25 +15,25 @@ namespace All_In_One_Shop.Controllers
     [ApiController]
     public class StoragesController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IStorageInterface _storageRepo;
 
-        public StoragesController(DataContext context)
+        public StoragesController(IStorageInterface storageRepo)
         {
-            _context = context;
+            this._storageRepo = storageRepo;
         }
 
         // GET: api/Storages
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Storage>>> GetStorages()
         {
-            return await _context.Storages.ToListAsync();
+            return await _storageRepo.GetAllStorages();
         }
 
         // GET: api/Storages/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Storage>> GetStorage(int id)
         {
-            var storage = await _context.Storages.FindAsync(id);
+            var storage = await _storageRepo.GetStorageById(id);
 
             if (storage == null)
             {
@@ -54,11 +55,9 @@ namespace All_In_One_Shop.Controllers
 
             try
             {
-                _context.Entry(storage).State = EntityState.Modified;
 
-                await _context.SaveChangesAsync();
+                await _storageRepo.UpdateStorage(id, storage);
 
-                _context.Entry(storage).State = EntityState.Detached;
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -80,11 +79,8 @@ namespace All_In_One_Shop.Controllers
         [HttpPost]
         public async Task<ActionResult<Storage>> PostStorage(Storage storage)
         {
-            _context.Storages.Add(storage);
 
-            await _context.SaveChangesAsync();
-
-            _context.Entry(storage).State = EntityState.Detached;
+            await _storageRepo.AddStorage(storage);
 
 
             return CreatedAtAction("GetStorage", new { id = storage.Id }, storage);
@@ -94,21 +90,19 @@ namespace All_In_One_Shop.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStorage(int id)
         {
-            var storage = await _context.Storages.FindAsync(id);
+            var storage = await _storageRepo.DeleteStorage(id);
+
             if (storage == null)
             {
                 return NotFound();
             }
-
-            _context.Storages.Remove(storage);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool StorageExists(int id)
         {
-            return _context.Storages.Any(e => e.Id == id);
+            return _storageRepo.StorageExists(id);
         }
     }
 }

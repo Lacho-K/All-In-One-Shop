@@ -5,16 +5,16 @@ namespace All_In_One_Shop.Data.Repo
 {
     public interface IProductInterface 
     {
-        Task<ActionResult<IEnumerable<Product>>> GetAll();
+        Task<ActionResult<IEnumerable<Product>>> GetAllProducts();
 
-        Task<ActionResult<Product>> GetById(int id);
+        Task<ActionResult<Product>> GetProductById(int id);
 
-        Task<ActionResult<Product>> Put(int id, Product product);
+        Task<ActionResult<Product>> UpdateProduct(int id, Product product);
 
-        Task<ActionResult<Product>> Post(Product product);
+        Task<ActionResult<Product>> AddProduct(Product product);
 
-        Task<ActionResult<Product>> Delete(int id);
+        Task<ActionResult<Product>> DeleteProduct(int id);
 
-        bool Exists(int id);
+        bool ProductExists(int id);
     }
 }

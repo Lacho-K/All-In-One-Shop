@@ -8,43 +8,48 @@ namespace All_In_One_Shop.Data.Repo
 {
     public class ProductRepo: IProductInterface
     {
-        private readonly static DataContext _context = new DataContext();
+        private readonly DataContext _context;
 
-        public async Task<ActionResult<IEnumerable<Product>>> GetAll()
+        public ProductRepo(DataContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts()
         {
             return await _context.Products.ToListAsync();
         }
 
-        public async Task<ActionResult<Product>> GetById(int id)
+        public async Task<ActionResult<Product>> GetProductById(int id)
         {
             var product = await _context.Products.FindAsync(id);
 
             return product;
         }
 
-        public async Task<ActionResult<Product>> Post(Product product)
+        public async Task<ActionResult<Product>> AddProduct(Product product)
         {
             _context.Products.Add(product);
 
             await _context.SaveChangesAsync();
 
-            _context.Entry(product).State = EntityState.Detached;
+            //_context.Entry(product).State = EntityState.Detached;
 
             return product;
         }
 
-        public async Task<ActionResult<Product>> Put(int id, Product product)
-        {            
-            _context.Entry(product).State = EntityState.Modified;
+        public async Task<ActionResult<Product>> UpdateProduct(int id, Product product)
+        {
+            _context.Products.Update(product);
             
             await _context.SaveChangesAsync();
 
-            _context.Entry(product).State = EntityState.Detached;
+            //_context.Entry(product).State = EntityState.Detached;
 
             return product;
         }
 
-        public async Task<ActionResult<Product>> Delete(int id)
+        public async Task<ActionResult<Product>> DeleteProduct(int id)
         {
             var product = await _context.Products.FindAsync(id);
 
@@ -57,7 +62,7 @@ namespace All_In_One_Shop.Data.Repo
             return product;
         }
 
-        public bool Exists(int id)
+        public bool ProductExists(int id)
         {
             return _context.Products.Any(e => e.Id == id);
         }

@@ -54,11 +54,11 @@ namespace All_In_One_Shop.Controllers
 
             try
             {
-                _context.Entry(productType).State = EntityState.Modified;
+                _context.ProductsTypes.Update(productType);
 
                 await _context.SaveChangesAsync();
 
-                _context.Entry(productType).State = EntityState.Detached;
+                //_context.Entry(productType).State = EntityState.Detached;
             }
             catch (DbUpdateConcurrencyException)
             {
