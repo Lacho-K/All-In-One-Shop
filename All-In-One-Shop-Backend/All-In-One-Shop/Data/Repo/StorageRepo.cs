@@ -15,13 +15,11 @@ namespace All_In_One_Shop.Data.Repo
             this._context = context;
         }
 
-        public async Task<ActionResult<Storage>> AddStorage(Storage storage)
+        public async Task AddStorage(Storage storage)
         {
             _context.Storages.Add(storage);
 
             await _context.SaveChangesAsync();
-
-            return storage;
         }
 
         public async Task<ActionResult<Storage>> DeleteStorage(int id)
@@ -54,13 +52,11 @@ namespace All_In_One_Shop.Data.Repo
             return _context.Storages.Any(e => e.Id == id);
         }
 
-        public async Task<ActionResult<Storage>> UpdateStorage(int id, Storage storage)
+        public async Task UpdateStorage(int id, Storage storage)
         {
             _context.Storages.Update(storage);
 
             await _context.SaveChangesAsync();
-
-            return storage;
         }
     }
 }

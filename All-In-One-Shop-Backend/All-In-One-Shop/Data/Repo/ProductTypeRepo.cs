@@ -14,13 +14,11 @@ namespace All_In_One_Shop.Data.Repo
             _context = context;
         }
 
-        public async Task<ActionResult<ProductType>> AddProductType(ProductType productType)
+        public async Task AddProductType(ProductType productType)
         {
             _context.ProductsTypes.Add(productType);
 
             await _context.SaveChangesAsync();
-
-            return productType;
         }
 
         public async Task<ActionResult<ProductType>> DeleteProductType(int id)
@@ -53,13 +51,11 @@ namespace All_In_One_Shop.Data.Repo
             return _context.ProductsTypes.Any(e => e.Id == id);
         }
 
-        public async Task<ActionResult<ProductType>> UpdateProductType(int id, ProductType productType)
+        public async Task UpdateProductType(int id, ProductType productType)
         {
             _context.ProductsTypes.Update(productType);
 
             await _context.SaveChangesAsync();
-
-            return productType;
         }
     }
 }

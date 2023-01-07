@@ -28,26 +28,18 @@ namespace All_In_One_Shop.Data.Repo
             return product;
         }
 
-        public async Task<ActionResult<Product>> AddProduct(Product product)
+        public async Task AddProduct(Product product)
         {
             _context.Products.Add(product);
 
             await _context.SaveChangesAsync();
-
-            //_context.Entry(product).State = EntityState.Detached;
-
-            return product;
         }
 
-        public async Task<ActionResult<Product>> UpdateProduct(int id, Product product)
+        public async Task UpdateProduct(int id, Product product)
         {
             _context.Products.Update(product);
             
             await _context.SaveChangesAsync();
-
-            //_context.Entry(product).State = EntityState.Detached;
-
-            return product;
         }
 
         public async Task<ActionResult<Product>> DeleteProduct(int id)

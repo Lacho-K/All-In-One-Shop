@@ -9,9 +9,9 @@ namespace All_In_One_Shop.Data.Repo.Interfaces
 
         Task<ActionResult<Product>> GetProductById(int id);
 
-        Task<ActionResult<Product>> UpdateProduct(int id, Product product);
+        Task UpdateProduct(int id, Product product);
 
-        Task<ActionResult<Product>> AddProduct(Product product);
+        Task AddProduct(Product product);
 
         Task<ActionResult<Product>> DeleteProduct(int id);
 
