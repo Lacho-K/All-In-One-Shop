@@ -1,8 +1,9 @@
-﻿using All_In_One_Shop.Models;
+﻿using All_In_One_Shop.Data.Repo.Interfaces;
+using All_In_One_Shop.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace All_In_One_Shop.Data.Repo.Interfaces
+namespace All_In_One_Shop.Data.Repo
 {
     public class StorageRepo : IStorageInterface
     {

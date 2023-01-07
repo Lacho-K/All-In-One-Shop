@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using All_In_One_Shop.Data;
 using All_In_One_Shop.Models;
 using All_In_One_Shop.Data.Repo;
+using All_In_One_Shop.Data.Repo.Interfaces;
 
 namespace All_In_One_Shop.Controllers
 {

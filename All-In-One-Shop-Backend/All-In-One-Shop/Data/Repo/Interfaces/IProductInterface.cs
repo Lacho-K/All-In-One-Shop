@@ -1,7 +1,7 @@
 ﻿using All_In_One_Shop.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace All_In_One_Shop.Data.Repo
+namespace All_In_One_Shop.Data.Repo.Interfaces
 {
     public interface IProductInterface 
     {

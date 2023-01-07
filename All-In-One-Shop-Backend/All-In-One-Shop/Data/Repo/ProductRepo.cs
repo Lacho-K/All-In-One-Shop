@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using All_In_One_Shop.Models;
 using All_In_One_Shop.Data.Repo;
 using System.Threading.Tasks;
+using All_In_One_Shop.Data.Repo.Interfaces;
 
 namespace All_In_One_Shop.Data.Repo
 {

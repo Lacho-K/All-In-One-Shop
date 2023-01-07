@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using All_In_One_Shop.Data;
 using All_In_One_Shop.Models;
+using All_In_One_Shop.Data.Repo.Interfaces;
 
 namespace All_In_One_Shop.Controllers
 {
@@ -14,25 +15,25 @@ namespace All_In_One_Shop.Controllers
     [ApiController]
     public class ProductTypesController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IProductTypeInterface _productTypeRepo;
 
-        public ProductTypesController(DataContext context)
+        public ProductTypesController(IProductTypeInterface productTypeRepo)
         {
-            _context = context;
+            this._productTypeRepo = productTypeRepo;
         }
 
         // GET: api/ProductTypes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductType>>> GetProductsTypes()
         {
-            return await _context.ProductsTypes.ToListAsync();
+            return await _productTypeRepo.GetAllProductTypes();
         }
 
         // GET: api/ProductTypes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductType>> GetProductType(int id)
         {
-            var productType = await _context.ProductsTypes.FindAsync(id);
+            var productType = await _productTypeRepo.GetProductTypeById(id);
 
             if (productType == null)
             {
@@ -54,15 +55,13 @@ namespace All_In_One_Shop.Controllers
 
             try
             {
-                _context.ProductsTypes.Update(productType);
 
-                await _context.SaveChangesAsync();
+                await _productTypeRepo.UpdateProductType(id, productType);
 
-                //_context.Entry(productType).State = EntityState.Detached;
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductTypeExists(id))
+                if (!_productTypeRepo.ProductTypeExists(id))
                 {
                     return NotFound();
                 }
@@ -80,8 +79,7 @@ namespace All_In_One_Shop.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductType>> PostProductType(ProductType productType)
         {
-            _context.ProductsTypes.Add(productType);
-            await _context.SaveChangesAsync();
+            await _productTypeRepo.AddProductType(productType);
 
             return CreatedAtAction("GetProductType", new { id = productType.Id }, productType);
         }
@@ -90,21 +88,14 @@ namespace All_In_One_Shop.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductType(int id)
         {
-            var productType = await _context.ProductsTypes.FindAsync(id);
+            var productType = await _productTypeRepo.DeleteProductType(id);
+
             if (productType == null)
             {
                 return NotFound();
             }
 
-            _context.ProductsTypes.Remove(productType);
-            await _context.SaveChangesAsync();
-
             return NoContent();
-        }
-
-        private bool ProductTypeExists(int id)
-        {
-            return _context.ProductsTypes.Any(e => e.Id == id);
         }
     }
 }

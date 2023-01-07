@@ -61,7 +61,7 @@ namespace All_In_One_Shop.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StorageExists(id))
+                if (!_storageRepo.StorageExists(id))
                 {
                     return NotFound();
                 }
@@ -98,11 +98,6 @@ namespace All_In_One_Shop.Controllers
             }
 
             return NoContent();
-        }
-
-        private bool StorageExists(int id)
-        {
-            return _storageRepo.StorageExists(id);
         }
     }
 }
