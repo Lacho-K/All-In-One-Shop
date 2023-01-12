@@ -22,6 +22,7 @@ export class ProductDetailsComponent implements OnInit {
   product !: any
   productType !: any
 
+  //Modal variables
   modalTitle:string = '';
   activeAddEditProductComponent:boolean = false;
 
@@ -59,24 +60,18 @@ export class ProductDetailsComponent implements OnInit {
 
         this.service.deleteProduct(deleteProduct.id).subscribe(res => {
 
-          this.router.navigate(['/products'])
-
-          var closeModalBtn = document.getElementById('add-edit-modal-close');
-          
-          if(closeModalBtn){
-            closeModalBtn.click();
-          }
-  
-          var showDeleteSuccess = document.getElementById('delete-success-alert');
-          if(showDeleteSuccess){
-            showDeleteSuccess.style.display = "block";
-          }
-  
-          setTimeout(function (){
+          this.router.navigate(['/products']).then(() => {
+            var showDeleteSuccess = document.getElementById('delete-success-alert');
             if(showDeleteSuccess){
-              showDeleteSuccess.style.display = "none"
+              showDeleteSuccess.style.display = "block";
             }
-          }, 4000)
+    
+            setTimeout(function (){
+              if(showDeleteSuccess){
+                showDeleteSuccess.style.display = "none"
+              }
+            }, 4000)
+          })  
           })
       })                 
      }

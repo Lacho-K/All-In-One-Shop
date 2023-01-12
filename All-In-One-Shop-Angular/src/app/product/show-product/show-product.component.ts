@@ -32,16 +32,6 @@ export class ShowProductComponent implements OnInit {
 
     this.mapProductTypes();
     this.mapStoragesWithProducts();
-
-    console.log(this.storagesMap);
-    
-
-    // this.service.getProductsList().subscribe(data =>{
-    //   for (let i = 0; i < data.length; i++) {
-    //     console.log(data[i]);
-        
-    //   }
-    // })
     
   }
 
@@ -98,46 +88,6 @@ export class ShowProductComponent implements OnInit {
 
     this.modalTitle = "Add Product"
     this.activeAddEditProductComponent = true;
-  }
-
-  modalEdit(product:any, storage: any){
-    this.product = product;
-    this.storage = storage;
-
-    this.modalTitle = "Edit Product";
-    this.activeAddEditProductComponent = true;
-  }
-
-  deleteProduct(deleteProduct : any, storageAssociatedWithProduct : any){
-
-    if(confirm(`Are you sure you want to delete this Product:  "${deleteProduct.name}"`))
-    {
-      this.service.deleteStorage(storageAssociatedWithProduct.id).subscribe(() => {
-
-        this.service.deleteProduct(deleteProduct.id).subscribe(res => {
-
-          var closeModalBtn = document.getElementById('add-edit-modal-close');
-          
-          if(closeModalBtn){
-            closeModalBtn.click();
-          }
-  
-          var showDeleteSuccess = document.getElementById('delete-success-alert');
-          if(showDeleteSuccess){
-            showDeleteSuccess.style.display = "block";
-          }
-  
-          setTimeout(function (){
-            if(showDeleteSuccess){
-              showDeleteSuccess.style.display = "none"
-            }
-          }, 4000)
-          this.storagesList$ = this.service.getStoragesList();
-
-          })
-      })            
-      
-     }
   }
 
   modalClose(){
