@@ -1,6 +1,7 @@
 <!-- Add Product trigger modal -->
-<button type="button" class="btn btn-primary mx-auto d-block my-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modalAdd()">
-    Add Product
+<button type="button" class="btn btn-primary mx-auto d-block my-4" data-bs-toggle="modal"
+  data-bs-target="#staticBackdrop" (click)="modalAdd()">
+  Add Product
 </button>
 
 <div class="alert alert-success" role="alert" id="add-success-alert">
@@ -15,14 +16,19 @@
   Product successfully deleted!
 </div>
 
-<div class="card my-1 mx-1 border border-1 border-secondary rounded d-inline-block" style="width: 18rem;" routerLink="productDetails/{{storage.id}}" *ngFor="let storage of storagesList$|async">
+<div class="card my-1 mx-1 border border-1 border-secondary rounded d-inline-block text-center" style="width: 18rem;"
+  routerLink="productDetails/{{storage.id}}" *ngFor="let storage of storagesList$|async">
   <div class="container my-4" style="height: 20rem;">
-    <img class="card-img-top" style="max-height: 17rem;" src={{storagesMap.get(storage.productId)?.productImageURL}} alt="Image Not Found" onerror="this.src='https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled.png';">
-  <div class="card-body">
-    <h5 class="card-title">{{storagesMap.get(storage.productId)?.name}}</h5>
-    <p class="card-text">{{storagesMap.get(storage.productId)?.description == '' || storagesMap.get(storage.productId)?.description == null ? 'No product description' : storagesMap.get(storage.productId)?.description}}</p>
+    <img class="card-img-top" style="max-height: 17rem;" src={{storagesMap.get(storage.productId)?.productImageURL}}
+      alt="Image Not Found"
+      onerror="this.src='https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled.png';">
+    <div class="card-body">
+      <h5 class="card-title">{{storagesMap.get(storage.productId)?.name}}</h5>
+      <p class="card-text">
+        {{storagesMap.get(storage.productId)?.description == '' || storagesMap.get(storage.productId)?.description == null ? 'No product description' : storagesMap.get(storage.productId)?.description}}
+      </p>
+    </div>
   </div>
-</div>
 
   <!-- <ul class="list-group list-group-flush">
     <li class="list-group-item">Product Type: {{productTypesMap.get(storagesMap.get(storage.productId)?.productTypeId)}}</li>
@@ -31,7 +37,7 @@
     <li class="list-group-item">Product Location: {{storage.productLocation}}</li>
     <li class="list-group-item">Product Ratings: {{storage.productRatings}}</li>
   </ul> -->
-  
+
   <!-- <div class="card-body m-2 border border-1 border-secondary rounded">
 
     <h5 class="card-title">Options:</h5>
@@ -51,19 +57,21 @@
   </div> -->
 
 </div>
-  
-  <!-- Add or edit Product Modal -->
-  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">{{modalTitle}}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modalClose()" id="add-edit-modal-close"></button>
-        </div>
-        <div class="modal-body">
-          <app-add-edit-product [storage]="storage" [product]="storagesMap.get(storage.productId)" *ngIf="activeAddEditProductComponent"></app-add-edit-product>
-        </div>
+
+<!-- Add or edit Product Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">{{modalTitle}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modalClose()"
+          id="add-edit-modal-close"></button>
+      </div>
+      <div class="modal-body">
+        <app-add-edit-product [storage]="storage" [product]="storagesMap.get(storage.productId)"
+          *ngIf="activeAddEditProductComponent"></app-add-edit-product>
       </div>
     </div>
   </div>
-  
+</div>
