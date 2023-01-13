@@ -21,6 +21,11 @@
     100% {opacity: 0;}
 }
 
+.card{
+    height: 18rem;
+    width: 18rem;
+}
+
 .card:hover{
     background-color: rgb(67, 163, 248);
 }
