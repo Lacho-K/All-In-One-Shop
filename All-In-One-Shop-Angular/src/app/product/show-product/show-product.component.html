@@ -15,13 +15,13 @@
 <div class="card my-1 mx-1 border border-1 border-secondary rounded d-inline-block text-center"
   routerLink="productDetails/{{storage.id}}" *ngFor="let storage of storagesList$|async">
   <div class="container my-4">
-    <img class="card-img-top" style="max-height: 17rem;" src={{storagesMap.get(storage.productId)?.productImageURL}}
+    <img class="card-img-top" src={{storagesMap.get(storage.productId)?.productImageURL}}
       alt="Image Not Found"
       onerror="this.src='../../../assets/img.png'">
     <div class="card-body">
       <h5 class="card-title">{{storagesMap.get(storage.productId)?.name}}</h5>
       <p class="card-text">
-        {{storagesMap.get(storage.productId)?.description == '' || storagesMap.get(storage.productId)?.description == null ? 'No product description' : storagesMap.get(storage.productId)?.description}}
+        Price: {{storagesMap.get(storage.productId)?.price}}
       </p>
     </div>
   </div>
