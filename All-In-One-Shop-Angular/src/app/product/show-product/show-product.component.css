@@ -24,10 +24,12 @@
 .card{
     height: 18rem;
     width: 18rem;
+    transition: transform .2s; /* Animation */
 }
 
 .card:hover{
     background-color: rgb(67, 163, 248);
+    transform: scale(1.05);
 }
 
 .card-img-top{
