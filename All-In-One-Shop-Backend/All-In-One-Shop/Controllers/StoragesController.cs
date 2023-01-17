@@ -44,7 +44,6 @@ namespace All_In_One_Shop.Controllers
         }
 
         // PUT: api/Storages/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStorage(int id, Storage storage)
         {
@@ -75,7 +74,6 @@ namespace All_In_One_Shop.Controllers
         }
 
         // POST: api/Storages
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Storage>> PostStorage(Storage storage)
         {
