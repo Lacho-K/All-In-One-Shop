@@ -9,10 +9,10 @@
 
 <div id="carouselDark" class="carousel carousel-dark slide mx-auto" style="width: 70rem;" data-bs-ride="carousel">
   <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselDark" *ngFor="let product of (recentProducts$ |async)?.slice()?.reverse(); let i = index" [attr.data-bs-slide-to]="i" [ngClass]="i == 0 ? 'active' : '' "></button>
+    <button type="button" data-bs-target="#carouselDark" *ngFor="let product of (recentProducts$ | async)?.slice(0,10)?.reverse(); let i = index" [attr.data-bs-slide-to]="i" [ngClass]="i == 0 ? 'active' : '' "></button>
   </div>
   <div class="carousel-inner">
-    <div data-bs-interval="5000" *ngFor="let product of (recentProducts$ |async)?.slice(0, 10)?.reverse(); let i = index" [ngClass]="i == 0 ? 'carousel-item active' : 'carousel-item' ">
+    <div data-bs-interval="5000" *ngFor="let product of (recentProducts$ | async)?.slice(0,10)?.reverse(); let i = index" [ngClass]="i == 0 ? 'carousel-item active' : 'carousel-item' ">
       <img class="img-fluid img-thumbnail mx-auto d-block" style="max-height: 32rem;" src={{product.productImageURL}} alt="Image Not Found"
       onerror="this.src='../../../assets/img.png';">
       <div class="carousel-caption d-none d-md-block shadow-none p-3 mb-3 bg-light rounded" style="opacity: 0.6">

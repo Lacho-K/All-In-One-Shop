@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ProductModel } from './Models/productModel';
+import { ProductResponseModel } from './Models/productResponseModel';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +15,8 @@ export class ShopApiService {
 
   // Products
 
-  getProductsList(): Observable<any[]>{
-    return this.http.get<any>(this.shopAPIUrl + '/products');
+  getProductsList(): Observable<ProductResponseModel[]>{
+    return this.http.get<ProductResponseModel[]>(this.shopAPIUrl + '/products');
   }
 
   getProductById(id:number|string): Observable<any>{
