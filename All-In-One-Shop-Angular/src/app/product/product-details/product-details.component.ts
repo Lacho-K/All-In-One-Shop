@@ -22,9 +22,9 @@ export class ProductDetailsComponent implements OnInit {
   storageId : string | null = null
 
   //variables used to display all available information about a product
-  storage !: StorageResponseModel
-  product !: ProductResponseModel
-  productType !: ProductTypeResponseModel
+  storage : StorageResponseModel = new StorageResponseModel('', 0, 0, '', '');
+  product : ProductResponseModel = new ProductResponseModel('', '', '', '', '', 0);
+  productType : ProductTypeResponseModel = new ProductTypeResponseModel('', '');
 
   //Modal variables
   modalTitle:string = '';
