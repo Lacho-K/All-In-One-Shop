@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ShopApiService } from 'src/app/shop-api.service';
 import { ProductResponseModel } from '../models/productResponseModel';
 
@@ -14,9 +14,20 @@ export class HomeComponent implements OnInit {
 
   recentProducts$!:Observable<ProductResponseModel[]>;
 
+  productsLenght: number = 0;
+
+  subscription !: Subscription;
+
   ngOnInit(): void {
     this.recentProducts$ = this.service.getProductsList()
     
+    this.subscription = this.recentProducts$.subscribe((res) => {
+      this.productsLenght = res.length;
+    })
   }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe(); // Unsubscribe from recentProducts$ subscription to prevent memory leaks
+}
 
 }

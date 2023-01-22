@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import { ShopApiService } from 'src/app/shop-api.service';
 import { Router } from '@angular/router';
+import { ProductResponseModel } from 'src/app/models/productResponseModel';
+import { StorageResponseModel } from 'src/app/models/storageResponseModel';
+import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
+import { Subscription } from 'rxjs';
 
 
 
@@ -15,33 +18,38 @@ export class ProductDetailsComponent implements OnInit {
 
   constructor(private route:ActivatedRoute, private service: ShopApiService, private router: Router) { }
 
+  // The Id used to get the current item's storage with which we can display all information about a product
   storageId : string | null = null
 
   //variables used to display all available information about a product
-  storage !: any
-  product !: any
-  productType !: any
+  storage !: StorageResponseModel
+  product !: ProductResponseModel
+  productType !: ProductTypeResponseModel
 
   //Modal variables
   modalTitle:string = '';
   activeAddEditProductComponent:boolean = false;
 
+  //Subscriptions we need to destroy after we're done with displaying info to prevent memory leaks
+  subscriptions: Subscription = new Subscription();
+
   ngOnInit(): void {
     this.storageId = this.route.snapshot.paramMap.get('storageId');
-   
+ 
     this.assignProductInfo();
   }
 
   assignProductInfo(){
-    this.service.getStoragetById((this.storageId as string)).subscribe(dbStorage =>{
+    //Adding to 'subscriptions' to be able to unsubscribe from all subscriptions when they're not needed
+    this.subscriptions.add(this.service.getStoragetById((this.storageId as string)).subscribe(dbStorage =>{
       this.storage = dbStorage;
-      this.service.getProductById(this.storage.productId).subscribe(dbProduct => {
+      this.subscriptions.add(this.service.getProductById(this.storage.productId).subscribe(dbProduct => {
         this.product = dbProduct;
-        this.service.getProductTypeById(this.product.productTypeId).subscribe(dbProductType => {
+        this.subscriptions.add(this.service.getProductTypeById(this.product.productTypeId).subscribe(dbProductType => {
           this.productType = dbProductType;
-        })
-      })
-    })
+        }))
+      }))
+    }))
   }
 
   modalEdit(product:any, storage: any){
@@ -81,5 +89,9 @@ export class ProductDetailsComponent implements OnInit {
     this.assignProductInfo();
     this.activeAddEditProductComponent = false;
   }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+}
 
 }

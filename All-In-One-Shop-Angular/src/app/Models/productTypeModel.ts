@@ -1,3 +1,4 @@
 export class ProductTypeModel{
-    constructor(public productTypeStr: string){}
+    constructor(public productTypeStr: string){       
+    }
 }

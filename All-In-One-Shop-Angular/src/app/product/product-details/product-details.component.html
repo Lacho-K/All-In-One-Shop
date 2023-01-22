@@ -5,22 +5,22 @@
 <div class="d-flex justify-content-md-center align-items-center vh-100">
   <div class="card w-25 border border-1 border-secondary rounded">
     <div class="container my-3">
-      <img class="card-img-top" src={{product?.productImageURL}} alt="Image Not Found"
+      <img class="card-img-top" src={{product.productImageURL}} alt="Image Not Found"
         onerror="this.src='../../../assets/img.png';">
       <div class="card-body">
-        <h5 class="card-title">{{product?.name}}</h5>
+        <h5 class="card-title">{{product.name}}</h5>
         <p class="card-text">
-          {{product?.description == '' || product?.description == null ? 'No product description' : product?.description}}
+          {{product.description == '' || product.description == null ? 'No product description' : product.description}}
         </p>
       </div>
     </div>
 
     <ul class="list-group list-group-flush">
-      <li class="list-group-item">Product Type: {{productType?.productTypeStr}}</li>
-      <li class="list-group-item">Product Price: {{product?.price}}</li>
-      <li class="list-group-item">Product Quantity: {{storage?.productQuantity}}</li>
-      <li class="list-group-item">Product Location: {{storage?.productLocation}}</li>
-      <li class="list-group-item">Product Ratings: {{storage?.productRatings}}</li>
+      <li class="list-group-item">Product Type: {{productType.productTypeStr}}</li>
+      <li class="list-group-item">Product Price: {{product.price}}</li>
+      <li class="list-group-item">Product Quantity: {{storage.productQuantity}}</li>
+      <li class="list-group-item">Product Location: {{storage.productLocation}}</li>
+      <li class="list-group-item">Product Ratings: {{storage.productRatings}}</li>
     </ul>
 
     <div class="card-body">
