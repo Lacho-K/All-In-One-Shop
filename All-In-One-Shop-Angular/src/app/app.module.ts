@@ -11,9 +11,9 @@ import { AddEditProductComponent } from './product/add-edit-product/add-edit-pro
 import { ShopApiService } from './shop-api.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
-import { RegisterComponent } from './navbar/register/register.component';
+import { RegisterComponent } from './register/register.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { LoginComponent } from './navbar/login/login.component';
+import { LoginComponent } from './login/login.component';
 import { ProductDetailsComponent } from './product/product-details/product-details.component';
 
 @NgModule({
