@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { ErrorStateMatcher,  } from '@angular/material/core';
+import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 
 @Component({
@@ -11,8 +10,6 @@ import { ErrorStateMatcher,  } from '@angular/material/core';
 export class RegisterComponent implements OnInit {
 
   registerForm !: FormGroup
-  checkPasswords !: ValidatorFn
-
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -22,7 +19,7 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       rePassword: ['', Validators.required]
-    }, { validators: this.checkPasswords })
+    })
     
   }
 
@@ -32,7 +29,6 @@ export class RegisterComponent implements OnInit {
       console.log(this.registerForm.value);
     }
     else{
-      alert(this.registerForm.status)
       this.validateAllFormField(this.registerForm)
       
     }
