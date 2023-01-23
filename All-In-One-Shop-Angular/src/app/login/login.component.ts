@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
       
     }
     else{
+      alert(this.loginForm.status)
       this.validateAllFormField(this.loginForm)
       
     }
