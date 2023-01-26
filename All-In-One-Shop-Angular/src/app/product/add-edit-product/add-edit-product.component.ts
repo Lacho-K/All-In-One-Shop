@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ProductResponseModel } from 'src/app/models/productResponseModel';
+import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
+import { StorageResponseModel } from 'src/app/models/storageResponseModel';
 import { ShopApiService  } from 'src/app/shop-api.service';
 
 @Component({
@@ -9,37 +12,41 @@ import { ShopApiService  } from 'src/app/shop-api.service';
 })
 export class AddEditProductComponent implements OnInit {
 
-  productLis$! : Observable<any[]>;
-  storageLis$! : Observable<any[]>;
-  productTypesList$!: Observable<any[]>;
+  productLis$! : Observable<ProductResponseModel[]>;
+  storageLis$! : Observable<StorageResponseModel[]>;
+  productTypesList$!: Observable<ProductTypeResponseModel[]>;
   
   constructor(private service: ShopApiService) { }
 
   
-  @Input() storage:any;
-  id:number = 0;
+  @Input() product : ProductResponseModel = new ProductResponseModel(0, "", "", "", 0, 0);
+  productId: number | string = 0;
+  name:string = '';
+  description:string = '';
+  productImageURL:string = '';
+  productTypeId!: number | string;
+  price:number = 0;
+  
+
+  @Input() storage : StorageResponseModel = new StorageResponseModel(0, 0, 0, "", "");
+  id: number | string = 0;
   productQuantity:number = 0;
   productLocation:string = '';
   productRatings:string = '';
 
-  @Input() product:any;
-  productId:number = 0;
-  name:string = '';
-  description:string = '';
-  productImageURL:string = '';
-  productTypeId!:number;
-  price:number = 0;
-  
   ngOnInit(): void {
     this.id = this.storage.id;
 
-    //Using optional chaining (?.) operator to avoid any cannot read properties of 'undefined' errors
-    this.productId = this.product?.id;
-    this.name = this.product?.name;
-    this.description = this.product?.description;
-    this.productImageURL = this.product?.productImageURL;
-    this.productTypeId = this.product?.productTypeId;
-    this.price = this.product?.price;
+    console.log(this.storage);
+    console.log(this.product);
+    
+
+    this.productId = this.product.id;
+    this.name = this.product.name;
+    this.description = this.product.description;
+    this.productImageURL = this.product.productImageURL;
+    this.productTypeId = this.product.productTypeId;
+    this.price = this.product.price;
 
     this.productQuantity = this.storage.productQuantity;
     this.productLocation = this.storage.productLocation;
@@ -52,8 +59,8 @@ export class AddEditProductComponent implements OnInit {
 
   addProduct(){
     var product = {
-      name: (this.name as String)?.trim(),
-      description: (this.description as String)?.trim(),
+      name: this.name,
+      description: this.description,
       productImageURL: this.productImageURL,
       productTypeId: this.productTypeId,
       price: this.price
@@ -63,8 +70,8 @@ export class AddEditProductComponent implements OnInit {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       
       var currentProductStorage = {
-        // casts last added product to type 'any' and gets its id
-        productId: (lastAddedProduct as any).id,
+        // casts last added product to type 'ProductResponseModel' and gets its id
+        productId: (lastAddedProduct as ProductResponseModel).id,
         productQuantity: this.productQuantity,
         productLocation: this.productLocation,
         productRatings: this.productRatings
@@ -109,8 +116,8 @@ export class AddEditProductComponent implements OnInit {
       productRatings: this.productRatings
     }
 
-    var productId:number = this.productId;
-    var storageId:number = this.id;
+    var productId: number | string = this.productId;
+    var storageId: number | string = this.id;
     
     this.service.updateStorage(storageId, storage).subscribe(() => {
 

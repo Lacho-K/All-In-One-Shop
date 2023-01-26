@@ -39,7 +39,7 @@
           id="add-edit-modal-close"></button>
       </div>
       <div class="modal-body">
-        <app-add-edit-product [storage]="storage" [product]="storagesMap.get(storage.productId)"
+        <app-add-edit-product [storage]="storage" [product]="product"
           *ngIf="activeAddEditProductComponent"></app-add-edit-product>
       </div>
     </div>
