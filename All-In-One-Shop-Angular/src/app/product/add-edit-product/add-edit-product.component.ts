@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Form, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ProductResponseModel } from 'src/app/models/productResponseModel';
 import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
@@ -15,49 +16,56 @@ export class AddEditProductComponent implements OnInit {
   productLis$! : Observable<ProductResponseModel[]>;
   storageLis$! : Observable<StorageResponseModel[]>;
   productTypesList$!: Observable<ProductTypeResponseModel[]>;
-  
-  constructor(private service: ShopApiService) { }
+
+    //Form validation
+  addEditForm !: FormGroup
+  constructor(private service: ShopApiService, private fb: FormBuilder) { }
 
   
   @Input() product : ProductResponseModel = new ProductResponseModel(0, "", "", "", 0, 0);
   productId: number | string = 0;
-  name:string = '';
-  description:string = '';
-  productImageURL:string = '';
+  name : FormControl = new FormControl('', Validators.required);
+  description : FormControl = new FormControl('', Validators.maxLength(200));
+  productImageURL : FormControl = new FormControl('', Validators.required);
   productTypeId!: number | string;
-  price:number = 0;
+  price : FormControl = new FormControl('', Validators.required);
   
 
   @Input() storage : StorageResponseModel = new StorageResponseModel(0, 0, 0, "", "");
   id: number | string = 0;
-  productQuantity:number = 0;
-  productLocation:string = '';
-  productRatings:string = '';
+  productQuantity : FormControl = new FormControl('', Validators.required);
+  productLocation: FormControl = new FormControl('', Validators.required);
+  productRatings: FormControl = new FormControl('', Validators.required);
+
 
   ngOnInit(): void {
-    this.id = this.storage.id;
 
-    console.log(this.storage);
-    console.log(this.product);
+    this.addEditForm = this.fb.group(this.name);
+    console.log(this.name.value);
     
 
-    this.productId = this.product.id;
-    this.name = this.product.name;
-    this.description = this.product.description;
-    this.productImageURL = this.product.productImageURL;
-    this.productTypeId = this.product.productTypeId;
-    this.price = this.product.price;
+    this.id = this.storage.id;
+    
+    // this.productId = this.product.id;
+    // this.name = this.product.name;
+    // this.description = this.product.description;
+    // this.productImageURL = this.product.productImageURL;
+    // this.productTypeId = this.product.productTypeId;
+    // this.price = this.product.price;
 
-    this.productQuantity = this.storage.productQuantity;
-    this.productLocation = this.storage.productLocation;
-    this.productRatings = this.storage.productRatings;
+    // this.productQuantity = this.storage.productQuantity;
+    // this.productLocation = this.storage.productLocation;
+    // this.productRatings = this.storage.productRatings;
 
-    this.productLis$ = this.service.getProductsList();
-    this.storageLis$ = this.service.getStoragesList();
-    this.productTypesList$ = this.service.getProductTypesList();
+    // this.productLis$ = this.service.getProductsList();
+    // this.storageLis$ = this.service.getStoragesList();
+    // this.productTypesList$ = this.service.getProductTypesList();
   }
 
   addProduct(){
+    console.log("adding");
+    
+
     var product = {
       name: this.name,
       description: this.description,
@@ -99,6 +107,8 @@ export class AddEditProductComponent implements OnInit {
 
   updateProduct(){
 
+    console.log("updating");
+    
     var product = {
       id: this.productId,
       name: this.name,
@@ -142,6 +152,35 @@ export class AddEditProductComponent implements OnInit {
         }, 4000)
 
       });    
+    })
+  }
+
+  onSubmit(){
+    //console.log(this.addEditForm.get('productType')?.value);
+    
+    if(this.addEditForm.valid){
+      if(this.storage.id){
+        this.updateProduct();
+      }
+      else{
+        this.addProduct();
+      }
+    }
+    else{
+      this.validateAllFormField(this.addEditForm)
+      
+    }
+  }
+
+  private validateAllFormField(formGroup : FormGroup){
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if(control instanceof FormControl){
+        control.markAsDirty({onlySelf: true});
+      }
+      else if(control instanceof FormGroup){
+        this.validateAllFormField(control);
+      }
     })
   }
 
