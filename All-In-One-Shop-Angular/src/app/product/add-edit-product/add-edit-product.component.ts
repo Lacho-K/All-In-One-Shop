@@ -17,17 +17,17 @@ export class AddEditProductComponent implements OnInit {
   storageLis$! : Observable<StorageResponseModel[]>;
   productTypesList$!: Observable<ProductTypeResponseModel[]>;
 
-    //Form validation
+  //Form validation
   addEditForm !: FormGroup
   constructor(private service: ShopApiService, private fb: FormBuilder) { }
 
   
   @Input() product : ProductResponseModel = new ProductResponseModel(0, "", "", "", 0, 0);
   productId: number | string = 0;
-  name : FormControl = new FormControl('', Validators.required);
+  name : FormControl = new FormControl('', [Validators.required, Validators.maxLength(50)]);
   description : FormControl = new FormControl('', Validators.maxLength(200));
   productImageURL : FormControl = new FormControl('', Validators.required);
-  productTypeId!: number | string;
+  productTypeId: FormControl = new FormControl('', Validators.required);;
   price : FormControl = new FormControl('', Validators.required);
   
 
@@ -40,26 +40,32 @@ export class AddEditProductComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.addEditForm = this.fb.group(this.name);
-    console.log(this.name.value);
+    this.addEditForm = this.fb.group({
+      name: this.name,
+      description: this.description,
+      imgUrl: this.productImageURL, 
+      price: this.price,
+      quantity: this.productQuantity,
+      location: this.productLocation,
+      ratings: this.productRatings
+    });    
+
+    this.id = this.storage.id; 
+    this.productId = this.product.id;
+
+    this.name.setValue(this.product.name);
+    this.description.setValue(this.product.description);
+    this.productImageURL.setValue(this.product.productImageURL);
+    this.productTypeId.setValue(this.product.productTypeId);
+    this.price.setValue(this.product.price);
+    this.productQuantity.setValue(this.storage.productQuantity);
+    this.productLocation.setValue(this.storage.productLocation);
+    this.productRatings.setValue(this.storage.productRatings);
     
 
-    this.id = this.storage.id;
-    
-    // this.productId = this.product.id;
-    // this.name = this.product.name;
-    // this.description = this.product.description;
-    // this.productImageURL = this.product.productImageURL;
-    // this.productTypeId = this.product.productTypeId;
-    // this.price = this.product.price;
-
-    // this.productQuantity = this.storage.productQuantity;
-    // this.productLocation = this.storage.productLocation;
-    // this.productRatings = this.storage.productRatings;
-
-    // this.productLis$ = this.service.getProductsList();
-    // this.storageLis$ = this.service.getStoragesList();
-    // this.productTypesList$ = this.service.getProductTypesList();
+    this.productLis$ = this.service.getProductsList();
+    this.storageLis$ = this.service.getStoragesList();
+    this.productTypesList$ = this.service.getProductTypesList();
   }
 
   addProduct(){
@@ -67,23 +73,26 @@ export class AddEditProductComponent implements OnInit {
     
 
     var product = {
-      name: this.name,
-      description: this.description,
-      productImageURL: this.productImageURL,
-      productTypeId: this.productTypeId,
-      price: this.price
-    }        
-
+      name: this.name.value,
+      description: this.description.value,
+      productImageURL: this.productImageURL.value,
+      productTypeId: this.productTypeId.value,
+      price: this.price.value
+    }           
+    
     this.service.addProduct(product).subscribe(lastAddedProduct => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       
       var currentProductStorage = {
         // casts last added product to type 'ProductResponseModel' and gets its id
         productId: (lastAddedProduct as ProductResponseModel).id,
-        productQuantity: this.productQuantity,
-        productLocation: this.productLocation,
-        productRatings: this.productRatings
+        productQuantity: this.productQuantity.value,
+        productLocation: this.productLocation.value,
+        productRatings: this.productRatings.value
       }
+
+      console.log(currentProductStorage);
+      
 
       this.service.addStorage(currentProductStorage).subscribe(() => {
         if(closeModalBtn){
@@ -111,19 +120,19 @@ export class AddEditProductComponent implements OnInit {
     
     var product = {
       id: this.productId,
-      name: this.name,
-      description: this.description,
-      productImageURL: this.productImageURL,
-      productTypeId: this.productTypeId,
-      price: this.price
+      name: this.name.value,
+      description: this.description.value,
+      productImageURL: this.productImageURL.value,
+      productTypeId: this.productTypeId.value,
+      price: this.price.value
     }
 
     var storage = {
       id: this.id,
       productId: this.productId,
-      productQuantity: this.productQuantity,
-      productLocation: this.productLocation,
-      productRatings: this.productRatings
+      productQuantity: this.productQuantity.value,
+      productLocation: this.productLocation.value,
+      productRatings: this.productRatings.value
     }
 
     var productId: number | string = this.productId;
@@ -155,9 +164,7 @@ export class AddEditProductComponent implements OnInit {
     })
   }
 
-  onSubmit(){
-    //console.log(this.addEditForm.get('productType')?.value);
-    
+  onSubmit(){    
     if(this.addEditForm.valid){
       if(this.storage.id){
         this.updateProduct();

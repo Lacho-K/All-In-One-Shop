@@ -1,13 +1,13 @@
 <form [formGroup]="addEditForm">
 
-    <!-- <small *ngIf="addEditForm.controls['name'].dirty && addEditForm.hasError('required', 'name')" class="text-danger">*Product Name is required</small> -->
-    <!-- <small *ngIf="addEditForm.controls['name'].dirty && addEditForm.hasError('maxLength', 'name')" class="text-danger">Product Name too long</small> -->
+    <small *ngIf="addEditForm.controls['name'].dirty && addEditForm.hasError('required', 'name')" class="text-danger">*Product Name is required</small>
+    <small *ngIf="addEditForm.controls['name'].dirty && addEditForm.hasError('maxlength', 'name')" class="text-danger">Product Name too long</small>
     <div class="mb-3">
         <label for="name" class="form-label">Product Name </label>
         <Input type="text" class="form-control" [formControl]="name" name="name" ngDefaultControl >
     </div>
 
-    <!-- <small *ngIf="addEditForm.controls['description'].dirty && addEditForm.hasError('maxlength', 'description')" class="text-danger">*Description too long</small> -->
+    <small *ngIf="addEditForm.controls['description'].dirty && addEditForm.hasError('maxlength', 'description')" class="text-danger">Description too long</small>
     <div class="mb-3">
         <label for="description" class="form-label">Product Description (optional) </label>
         <Input type="text" class="form-control" [formControl]="description" name="description" ngDefaultControl>
@@ -20,7 +20,7 @@
 
     <div class="mb-3">
         <label for="productType">Product Type</label>
-        <select class="form-control" name="productTypeId" id="productTypeId" >
+        <select class="form-control" name="productTypeId" id="productTypeId" [formControl]="productTypeId" >
             <option *ngFor="let type of productTypesList$|async" [value]="type.id" >{{type.productTypeStr}}</option>
         </select>
     </div>
