@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Form, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
+import ValidateForm from 'src/app/helpers/validateForm';
 import { ProductResponseModel } from 'src/app/models/productResponseModel';
 import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
 import { StorageResponseModel } from 'src/app/models/storageResponseModel';
@@ -69,9 +70,7 @@ export class AddEditProductComponent implements OnInit {
   }
 
   addProduct(){
-    console.log("adding");
     
-
     var product = {
       name: this.name.value,
       description: this.description.value,
@@ -115,8 +114,6 @@ export class AddEditProductComponent implements OnInit {
   }
 
   updateProduct(){
-
-    console.log("updating");
     
     var product = {
       id: this.productId,
@@ -174,21 +171,8 @@ export class AddEditProductComponent implements OnInit {
       }
     }
     else{
-      this.validateAllFormField(this.addEditForm)
-      
+      ValidateForm.validateAllFormField(this.addEditForm)    
     }
-  }
-
-  private validateAllFormField(formGroup : FormGroup){
-    Object.keys(formGroup.controls).forEach(field => {
-      const control = formGroup.get(field);
-      if(control instanceof FormControl){
-        control.markAsDirty({onlySelf: true});
-      }
-      else if(control instanceof FormGroup){
-        this.validateAllFormField(control);
-      }
-    })
   }
 
 }

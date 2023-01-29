@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import ValidateForm from '../helpers/validateForm';
 
 
 @Component({
@@ -27,23 +28,12 @@ export class RegisterComponent implements OnInit {
     this.onPasswordChange();
     if(this.registerForm.valid){
       console.log(this.registerForm.value);
+
     }
     else{
-      this.validateAllFormField(this.registerForm)
-      
-    }
-  }
+      ValidateForm.validateAllFormField(this.registerForm)    
 
-  private validateAllFormField(formGroup : FormGroup){
-    Object.keys(formGroup.controls).forEach(field => {
-      const control = formGroup.get(field);
-      if(control instanceof FormControl){
-        control.markAsDirty({onlySelf: true});
-      }
-      else if(control instanceof FormGroup){
-        this.validateAllFormField(control);
-      }
-    })
+    }
   }
 
   onPasswordChange() {
