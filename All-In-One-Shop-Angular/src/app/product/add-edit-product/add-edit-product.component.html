@@ -14,6 +14,7 @@
     </div>
 
     <small *ngIf="addEditForm.controls['imgUrl'].dirty && addEditForm.hasError('required', 'imgUrl')" class="text-danger">*Product Image Url is required</small>
+    <small *ngIf="addEditForm.controls['imgUrl'].dirty && addEditForm.hasError('pattern', 'imgUrl')" class="text-danger">Product Image Url is invalid</small>
     <div class="mb-3">
         <label for="productImageURL" class="form-label">Product Image Url </label>
         <Input type="text" class="form-control" [formControl]="productImageURL"  name="productImageURL" ngDefaultControl >
@@ -28,12 +29,14 @@
     </div>
 
     <small *ngIf="addEditForm.controls['price'].dirty && addEditForm.hasError('required', 'price')" class="text-danger">*Product Price is required</small>
+    <small *ngIf="addEditForm.controls['price'].dirty && addEditForm.hasError('pattern', 'price')" class="text-danger">Product Price must be a positive whole or decimal number</small>
     <div class="mb-3">
         <label for="price" class="form-label">Product Price </label>
         <Input type="text" class="form-control" [formControl]="price" name="price" ngDefaultControl>
     </div>
 
     <small *ngIf="addEditForm.controls['quantity'].dirty && addEditForm.hasError('required', 'quantity')" class="text-danger">*Product Quantity is required</small>
+    <small *ngIf="addEditForm.controls['quantity'].dirty && addEditForm.hasError('pattern', 'quantity')" class="text-danger">Product Quantity must be a positive whole number</small>
     <div class="mb-3">
         <label for="productQuantity" class="form-label">Product ProductQuantity </label>
         <Input type="text" class="form-control" [formControl]="productQuantity" name="productQuantity" ngDefaultControl>

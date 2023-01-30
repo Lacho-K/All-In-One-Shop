@@ -20,21 +20,23 @@ export class AddEditProductComponent implements OnInit {
 
   //Form validation
   addEditForm !: FormGroup
+
+
   constructor(private service: ShopApiService, private fb: FormBuilder) { }
 
-  
+
   @Input() product : ProductResponseModel = new ProductResponseModel(0, "", "", "", 0, 0);
   productId: number | string = 0;
   name : FormControl = new FormControl('', [Validators.required, Validators.maxLength(50)]);
   description : FormControl = new FormControl('', Validators.maxLength(200));
-  productImageURL : FormControl = new FormControl('', Validators.required);
+  productImageURL : FormControl = new FormControl('', [Validators.required, Validators.pattern('^https?:\\\/\\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\\/=]*)$')]);
   productTypeId: FormControl = new FormControl('', Validators.required);;
-  price : FormControl = new FormControl('', Validators.required);
+  price : FormControl = new FormControl('', [Validators.required, Validators.pattern('^\\d*[.,]?\\d{0,2}$')]);
   
 
   @Input() storage : StorageResponseModel = new StorageResponseModel(0, 0, 0, "", "");
   id: number | string = 0;
-  productQuantity : FormControl = new FormControl('', Validators.required);
+  productQuantity : FormControl = new FormControl('', [Validators.required, Validators.pattern('^\\d*$')]);
   productLocation: FormControl = new FormControl('', Validators.required);
   productRatings: FormControl = new FormControl('', Validators.required);
 
@@ -175,5 +177,4 @@ export class AddEditProductComponent implements OnInit {
       ValidateForm.validateAllFormField(this.addEditForm)    
     }
   }
-
 }
