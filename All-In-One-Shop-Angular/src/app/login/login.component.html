@@ -30,7 +30,7 @@
                     </div>
   
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                      <button (click)="onSubmit()" type="button" class="btn btn-primary btn-lg">Login</button>
+                      <button (click)="onSubmit()" type="button" class="btn btn-primary btn-lg" [ngClass]="{'btn-danger': !this.loginForm.valid && this.loginForm.dirty}">Login</button>
                     </div>
   
                   </form>

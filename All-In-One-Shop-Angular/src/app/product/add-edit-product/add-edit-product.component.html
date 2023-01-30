@@ -4,26 +4,26 @@
     <small *ngIf="addEditForm.controls['name'].dirty && addEditForm.hasError('maxlength', 'name')" class="text-danger">Product Name too long</small>
     <div class="mb-3">
         <label for="name" class="form-label">Product Name </label>
-        <Input type="text" class="form-control" [formControl]="name" name="name" ngDefaultControl >
+        <Input type="text" class="form-control" [formControl]="name" name="name" ngDefaultControl [ngClass]="{'border border-danger': addEditForm.controls['name'].dirty && !addEditForm.controls['name'].valid}">
     </div>
 
     <small *ngIf="addEditForm.controls['description'].dirty && addEditForm.hasError('maxlength', 'description')" class="text-danger">Description too long</small>
     <div class="mb-3">
         <label for="description" class="form-label">Product Description (optional) </label>
-        <Input type="text" class="form-control" [formControl]="description" name="description" ngDefaultControl>
+        <Input type="text" class="form-control" [formControl]="description" name="description" ngDefaultControl [ngClass]="{'border border-danger': addEditForm.controls['description'].dirty && !addEditForm.controls['description'].valid}">
     </div>
 
     <small *ngIf="addEditForm.controls['imgUrl'].dirty && addEditForm.hasError('required', 'imgUrl')" class="text-danger">*Product Image Url is required</small>
     <small *ngIf="addEditForm.controls['imgUrl'].dirty && addEditForm.hasError('pattern', 'imgUrl')" class="text-danger">Product Image Url is invalid</small>
     <div class="mb-3">
         <label for="productImageURL" class="form-label">Product Image Url </label>
-        <Input type="text" class="form-control" [formControl]="productImageURL"  name="productImageURL" ngDefaultControl >
+        <Input type="text" class="form-control" [formControl]="productImageURL"  name="productImageURL" ngDefaultControl [ngClass]="{'border border-danger': addEditForm.controls['imgUrl'].dirty && !addEditForm.controls['imgUrl'].valid}">
     </div>
 
     <small *ngIf="addEditForm.controls['productType'].dirty && addEditForm.hasError('required', 'productType')" class="text-danger">*Product Type is required</small>
     <div class="mb-3">
         <label for="productType">Product Type</label>
-        <select class="form-control" name="productTypeId" id="productTypeId" [formControl]="productTypeId" >
+        <select class="form-control" name="productTypeId" id="productTypeId" [formControl]="productTypeId" [ngClass]="{'border border-danger': addEditForm.controls['productType'].dirty && !addEditForm.controls['productType'].valid}">
             <option *ngFor="let type of productTypesList$|async" [value]="type.id" >{{type.productTypeStr}}</option>
         </select>
     </div>
@@ -32,28 +32,28 @@
     <small *ngIf="addEditForm.controls['price'].dirty && addEditForm.hasError('pattern', 'price')" class="text-danger">Product Price must be a positive whole or decimal number</small>
     <div class="mb-3">
         <label for="price" class="form-label">Product Price </label>
-        <Input type="text" class="form-control" [formControl]="price" name="price" ngDefaultControl>
+        <Input type="text" class="form-control" [formControl]="price" name="price" ngDefaultControl [ngClass]="{'border border-danger': addEditForm.controls['price'].dirty && !addEditForm.controls['price'].valid}">
     </div>
 
     <small *ngIf="addEditForm.controls['quantity'].dirty && addEditForm.hasError('required', 'quantity')" class="text-danger">*Product Quantity is required</small>
     <small *ngIf="addEditForm.controls['quantity'].dirty && addEditForm.hasError('pattern', 'quantity')" class="text-danger">Product Quantity must be a positive whole number</small>
     <div class="mb-3">
         <label for="productQuantity" class="form-label">Product ProductQuantity </label>
-        <Input type="text" class="form-control" [formControl]="productQuantity" name="productQuantity" ngDefaultControl>
+        <Input type="text" class="form-control" [formControl]="productQuantity" name="productQuantity" ngDefaultControl [ngClass]="{'border border-danger': addEditForm.controls['quantity'].dirty && !addEditForm.controls['quantity'].valid}">
     </div>
 
     <small *ngIf="addEditForm.controls['location'].dirty && addEditForm.hasError('required', 'location')" class="text-danger">*Product Location is required</small>
     <div class="mb-3">
         <label for="productLocation" class="form-label">Product Location </label>
-        <Input type="text" class="form-control" [formControl]="productLocation" name="productLocation" ngDefaultControl>
+        <Input type="text" class="form-control" [formControl]="productLocation" name="productLocation" ngDefaultControl [ngClass]="{'border border-danger': addEditForm.controls['location'].dirty && !addEditForm.controls['location'].valid}">
     </div>
 
     <small *ngIf="addEditForm.controls['ratings'].dirty && addEditForm.hasError('required', 'ratings')" class="text-danger">*Product Ratings are required</small>
     <div class="mb-3">
         <label for="productRatings" class="form-label">Product Ratings </label>
-        <Input type="text" class="form-control" [formControl]="productRatings" name="productRatings" ngDefaultControl>
+        <Input type="text" class="form-control" [formControl]="productRatings" name="productRatings" ngDefaultControl [ngClass]="{'border border-danger': addEditForm.controls['ratings'].dirty && !addEditForm.controls['ratings'].valid}">
     </div>
 
-    <button (click)="onSubmit()" *ngIf="storage.id==0" class="btn btn-primary">Add</button>
-    <button (click)="onSubmit()" *ngIf="storage.id!=0" class="btn btn-primary">Update</button>
+    <button (click)="onSubmit()" *ngIf="storage.id==0" class="btn btn-primary" [ngClass]="{'btn-danger': !this.addEditForm.valid && this.addEditForm.dirty}">Add</button>
+    <button (click)="onSubmit()" *ngIf="storage.id!=0" class="btn btn-primary" [ngClass]="{'btn-danger': !this.addEditForm.valid && this.addEditForm.dirty}">Update</button>
 </form>
