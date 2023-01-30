@@ -13,11 +13,13 @@
         <Input type="text" class="form-control" [formControl]="description" name="description" ngDefaultControl>
     </div>
 
+    <small *ngIf="addEditForm.controls['imgUrl'].dirty && addEditForm.hasError('required', 'imgUrl')" class="text-danger">*Product Image Url is required</small>
     <div class="mb-3">
         <label for="productImageURL" class="form-label">Product Image Url </label>
         <Input type="text" class="form-control" [formControl]="productImageURL"  name="productImageURL" ngDefaultControl >
     </div>
 
+    <small *ngIf="addEditForm.controls['productType'].dirty && addEditForm.hasError('required', 'productType')" class="text-danger">*Product Type is required</small>
     <div class="mb-3">
         <label for="productType">Product Type</label>
         <select class="form-control" name="productTypeId" id="productTypeId" [formControl]="productTypeId" >
@@ -25,21 +27,25 @@
         </select>
     </div>
 
+    <small *ngIf="addEditForm.controls['price'].dirty && addEditForm.hasError('required', 'price')" class="text-danger">*Product Price is required</small>
     <div class="mb-3">
         <label for="price" class="form-label">Product Price </label>
         <Input type="text" class="form-control" [formControl]="price" name="price" ngDefaultControl>
     </div>
 
+    <small *ngIf="addEditForm.controls['quantity'].dirty && addEditForm.hasError('required', 'quantity')" class="text-danger">*Product Quantity is required</small>
     <div class="mb-3">
         <label for="productQuantity" class="form-label">Product ProductQuantity </label>
         <Input type="text" class="form-control" [formControl]="productQuantity" name="productQuantity" ngDefaultControl>
     </div>
 
+    <small *ngIf="addEditForm.controls['location'].dirty && addEditForm.hasError('required', 'location')" class="text-danger">*Product Location is required</small>
     <div class="mb-3">
         <label for="productLocation" class="form-label">Product Location </label>
         <Input type="text" class="form-control" [formControl]="productLocation" name="productLocation" ngDefaultControl>
     </div>
 
+    <small *ngIf="addEditForm.controls['ratings'].dirty && addEditForm.hasError('required', 'ratings')" class="text-danger">*Product Ratings are required</small>
     <div class="mb-3">
         <label for="productRatings" class="form-label">Product Ratings </label>
         <Input type="text" class="form-control" [formControl]="productRatings" name="productRatings" ngDefaultControl>

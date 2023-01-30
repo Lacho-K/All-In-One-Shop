@@ -45,6 +45,7 @@ export class AddEditProductComponent implements OnInit {
       name: this.name,
       description: this.description,
       imgUrl: this.productImageURL, 
+      productType: this.productTypeId,
       price: this.price,
       quantity: this.productQuantity,
       location: this.productLocation,
