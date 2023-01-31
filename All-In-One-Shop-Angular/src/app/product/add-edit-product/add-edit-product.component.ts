@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
+import AnimateForm from 'src/app/helpers/animateForm';
 import ValidateForm from 'src/app/helpers/validateForm';
 import { ProductResponseModel } from 'src/app/models/productResponseModel';
 import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
@@ -173,16 +174,10 @@ export class AddEditProductComponent implements OnInit {
       }
     }
     else{
-      ValidateForm.validateAllFormField(this.addEditForm);
+      ValidateForm.validateAllFormFields(this.addEditForm);
 
-      // assign shake animatio to inputs
-      document.querySelectorAll('input.ng-invalid, select.ng-invalid').forEach((current) => {
-        current.classList.remove('error');
-        void (current as HTMLElement).offsetWidth;
-        current.classList.add('error');
-      });
-
-      
+      // assign shake animation to invalid form controls
+      AnimateForm.assignAnimation('input.ng-invalid, select.ng-invalid');  
     } 
   }
 }

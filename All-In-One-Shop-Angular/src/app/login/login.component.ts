@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import AnimateForm from '../helpers/animateForm';
 import ValidateForm from '../helpers/validateForm';
 
 @Component({
@@ -27,8 +28,10 @@ export class LoginComponent implements OnInit {
       
     }
     else{
-      ValidateForm.validateAllFormField(this.loginForm)
+      ValidateForm.validateAllFormFields(this.loginForm)
      
+      // Assign shake animation to all invalid inputs
+      AnimateForm.assignAnimation('input.ng-invalid');  
     }
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import AnimateForm from '../helpers/animateForm';
 import ValidateForm from '../helpers/validateForm';
 
 
@@ -31,8 +32,9 @@ export class RegisterComponent implements OnInit {
 
     }
     else{
-      ValidateForm.validateAllFormField(this.registerForm)    
+      ValidateForm.validateAllFormFields(this.registerForm)    
 
+      AnimateForm.assignAnimation('input.ng-invalid');
     }
   }
 
