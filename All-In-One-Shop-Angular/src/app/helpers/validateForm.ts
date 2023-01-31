@@ -6,7 +6,7 @@ export default class ValidateForm{
         Object.keys(formGroup.controls).forEach(field => {
           const control = formGroup.get(field);
           if(control instanceof FormControl){
-            control.markAsDirty({onlySelf: true});
+            control.markAsDirty({onlySelf: true})
           }
           else if(control instanceof FormGroup){
             this.validateAllFormField(control);

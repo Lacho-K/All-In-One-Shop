@@ -19,8 +19,7 @@ export class AddEditProductComponent implements OnInit {
   productTypesList$!: Observable<ProductTypeResponseModel[]>;
 
   //Form validation
-  addEditForm !: FormGroup
-
+  addEditForm !: FormGroup;
 
   constructor(private service: ShopApiService, private fb: FormBuilder) { }
 
@@ -174,7 +173,16 @@ export class AddEditProductComponent implements OnInit {
       }
     }
     else{
-      ValidateForm.validateAllFormField(this.addEditForm)    
-    }
+      ValidateForm.validateAllFormField(this.addEditForm);
+
+      // assign shake animatio to inputs
+      document.querySelectorAll('input.ng-invalid, select.ng-invalid').forEach((current) => {
+        current.classList.remove('error');
+        void (current as HTMLElement).offsetWidth;
+        current.classList.add('error');
+      });
+
+      
+    } 
   }
 }
