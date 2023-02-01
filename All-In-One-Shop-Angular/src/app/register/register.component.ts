@@ -17,10 +17,12 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
 
     this.registerForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-      rePassword: ['', Validators.required]
+      rePassword: ['', [Validators.required]]
     })
     
   }
@@ -34,7 +36,7 @@ export class RegisterComponent implements OnInit {
     else{
       ValidateForm.validateAllFormFields(this.registerForm)    
 
-      AnimateForm.assignAnimation('input.ng-invalid');
+      AnimateForm.assignAnimation('input.ng-invalid, input.mismatch');
     }
   }
 
