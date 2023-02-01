@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IProductInterface, ProductRepo>();
 builder.Services.AddScoped<IStorageInterface, StorageRepo>();
 builder.Services.AddScoped<IProductTypeInterface, ProductTypeRepo>();
+builder.Services.AddScoped<IUserInterface, UserRepo>();
 
 
 builder.Services.AddControllers();
