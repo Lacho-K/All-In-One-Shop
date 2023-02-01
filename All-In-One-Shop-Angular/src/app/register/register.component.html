@@ -51,18 +51,20 @@
                     <small *ngIf="registerForm.controls['password'].dirty && registerForm.hasError('required', 'password')" class="text-danger">*Password is required</small>
                     <div class="d-flex flex-row align-items-center mb-4">
                       <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                      <div class="form-outline flex-fill mb-0">
-                        <input type="password" formControlName="password" id="password" class="form-control"  (input)="onPasswordChange()" [ngClass]="{'border border-danger': registerForm.controls['password'].dirty && !registerForm.controls['password'].valid}"/>
+                      <div class="form-outline flex-fill mb-0 pass">
+                        <input type="{{passInputType}}" formControlName="password" id="password" class="form-control"  (input)="onPasswordChange()" [ngClass]="{'border border-danger': registerForm.controls['password'].dirty && !registerForm.controls['password'].valid}"/>
                         <label class="form-label" for="password">Password</label>
+                        <span (click)="showHidePass()" class="fa {{eyeIconPass}} mt-1"></span>
                       </div>
                     </div>
                     
                     <small *ngIf="registerForm.controls['rePassword'].dirty && registerForm.hasError('mismatch')" class="text-danger">Passwords don't match</small>
                     <div class="d-flex flex-row align-items-center mb-4">
                       <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                      <div class="form-outline flex-fill mb-0">
-                        <input type="password" formControlName="rePassword"  id="repet_password" class="form-control" (input)="onPasswordChange()" [ngClass]="{'border border-danger mismatch': (registerForm.controls['rePassword'].dirty && !registerForm.controls['rePassword'].valid) || registerForm.hasError('mismatch')}"/>
+                      <div class="form-outline flex-fill mb-0 rePass">
+                        <input type="{{rePassInputType}}" formControlName="rePassword"  id="repet_password" class="form-control" (input)="onPasswordChange()" [ngClass]="{'border border-danger mismatch': (registerForm.controls['rePassword'].dirty && !registerForm.controls['rePassword'].valid) || registerForm.hasError('mismatch')}"/>
                         <label class="form-label" for="repet_password">Repeat your password</label>
+                        <span (click)="showHideRePass()" class="fa {{eyeIconRePass}} mt-1"></span>
                       </div>
                     </div>
   

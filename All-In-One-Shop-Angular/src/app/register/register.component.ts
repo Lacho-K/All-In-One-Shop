@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import AnimateForm from '../helpers/animateForm';
 import ValidateForm from '../helpers/validateForm';
+import { ShopApiService } from '../shop-api.service';
 
 
 @Component({
@@ -12,7 +13,16 @@ import ValidateForm from '../helpers/validateForm';
 export class RegisterComponent implements OnInit {
 
   registerForm !: FormGroup
-  constructor(private fb: FormBuilder) { }
+  
+  //variables for showing password
+  showPass: boolean = false;
+  showRePass: boolean = false;
+  passInputType: string = 'password';
+  rePassInputType: string = 'password';
+  eyeIconPass: string = 'fa-eye-slash';
+  eyeIconRePass: string = 'fa-eye-slash';
+  
+  constructor(private fb: FormBuilder, private service: ShopApiService) { }
 
   ngOnInit(): void {
 
@@ -30,8 +40,16 @@ export class RegisterComponent implements OnInit {
   onSubmit(){
     this.onPasswordChange();
     if(this.registerForm.valid){
-      console.log(this.registerForm.value);
-
+      this.service.register(this.registerForm.value)
+      .subscribe({
+        next: (()=>{
+          alert("sign up sucessful");
+          this.registerForm.reset();
+        }),
+        error: (err => {
+          alert(err?.error.message);
+        })
+      })
     }
     else{
       ValidateForm.validateAllFormFields(this.registerForm)    
@@ -46,6 +64,18 @@ export class RegisterComponent implements OnInit {
     } else {
       this.registerForm.setErrors({ mismatch: true });
     }
+  }
+
+  showHidePass(){
+    this.showPass = !this.showPass;
+    this.showPass ? this.eyeIconPass = 'fa-eye' : this.eyeIconPass = 'fa-eye-slash';
+    this.showPass ? this.passInputType = 'text' : this.passInputType = 'password';
+  }
+
+  showHideRePass(){
+    this.showRePass = !this.showRePass;
+    this.showRePass ? this.eyeIconRePass = 'fa-eye' : this.eyeIconRePass = 'fa-eye-slash';
+    this.showRePass ? this.rePassInputType = 'text' : this.rePassInputType = 'password';
   }
 
 }

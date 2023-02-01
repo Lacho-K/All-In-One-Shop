@@ -2,6 +2,14 @@
     animation: shake 0.2s ease-in-out 0s 2;
 }
 
+.pass span{
+    float: right;
+}
+
+.rePass span{
+    float: right;
+}
+
 @keyframes shake {
     0% { margin-left: 0rem; }
     25% { margin-left: 0.5rem; }
