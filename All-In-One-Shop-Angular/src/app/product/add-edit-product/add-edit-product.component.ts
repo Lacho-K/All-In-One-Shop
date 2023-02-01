@@ -92,8 +92,6 @@ export class AddEditProductComponent implements OnInit {
         productLocation: this.productLocation.value,
         productRatings: this.productRatings.value
       }
-
-      console.log(currentProductStorage);
       
 
       this.service.addStorage(currentProductStorage).subscribe(() => {
