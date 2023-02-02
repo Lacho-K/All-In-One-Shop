@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import AnimateForm from '../helpers/animateForm';
 import ValidateForm from '../helpers/validateForm';
 import { ShopApiService } from '../shop-api.service';
@@ -31,7 +31,11 @@ export class RegisterComponent implements OnInit {
       lastName: ['', Validators.required],
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(8),
+        this.regexValidator(new RegExp('[0-9]'), {digits : true}),
+        this.regexValidator(new RegExp('[A-Z]'), {capitals : true}),
+        this.regexValidator(new RegExp('[a-z]'), {lowerCase : true}), 
+        this.regexValidator(new RegExp('[_@.\/#&+-]'), {specialCharacter: true})]],
       rePassword: ['', [Validators.required]]
     })
     
@@ -78,4 +82,13 @@ export class RegisterComponent implements OnInit {
     this.showRePass ? this.rePassInputType = 'text' : this.rePassInputType = 'password';
   }
 
+  regexValidator(regex: RegExp, error: ValidationErrors): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} => {
+      if (!control.value) {
+        return null as any;
+      }
+      const valid = regex.test(control.value);
+      return valid ? null as any : error;
+    };
+  }
 }

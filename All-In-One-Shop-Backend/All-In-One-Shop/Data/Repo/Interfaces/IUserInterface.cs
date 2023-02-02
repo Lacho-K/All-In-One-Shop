@@ -6,6 +6,6 @@ namespace All_In_One_Shop.Data.Repo.Interfaces
     public interface IUserInterface
     {
         Task<ActionResult<User>> Authenticate(User userObj);
-        Task Register(User userObj);
+        Task<string> Register(User userObj);
     }
 }

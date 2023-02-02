@@ -49,6 +49,11 @@
                     </div>
   
                     <small *ngIf="registerForm.controls['password'].dirty && registerForm.hasError('required', 'password')" class="text-danger">*Password is required</small>
+                    <small *ngIf="registerForm.controls['password'].dirty && registerForm.hasError('minlength', 'password')" class="text-danger">Password must be at least 8 characters long</small>
+                    <small *ngIf="registerForm.controls['password'].dirty && registerForm.hasError('digits', 'password')" class="text-danger">Password must contain digits</small>
+                    <small *ngIf="registerForm.controls['password'].dirty && registerForm.hasError('capitals', 'password')" class="text-danger">Password must contain capital letters</small>
+                    <small *ngIf="registerForm.controls['password'].dirty && registerForm.hasError('lowerCase', 'password')" class="text-danger">Password must contain lower case letters</small>
+                    <small *ngIf="registerForm.controls['password'].dirty && registerForm.hasError('specialCharacter', 'password')" class="text-danger">Password must contain special characters</small>
                     <div class="d-flex flex-row align-items-center mb-4">
                       <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0 pass">

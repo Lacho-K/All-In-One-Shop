@@ -10,6 +10,11 @@
     float: right;
 }
 
+small{
+    display: block;
+    margin: 1rem;
+}
+
 @keyframes shake {
     0% { margin-left: 0rem; }
     25% { margin-left: 0.5rem; }

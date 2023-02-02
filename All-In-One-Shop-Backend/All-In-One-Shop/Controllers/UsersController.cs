@@ -44,9 +44,9 @@ namespace All_In_One_Shop.Controllers
                 return BadRequest();
             }
 
-            await this._userRepo.Register(userObj);
+            string token = await this._userRepo.Register(userObj);
 
-            return Ok(new { Message = "Register success!" });
+            return token == null ? Ok(new { Message = "Register success!" }) : BadRequest(new {Message = token});
         }
     }
 }
