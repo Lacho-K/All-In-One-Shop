@@ -36,8 +36,8 @@ export class LoginComponent implements OnInit {
           alert("loged in");
           this.loginForm.reset();
         }),
-        error: ((err) => {
-          alert(err?.error.message);
+        error: (() => {
+          alert("Invalid password or username");
         })
       });
       

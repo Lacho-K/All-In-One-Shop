@@ -18,9 +18,9 @@ namespace All_In_One_Shop.Data.Repo
         public async Task<ActionResult<User>> Authenticate(User userObj)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Username == userObj.Username && u.Password == userObj.Password);
+                .FirstOrDefaultAsync(u => u.Username == userObj.Username);
 
-            return user;
+            return user;           
         }
 
         public async Task<string> Register(User userObj)
@@ -38,6 +38,7 @@ namespace All_In_One_Shop.Data.Repo
             userObj.Password = PasswordHasher.HashPassword(userObj.Password);
             userObj.Role = "User";
             userObj.Token = "";
+
             await _context.Users.AddAsync(userObj);
             await _context.SaveChangesAsync();
 

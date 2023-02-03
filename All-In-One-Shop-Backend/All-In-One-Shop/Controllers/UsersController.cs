@@ -1,4 +1,5 @@
 ﻿using All_In_One_Shop.Data.Repo.Interfaces;
+using All_In_One_Shop.Helpers;
 using All_In_One_Shop.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,10 +31,13 @@ namespace All_In_One_Shop.Controllers
             {
                 return NotFound(new { Message = "User Not found!" });
             }
-            else
+
+            if (!PasswordHasher.VerifyPassword(userObj.Password, user.Value.Password))
             {
-                return Ok(new { Message = "Login success!" });
+                return BadRequest(new { Message = "Invalid Password!" });
             }
+
+            return Ok(new { Message = "Login success!" });       
         }
         
         [HttpPost("register")]
