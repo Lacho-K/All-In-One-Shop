@@ -53,5 +53,10 @@ namespace All_In_One_Shop.Data.Repo
         {
             return await _context.Users.AnyAsync(u => u.Email == email);
         }
+
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+        {
+            return await _context.Users.ToListAsync();
+        }
     }
 }

@@ -7,5 +7,7 @@ namespace All_In_One_Shop.Data.Repo.Interfaces
     {
         Task<ActionResult<User>> Authenticate(User userObj);
         Task<string> Register(User userObj);
+
+        Task<ActionResult<IEnumerable<User>>> GetAllUsers();
     }
 }

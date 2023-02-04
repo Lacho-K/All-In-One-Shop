@@ -39,7 +39,7 @@ namespace All_In_One_Shop.Controllers
                 return BadRequest(new { Message = "Invalid Password!" });
             }
 
-            user.Value.Token = _tokenRepo.GenerateJwt(user.Value);
+            user.Value.Token = this._tokenRepo.GenerateJwt(user.Value);
 
             return Ok(new
             {
@@ -59,6 +59,12 @@ namespace All_In_One_Shop.Controllers
             string token = await this._userRepo.Register(userObj);
 
             return token == null ? Ok(new { Message = "Register success!" }) : BadRequest(new {Message = token});
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+        {
+            return await this._userRepo.GetAllUsers();
         }
     }
 }
