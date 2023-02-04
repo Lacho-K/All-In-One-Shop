@@ -1,7 +1,10 @@
 using All_In_One_Shop.Data;
 using All_In_One_Shop.Data.Repo;
 using All_In_One_Shop.Data.Repo.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -12,6 +15,7 @@ builder.Services.AddScoped<IProductInterface, ProductRepo>();
 builder.Services.AddScoped<IStorageInterface, StorageRepo>();
 builder.Services.AddScoped<IProductTypeInterface, ProductTypeRepo>();
 builder.Services.AddScoped<IUserInterface, UserRepo>();
+builder.Services.AddScoped<ITokenInterface, TokenRepo>();
 
 
 builder.Services.AddControllers();
@@ -22,6 +26,24 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+//Authentication
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("veryverysecret.....")),
+        ValidateAudience = false,
+        ValidateIssuer = false
+    };
 });
 
 // Enable CORS
