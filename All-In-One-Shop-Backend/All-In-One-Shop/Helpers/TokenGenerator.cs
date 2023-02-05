@@ -1,15 +1,14 @@
-﻿using All_In_One_Shop.Data.Repo.Interfaces;
-using All_In_One_Shop.Models;
+﻿using All_In_One_Shop.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace All_In_One_Shop.Data.Repo
+namespace All_In_One_Shop.Helpers
 {
-    public class TokenRepo: ITokenInterface
+    public class TokenGenerator
     {
-        public string GenerateJwt(User user)
+        public static string GenerateJwt(User user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("veryverysecret.....");

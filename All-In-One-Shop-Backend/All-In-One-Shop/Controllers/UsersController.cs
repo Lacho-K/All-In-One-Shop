@@ -11,12 +11,10 @@ namespace All_In_One_Shop.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserInterface _userRepo;
-        private readonly ITokenInterface _tokenRepo;
 
-        public UsersController(IUserInterface userRepo, ITokenInterface tokenRepo)
+        public UsersController(IUserInterface userRepo)
         {
             this._userRepo = userRepo;
-            this._tokenRepo = tokenRepo;
         }
 
         [HttpPost("authenticate")]
@@ -39,7 +37,7 @@ namespace All_In_One_Shop.Controllers
                 return BadRequest(new { Message = "Invalid Password!" });
             }
 
-            user.Value.Token = this._tokenRepo.GenerateJwt(user.Value);
+            user.Value.Token = TokenGenerator.GenerateJwt(user.Value);
 
             return Ok(new
             {

@@ -15,8 +15,6 @@ builder.Services.AddScoped<IProductInterface, ProductRepo>();
 builder.Services.AddScoped<IStorageInterface, StorageRepo>();
 builder.Services.AddScoped<IProductTypeInterface, ProductTypeRepo>();
 builder.Services.AddScoped<IUserInterface, UserRepo>();
-builder.Services.AddScoped<ITokenInterface, TokenRepo>();
-
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
