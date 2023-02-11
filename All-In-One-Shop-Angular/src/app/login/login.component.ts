@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   inputType: string = 'password';
   eyeIcon: string = 'fa-eye-slash';
 
-  constructor(private fb: FormBuilder, private service: AuthService) { }
+  constructor(private fb: FormBuilder, private auth: AuthService) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -30,10 +30,11 @@ export class LoginComponent implements OnInit {
 
   onSubmit(){
     if(this.loginForm.valid){
-      this.service.login(this.loginForm.value)
+      this.auth.login(this.loginForm.value)
       .subscribe({
-        next: (() => {
+        next: ((res:any) => {
           alert("loged in");
+          this.auth.storeToken(res.token);
           this.loginForm.reset();
         }),
         error: (() => {
