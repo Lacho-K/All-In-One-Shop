@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
         next: ((res:any) => {
           alert("loged in");
           this.auth.storeToken(res.token);
-          this.loginForm.reset();
+          window.location.reload();
         }),
         error: (() => {
           alert("Invalid password or username");

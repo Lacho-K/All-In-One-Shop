@@ -12,14 +12,14 @@
           <li class="nav-item">
             <a class="nav-link" routerLinkActive="border border-info rounded" routerLink="/products">Product List</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="!this.loggedIn">
             <a class="nav-link" routerLinkActive="border border-info rounded" routerLink="/register">Sign Up</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="!this.loggedIn">
             <a class="nav-link" routerLinkActive="border border-info rounded" routerLink="/login">Login</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link disabled">Disabled</a>
+          <li class="nav-item" *ngIf="this.loggedIn">
+            <a class="nav-link" (click)="logOut()">Log Out</a>
           </li>
         </ul>
       </div>
