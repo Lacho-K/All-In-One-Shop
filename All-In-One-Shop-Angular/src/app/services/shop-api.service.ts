@@ -1,14 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ProductModel } from './models/productModel';
-import { ProductResponseModel } from './models/productResponseModel';
-import { ProductTypeModel } from './models/productTypeModel';
-import { ProductTypeResponseModel } from './models/productTypeResponseModel';
-import { StorageModel } from './models/storageModel';
-import { StorageResponseModel } from './models/storageResponseModel';
-import { UserLoginModel } from './models/userLoginModel';
-import { UserModel } from './models/userModel';
+import { ProductModel } from '../models/productModel';
+import { ProductResponseModel } from '../models/productResponseModel';
+import { ProductTypeModel } from '../models/productTypeModel';
+import { ProductTypeResponseModel } from '../models/productTypeResponseModel';
+import { StorageModel } from '../models/storageModel';
+import { StorageResponseModel } from '../models/storageResponseModel';
 
 @Injectable({
   providedIn: 'root'
@@ -83,16 +81,6 @@ export class ShopApiService {
 
   deleteProductType(id:number|string){
     return this.http.delete(this.shopAPIUrl + `/productTypes/${id}`)
-  }
-
-  // Users
-
-  register(data: UserModel){
-    return this.http.post(this.shopAPIUrl + '/users/register', data);
-  }
-
-  login(data: UserLoginModel){
-    return this.http.post(this.shopAPIUrl + '/users/authenticate', data);
   }
   
 }

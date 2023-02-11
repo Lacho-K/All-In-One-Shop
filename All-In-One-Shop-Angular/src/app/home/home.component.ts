@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { ShopApiService } from 'src/app/shop-api.service';
 import { ProductResponseModel } from '../models/productResponseModel';
+import { ShopApiService } from '../services/shop-api.service';
 
 @Component({
   selector: 'app-home',

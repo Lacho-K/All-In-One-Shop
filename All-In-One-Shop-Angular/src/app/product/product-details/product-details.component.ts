@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ShopApiService } from 'src/app/shop-api.service';
 import { Router } from '@angular/router';
 import { ProductResponseModel } from 'src/app/models/productResponseModel';
 import { StorageResponseModel } from 'src/app/models/storageResponseModel';
 import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
 import { Subscription } from 'rxjs';
+import { ShopApiService } from 'src/app/services/shop-api.service';
 
 
 
@@ -92,6 +92,6 @@ export class ProductDetailsComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
-}
+  }
 
 }

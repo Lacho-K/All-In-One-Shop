@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import AnimateForm from '../helpers/animateForm';
 import ValidateForm from '../helpers/validateForm';
-import { ShopApiService } from '../shop-api.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   inputType: string = 'password';
   eyeIcon: string = 'fa-eye-slash';
 
-  constructor(private fb: FormBuilder, private service: ShopApiService) { }
+  constructor(private fb: FormBuilder, private service: AuthService) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({

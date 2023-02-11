@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { ProductResponseModel } from 'src/app/models/productResponseModel';
 import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
 import { StorageResponseModel } from 'src/app/models/storageResponseModel';
-import { ShopApiService } from 'src/app/shop-api.service';
+import { ShopApiService } from 'src/app/services/shop-api.service';
 
 @Component({
   selector: 'app-show-product',

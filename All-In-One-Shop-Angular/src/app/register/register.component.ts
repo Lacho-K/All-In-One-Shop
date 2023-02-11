@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import AnimateForm from '../helpers/animateForm';
 import ValidateForm from '../helpers/validateForm';
-import { ShopApiService } from '../shop-api.service';
+import { AuthService } from '../services/auth.service';
 
 
 @Component({
@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit {
   eyeIconPass: string = 'fa-eye-slash';
   eyeIconRePass: string = 'fa-eye-slash';
   
-  constructor(private fb: FormBuilder, private service: ShopApiService) { }
+  constructor(private fb: FormBuilder, private service: AuthService) { }
 
   ngOnInit(): void {
 

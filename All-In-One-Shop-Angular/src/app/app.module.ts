@@ -8,13 +8,13 @@ import { AppComponent } from './app.component';
 import { ProductComponent } from './product/product.component';
 import { ShowProductComponent } from './product/show-product/show-product.component';
 import { AddEditProductComponent } from './product/add-edit-product/add-edit-product.component';
-import { ShopApiService } from './shop-api.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { LoginComponent } from './login/login.component';
 import { ProductDetailsComponent } from './product/product-details/product-details.component';
+import { ShopApiService } from './services/shop-api.service';
 
 @NgModule({
   declarations: [
