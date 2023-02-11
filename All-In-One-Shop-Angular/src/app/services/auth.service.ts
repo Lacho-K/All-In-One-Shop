@@ -12,7 +12,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-    // Users
+    // Auth
 
     register(data: UserModel){
       return this.http.post(this.usersUrl + '/register', data);
@@ -22,14 +22,13 @@ export class AuthService {
       return this.http.post(this.usersUrl + '/authenticate', data);
     }
 
-    // Auth
 
     storeToken(token: string){
       localStorage.setItem('token', token);
     }
 
     getToken(){
-      localStorage.getItem('token');
+      return localStorage.getItem('token');
     }
 
     isLoggedIn(): boolean{

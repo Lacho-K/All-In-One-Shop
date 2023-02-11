@@ -1,6 +1,7 @@
 ﻿using All_In_One_Shop.Data.Repo.Interfaces;
 using All_In_One_Shop.Helpers;
 using All_In_One_Shop.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -60,6 +61,7 @@ namespace All_In_One_Shop.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {
             return await this._userRepo.GetAllUsers();

@@ -7,6 +7,7 @@ import { ProductTypeModel } from '../models/productTypeModel';
 import { ProductTypeResponseModel } from '../models/productTypeResponseModel';
 import { StorageModel } from '../models/storageModel';
 import { StorageResponseModel } from '../models/storageResponseModel';
+import { UserResponseModel } from '../models/userResponseModel';
 
 @Injectable({
   providedIn: 'root'
@@ -81,6 +82,12 @@ export class ShopApiService {
 
   deleteProductType(id:number|string){
     return this.http.delete(this.shopAPIUrl + `/productTypes/${id}`)
+  }
+
+  // Users
+
+  getUsersList(): Observable<UserResponseModel[]>{
+    return this.http.get<UserResponseModel[]>(this.shopAPIUrl + '/users');
   }
   
 }

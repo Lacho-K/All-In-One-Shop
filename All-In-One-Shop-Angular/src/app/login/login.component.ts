@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import AnimateForm from '../helpers/animateForm';
 import ValidateForm from '../helpers/validateForm';
 import { AuthService } from '../services/auth.service';
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
   inputType: string = 'password';
   eyeIcon: string = 'fa-eye-slash';
 
-  constructor(private fb: FormBuilder, private auth: AuthService) { }
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -34,8 +35,8 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: ((res:any) => {
           alert("loged in");
-          this.auth.storeToken(res.token);
-          window.location.reload();
+          this.auth.storeToken(res.token);     
+          this.router.navigate(['/dashboard']).then(() => window.location.reload());
         }),
         error: (() => {
           alert("Invalid password or username");

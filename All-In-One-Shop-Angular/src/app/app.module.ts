@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -15,6 +15,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { LoginComponent } from './login/login.component';
 import { ProductDetailsComponent } from './product/product-details/product-details.component';
 import { ShopApiService } from './services/shop-api.service';
+import { TokenInterceptor } from './interceptors/token.interceptor';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { ShopApiService } from './services/shop-api.service';
     RegisterComponent,
     PageNotFoundComponent,
     LoginComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,11 @@ import { ShopApiService } from './services/shop-api.service';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [ShopApiService],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
