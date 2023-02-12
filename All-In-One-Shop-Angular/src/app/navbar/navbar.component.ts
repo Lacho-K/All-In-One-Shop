@@ -24,6 +24,7 @@ export class NavbarComponent implements OnInit {
   logOut(){
     this.auth.signOut();
     this.loggedIn = this.auth.isLoggedIn();
+    this.refreshPage();
   }
 
 }

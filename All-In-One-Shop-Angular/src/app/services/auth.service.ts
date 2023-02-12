@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { UserLoginModel } from '../models/userLoginModel';
 import { UserModel } from '../models/userModel';
 
@@ -9,8 +10,11 @@ import { UserModel } from '../models/userModel';
 export class AuthService {
 
   private readonly usersUrl = 'https://localhost:7220/api/users';
+  private userPayload: any; 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    this.userPayload = this.decodedToken();
+  }
 
     // Auth
 
@@ -37,5 +41,28 @@ export class AuthService {
 
     signOut(){
       localStorage.clear();
+    }
+
+    decodedToken(){
+      const jwtHelper = new JwtHelperService();
+
+      // exclamation mark to avoid "Object is possibly 'undefined" error
+      const token = this.getToken()!;
+
+      console.log(jwtHelper.decodeToken(token));
+
+      return jwtHelper.decodeToken(token)
+    }
+
+    getFullNameFromToken(){
+      if(this.userPayload){
+        return this.userPayload.name;
+      }
+    }
+
+    getRoleFromToken(){
+      if(this.userPayload){
+        return this.userPayload.role;
+      }
     }
 }
