@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { UserStoreService } from '../services/user-store.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,12 +10,17 @@ import { AuthService } from '../services/auth.service';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private router: Router, private auth: AuthService) { }
+  constructor(private router: Router, private auth: AuthService, private userStore: UserStoreService) { }
 
   loggedIn: boolean = this.auth.isLoggedIn();
+  fullName: string = ""
 
   ngOnInit(): void {
-
+    this.userStore.getFullNameFromStore()
+    .subscribe(name => {
+      let fullNameFromToken = this.auth.getFullNameFromToken();
+      this.fullName = name || fullNameFromToken;
+    });
   }
 
   refreshPage(){

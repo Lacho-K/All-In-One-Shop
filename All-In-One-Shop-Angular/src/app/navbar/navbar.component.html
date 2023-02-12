@@ -18,10 +18,13 @@
           <li class="nav-item" *ngIf="!this.loggedIn">
             <a class="nav-link" routerLinkActive="border border-info rounded" routerLink="/login">Login</a>
           </li>
-          <li class="nav-item" *ngIf="this.loggedIn">
-            <a class="nav-link" (click)="logOut()">Log Out</a>
-          </li>
         </ul>
       </div>
+
+      <ng-container *ngIf="this.loggedIn">      
+        <h4 class="mx-4">Hey, {{this.fullName}}</h4>
+        <button class="btn btn-danger" (click)="logOut()">Log Out</button>
+      </ng-container>
+
     </div>
 </nav>
