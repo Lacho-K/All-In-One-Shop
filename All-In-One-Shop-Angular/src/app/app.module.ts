@@ -17,6 +17,7 @@ import { ProductDetailsComponent } from './product/product-details/product-detai
 import { ShopApiService } from './services/shop-api.service';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { NgToastModule } from 'ng-angular-popup';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgToastModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
