@@ -36,6 +36,7 @@ export class AuthService {
     }
 
     isLoggedIn(): boolean{
+      // exclamation marks to make the return type boolean
       return !!localStorage.getItem('token');
     }
 

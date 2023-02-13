@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
           const tokenPayload = this.auth.decodedToken();
           this.userStore.setFullNameForStore(tokenPayload.name);
           this.userStore.setRoleForStore(tokenPayload.role);
-          this.router.navigate(['/home']).then(() => window.location.reload());
+          this.router.navigate(['/dashboard']).then(() => window.location.reload());
         }),
         error: (() => {
           alert("Invalid password or username");

@@ -23,7 +23,7 @@ namespace All_In_One_Shop.Helpers
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = identity,
-                Expires = DateTime.Now.AddDays(1),
+                Expires = DateTime.Now.AddHours(1),
                 SigningCredentials = credentials
             };
 
