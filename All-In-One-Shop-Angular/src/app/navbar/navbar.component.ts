@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { UserStoreService } from '../services/user-store.service';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-navbar',
@@ -10,12 +11,17 @@ import { UserStoreService } from '../services/user-store.service';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private router: Router, private auth: AuthService, private userStore: UserStoreService) { }
+  public static loggedIn: any;
 
-  loggedIn: boolean = this.auth.isLoggedIn();
+  
+  constructor(private router: Router, private auth: AuthService, private userStore: UserStoreService, private toast: NgToastService) { }
+
   fullName: string = ""
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
+    
+    NavbarComponent.loggedIn = this.auth.isLoggedIn();
+    
     this.userStore.getFullNameFromStore()
     .subscribe(name => {
       let fullNameFromToken = this.auth.getFullNameFromToken();
@@ -29,8 +35,12 @@ export class NavbarComponent implements OnInit {
 
   logOut(){
     this.auth.signOut();
-    this.loggedIn = this.auth.isLoggedIn();
+    NavbarComponent.loggedIn = this.auth.isLoggedIn();
     this.refreshPage();
+  }
+
+  get staticLoggin(){
+    return NavbarComponent.loggedIn;
   }
 
 }

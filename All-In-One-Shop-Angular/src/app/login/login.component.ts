@@ -6,6 +6,7 @@ import AnimateForm from '../helpers/animateForm';
 import ValidateForm from '../helpers/validateForm';
 import { AuthService } from '../services/auth.service';
 import { UserStoreService } from '../services/user-store.service';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-login',
@@ -40,14 +41,14 @@ export class LoginComponent implements OnInit {
           const tokenPayload = this.auth.decodedToken();
           this.userStore.setFullNameForStore(tokenPayload.name);
           this.userStore.setRoleForStore(tokenPayload.role);
-          this.router.navigate(['/dashboard']);
-          this.toast.success({detail: "SUCCESS", summary: res.message, duration: 5000});
+          this.router.navigate(['/home']);
+          NavbarComponent.loggedIn = this.auth.isLoggedIn();
+          this.toast.success({detail: "SUCCESS", summary: "logged in", duration: 5000})
         }),
         error: (() => {
           this.toast.error({detail: "ERROR", summary: "Invalid password or username", duration: 5000})
         })
       });
-      
     }
     else{
       ValidateForm.validateAllFormFields(this.loginForm)

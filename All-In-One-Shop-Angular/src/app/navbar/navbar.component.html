@@ -12,16 +12,16 @@
           <li class="nav-item">
             <a class="nav-link" routerLinkActive="border border-info rounded" routerLink="/products">Product List</a>
           </li>
-          <li class="nav-item" *ngIf="!this.loggedIn">
+          <li class="nav-item" *ngIf="!this.staticLoggin">
             <a class="nav-link" routerLinkActive="border border-info rounded" routerLink="/register">Sign Up</a>
           </li>
-          <li class="nav-item" *ngIf="!this.loggedIn">
+          <li class="nav-item" *ngIf="!this.staticLoggin">
             <a class="nav-link" routerLinkActive="border border-info rounded" routerLink="/login">Login</a>
           </li>
         </ul>
       </div>
 
-      <ng-container *ngIf="this.loggedIn">      
+      <ng-container *ngIf="this.staticLoggin">      
         <h4 class="mx-4">Hey, {{this.fullName}}</h4>
         <button class="btn btn-danger" (click)="logOut()">Log Out</button>
       </ng-container>
