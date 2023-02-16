@@ -36,7 +36,8 @@ export class NavbarComponent implements OnInit {
   logOut(){
     this.auth.signOut();
     NavbarComponent.loggedIn = this.auth.isLoggedIn();
-    this.refreshPage();
+    this.router.navigate(['/home']);
+    this.toast.info({detail: "INFO", summary: 'You have been logged out', duration: 3000});
   }
 
   get staticLoggin(){

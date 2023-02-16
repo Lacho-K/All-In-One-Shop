@@ -41,12 +41,12 @@ export class LoginComponent implements OnInit {
           const tokenPayload = this.auth.decodedToken();
           this.userStore.setFullNameForStore(tokenPayload.name);
           this.userStore.setRoleForStore(tokenPayload.role);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/dashboard']);
           NavbarComponent.loggedIn = this.auth.isLoggedIn();
-          this.toast.success({detail: "SUCCESS", summary: "logged in", duration: 5000})
+          this.toast.success({detail: "SUCCESS", summary: "logged in", duration: 3000})
         }),
         error: (() => {
-          this.toast.error({detail: "ERROR", summary: "Invalid password or username", duration: 5000})
+          this.toast.error({detail: "ERROR", summary: "Invalid password or username", duration: 3000})
         })
       });
     }
