@@ -64,8 +64,8 @@ export class RegisterComponent implements OnInit {
             this.toast.success({detail: "SUCCESS", summary: "logged in", duration: 3000})
           })         
         }),
-        error: (err => {
-          this.toast.error({detail: 'ERROR', summary: err?.error.message, duration: 3000});
+        error: (() => {
+          this.toast.error({detail: 'ERROR', summary: 'Email or username already exists!', duration: 3000});
         })
       })
     }
