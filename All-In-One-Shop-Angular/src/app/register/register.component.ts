@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NgToastService } from 'ng-angular-popup';
 import AnimateForm from '../helpers/animateForm';
 import ValidateForm from '../helpers/validateForm';
+import { UserLoginModel } from '../models/userLoginModel';
+import { NavbarComponent } from '../navbar/navbar.component';
 import { AuthService } from '../services/auth.service';
+import { UserStoreService } from '../services/user-store.service';
 
 
 @Component({
@@ -13,6 +18,7 @@ import { AuthService } from '../services/auth.service';
 export class RegisterComponent implements OnInit {
 
   registerForm !: FormGroup
+  userLogin !: UserLoginModel
   
   //variables for showing password
   showPass: boolean = false;
@@ -22,7 +28,7 @@ export class RegisterComponent implements OnInit {
   eyeIconPass: string = 'fa-eye-slash';
   eyeIconRePass: string = 'fa-eye-slash';
   
-  constructor(private fb: FormBuilder, private service: AuthService) { }
+  constructor(private fb: FormBuilder, private auth: AuthService, private toast: NgToastService, private userStore: UserStoreService, private router: Router) { }
 
   ngOnInit(): void {
 
@@ -44,14 +50,22 @@ export class RegisterComponent implements OnInit {
   onSubmit(){
     this.onPasswordChange();
     if(this.registerForm.valid){
-      this.service.register(this.registerForm.value)
+      this.auth.register(this.registerForm.value)
       .subscribe({
         next: (()=>{
-          alert("sign up sucessful");
-          this.registerForm.reset();
+          this.userLogin = new UserLoginModel(this.registerForm.value.username, this.registerForm.value.password);
+          this.auth.login(this.userLogin).subscribe((res: any) => {
+            this.auth.storeToken(res.token);     
+            const tokenPayload = this.auth.decodedToken();
+            this.userStore.setFullNameForStore(tokenPayload.name);
+            this.userStore.setRoleForStore(tokenPayload.role);
+            this.router.navigate(['/dashboard']);
+            NavbarComponent.loggedIn = this.auth.isLoggedIn();
+            this.toast.success({detail: "SUCCESS", summary: "logged in", duration: 3000})
+          })         
         }),
         error: (err => {
-          alert(err?.error.message);
+          this.toast.error({detail: 'ERROR', summary: err?.error.message, duration: 3000});
         })
       })
     }
