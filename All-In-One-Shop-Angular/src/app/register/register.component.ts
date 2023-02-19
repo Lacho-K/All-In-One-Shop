@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
   registerForm !: FormGroup
   userLogin !: UserLoginModel
   
-  //variables for showing password
+  //variables for showing/hiding password
   showPass: boolean = false;
   showRePass: boolean = false;
   passInputType: string = 'password';
@@ -50,9 +50,11 @@ export class RegisterComponent implements OnInit {
   onSubmit(){
     this.onPasswordChange();
     if(this.registerForm.valid){
+      //register
       this.auth.register(this.registerForm.value)
       .subscribe({
         next: (()=>{
+          //login automaticaly after registering
           this.userLogin = new UserLoginModel(this.registerForm.value.username, this.registerForm.value.password);
           this.auth.login(this.userLogin).subscribe((res: any) => {
             this.auth.storeToken(res.token);     

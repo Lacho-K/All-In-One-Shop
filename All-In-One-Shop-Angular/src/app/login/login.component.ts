@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
 
   loginForm !: FormGroup
 
-  //variables for showing password
+  //variables for showing/hiding password
   showPass: boolean = false;
   inputType: string = 'password';
   eyeIcon: string = 'fa-eye-slash';
