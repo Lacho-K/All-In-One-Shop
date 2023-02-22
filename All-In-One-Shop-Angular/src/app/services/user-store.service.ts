@@ -26,4 +26,9 @@ export class UserStoreService {
   public setFullNameForStore(fullName: string){
     this.fullName$.next(fullName);
   }
+
+  public clearStore(){
+    this.fullName$.next('');
+    this.role$.next('');
+  }
 }

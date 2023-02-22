@@ -36,7 +36,7 @@ namespace All_In_One_Shop.Data.Repo
             }
 
             userObj.Password = PasswordHasher.HashPassword(userObj.Password);
-            userObj.Role = "User";
+            userObj.Role = "Admin";
             userObj.Token = "";
 
             await _context.Users.AddAsync(userObj);

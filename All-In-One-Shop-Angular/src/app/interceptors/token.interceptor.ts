@@ -11,6 +11,7 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { AppComponent } from '../app.component';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -35,7 +36,7 @@ export class TokenInterceptor implements HttpInterceptor {
           if(err.status === 401){
             console.log('correct status');           
             this.auth.signOut();
-            NavbarComponent.loggedIn = this.auth.isLoggedIn();
+            AppComponent.IsLoggedIn = this.auth.isLoggedIn();
             //Make this work
             //this.router.navigate(['/login'])
             this.toaster.warning({detail:'WARNING', summary: 'Please login to do that', duration: 3000});

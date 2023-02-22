@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { UserStoreService } from '../services/user-store.service';
 import { NgToastService } from 'ng-angular-popup';
+import { AppComponent } from '../app.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-navbar',
@@ -11,16 +13,14 @@ import { NgToastService } from 'ng-angular-popup';
 })
 export class NavbarComponent implements OnInit {
 
-  public static loggedIn: any;
-
   
-  constructor(private router: Router, private auth: AuthService, private userStore: UserStoreService, private toast: NgToastService) { }
+  constructor(private router: Router, private auth: AuthService, private userStore: UserStoreService, private toast: NgToastService, private http: HttpClient) { }
 
   fullName: string = ""
 
   public ngOnInit(): void {
     
-    NavbarComponent.loggedIn = this.auth.isLoggedIn();
+    AppComponent.IsLoggedIn = this.auth.isLoggedIn();
     
     this.userStore.getFullNameFromStore()
     .subscribe(name => {
@@ -35,13 +35,15 @@ export class NavbarComponent implements OnInit {
 
   logOut(){
     this.auth.signOut();
-    NavbarComponent.loggedIn = this.auth.isLoggedIn();
+    AppComponent.IsLoggedIn = this.auth.isLoggedIn();
+    AppComponent.IsAdmin = this.auth.isAdmin();
+    this.userStore.clearStore();
     this.router.navigate(['/home']);
     this.toast.info({detail: "INFO", summary: 'You have been logged out', duration: 3000});
   }
 
   get staticLoggin(){
-    return NavbarComponent.loggedIn;
+    return AppComponent.IsLoggedIn;
   }
 
 }

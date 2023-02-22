@@ -1,5 +1,5 @@
 <!-- Add Product trigger modal -->
-<button type="button" class="btn btn-primary mx-auto d-block my-4" data-bs-toggle="modal"
+<button *ngIf="getIsAdmin" type="button" class="btn btn-primary mx-auto d-block my-4" data-bs-toggle="modal"
   data-bs-target="#staticBackdrop" (click)="modalAdd()">
   Add Product
 </button>

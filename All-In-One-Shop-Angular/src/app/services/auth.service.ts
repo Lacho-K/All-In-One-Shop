@@ -40,6 +40,10 @@ export class AuthService {
       return !!localStorage.getItem('token');
     }
 
+    isAdmin(): boolean{
+      return this.getRoleFromToken() == 'Admin';
+    }
+
     signOut(){
       localStorage.clear();
     }
@@ -49,8 +53,6 @@ export class AuthService {
 
       // exclamation mark to avoid "Object is possibly 'undefined" error
       const token = this.getToken()!;
-
-      console.log(jwtHelper.decodeToken(token));
 
       return jwtHelper.decodeToken(token)
     }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
+import { AppComponent } from '../app.component';
 import AnimateForm from '../helpers/animateForm';
 import ValidateForm from '../helpers/validateForm';
 import { UserLoginModel } from '../models/userLoginModel';
@@ -19,6 +20,7 @@ export class RegisterComponent implements OnInit {
 
   registerForm !: FormGroup
   userLogin !: UserLoginModel
+
   
   //variables for showing/hiding password
   showPass: boolean = false;
@@ -62,7 +64,7 @@ export class RegisterComponent implements OnInit {
             this.userStore.setFullNameForStore(tokenPayload.name);
             this.userStore.setRoleForStore(tokenPayload.role);
             this.router.navigate(['/dashboard']);
-            NavbarComponent.loggedIn = this.auth.isLoggedIn();
+            AppComponent.IsLoggedIn = this.auth.isLoggedIn();
             this.toast.success({detail: "SUCCESS", summary: "logged in", duration: 3000})
           })         
         }),

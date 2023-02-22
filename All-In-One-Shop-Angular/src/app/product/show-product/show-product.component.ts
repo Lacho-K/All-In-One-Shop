@@ -1,9 +1,13 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AppComponent } from 'src/app/app.component';
 import { ProductResponseModel } from 'src/app/models/productResponseModel';
 import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
 import { StorageResponseModel } from 'src/app/models/storageResponseModel';
+import { AuthService } from 'src/app/services/auth.service';
 import { ShopApiService } from 'src/app/services/shop-api.service';
+import { UserStoreService } from 'src/app/services/user-store.service';
 
 @Component({
   selector: 'app-show-product',
@@ -20,15 +24,18 @@ export class ShowProductComponent implements OnInit {
   // Map used to display data associated with foreign keys
   storagesMap:Map<number | string, ProductResponseModel> = new Map();
 
-  constructor(private service: ShopApiService) { }
+  constructor(private service: ShopApiService, private auth: AuthService, private userStore: UserStoreService, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.productList$ = this.service.getProductsList();
     this.productTypesList$ = this.service.getProductTypesList();
     this.storagesList$ = this.service.getStoragesList();
-
-    this.mapStoragesWithProducts();
-    
+    this.mapStoragesWithProducts(); 
+    this.userStore.getRoleFromStore().subscribe(role => {
+      this.auth = new AuthService(this.http);
+      let authRole = this.auth.isAdmin();
+      AppComponent.IsAdmin = authRole || role == 'Admin';
+    });
   }
 
   //Variables(properties)
@@ -78,5 +85,9 @@ export class ShowProductComponent implements OnInit {
     this.storagesList$ = this.service.getStoragesList();
 
     this.mapStoragesWithProducts(); 
+  }
+
+  get getIsAdmin(){
+    return AppComponent.IsAdmin;
   }
 }

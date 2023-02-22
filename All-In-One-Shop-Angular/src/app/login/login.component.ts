@@ -7,6 +7,9 @@ import ValidateForm from '../helpers/validateForm';
 import { AuthService } from '../services/auth.service';
 import { UserStoreService } from '../services/user-store.service';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { ShowProductComponent } from '../product/show-product/show-product.component';
+import { HttpClient } from '@angular/common/http';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +26,7 @@ export class LoginComponent implements OnInit {
   inputType: string = 'password';
   eyeIcon: string = 'fa-eye-slash';
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private userStore: UserStoreService, private toast: NgToastService) { }
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private userStore: UserStoreService, private toast: NgToastService, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -41,8 +44,12 @@ export class LoginComponent implements OnInit {
           const tokenPayload = this.auth.decodedToken();
           this.userStore.setFullNameForStore(tokenPayload.name);
           this.userStore.setRoleForStore(tokenPayload.role);
+          
           this.router.navigate(['/dashboard']);
-          NavbarComponent.loggedIn = this.auth.isLoggedIn();
+
+          AppComponent.IsLoggedIn = this.auth.isLoggedIn();
+          AppComponent.IsAdmin = this.auth.isAdmin();  
+
           this.toast.success({detail: "SUCCESS", summary: "logged in", duration: 3000})
         }),
         error: (() => {
