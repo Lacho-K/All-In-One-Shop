@@ -16,6 +16,7 @@ namespace All_In_One_Shop.Models
         [StringLength(50)]
         public string ProductLocation { get; set; } = string.Empty;
 
+        [StringLength(50)]
         public string ProductRatings { get; set; } = string.Empty;
     }
 }
