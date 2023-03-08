@@ -46,4 +46,9 @@ export class NavbarComponent implements OnInit {
     return AppComponent.IsLoggedIn;
   }
 
+  openCart(){
+    console.log("open");
+    
+  }
+
 }
