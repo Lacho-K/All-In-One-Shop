@@ -14,9 +14,21 @@ export class ShoppingCartComponent implements OnInit {
 
   productList$!:Observable<ProductResponseModel[]>;
 
+  // the sum price of items in shopping-cart
+  sum: number = 0;
+
 
   ngOnInit(): void {
-    this.productList$ = this.shopApi.getProductsList();
+   this.productList$ = this.shopApi.getProductsList();
+   this.getSumOfProucts();
+  }
+
+  getSumOfProucts(){
+    this.shopApi.getProductsList().subscribe((p: ProductResponseModel[]) => {
+      for (let i = 0; i < p.length; i++) {
+        this.sum += p[i].price;        
+      }      
+    });
   }
 
 }
