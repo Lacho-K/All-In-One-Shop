@@ -16,7 +16,9 @@ export class NavbarComponent implements OnInit {
   
   constructor(private router: Router, private auth: AuthService, private userStore: UserStoreService, private toast: NgToastService, private http: HttpClient) { }
 
-  fullName: string = ""
+  fullName: string = "";
+  activeShoppingCart: boolean = false;
+  modalTitle: string = "";
 
   public ngOnInit(): void {
     
@@ -47,8 +49,9 @@ export class NavbarComponent implements OnInit {
   }
 
   openCart(){
-    console.log("open");
-    
+    this.modalTitle = "Shopping Cart";
+    this.activeShoppingCart = true;
+    console.log(this.activeShoppingCart);  
   }
 
 }

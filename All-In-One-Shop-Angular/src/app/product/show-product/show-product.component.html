@@ -1,6 +1,6 @@
 <!-- Add Product trigger modal -->
 <button *ngIf="getIsAdmin" type="button" class="btn btn-primary mx-auto d-block my-4" data-bs-toggle="modal"
-  data-bs-target="#staticBackdrop" (click)="modalAdd()">
+  data-bs-target="#modal1" (click)="modalAdd()">
   Add Product
 </button>
 
@@ -29,12 +29,12 @@
 </div>
 
 <!-- Add Product Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modal1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="modal1Label" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">{{modalTitle}}</h5>
+        <h5 class="modal-title" id="modal1Label">{{modalTitle}}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modalClose()"
           id="add-edit-modal-close"></button>
       </div>

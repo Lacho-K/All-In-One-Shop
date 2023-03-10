@@ -18,6 +18,7 @@ import { ShopApiService } from './services/shop-api.service';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgToastModule } from 'ng-angular-popup';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { NgToastModule } from 'ng-angular-popup';
     PageNotFoundComponent,
     LoginComponent,
     ProductDetailsComponent,
-    DashboardComponent
+    DashboardComponent,
+    ShoppingCartComponent
   ],
   imports: [
     BrowserModule,
