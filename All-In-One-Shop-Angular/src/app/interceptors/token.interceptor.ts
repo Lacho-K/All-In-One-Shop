@@ -32,14 +32,15 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((err: any) => {
         if(err instanceof HttpErrorResponse){
-          console.log('correct instance');       
           if(err.status === 401){
-            console.log('correct status');           
             this.auth.signOut();
             AppComponent.IsLoggedIn = this.auth.isLoggedIn();
-            //Make this work
-            //this.router.navigate(['/login'])
-            this.toaster.warning({detail:'WARNING', summary: 'Please login to do that', duration: 3000});
+
+            //close open modal so that you can navigate the new loaded page
+            document.getElementById('add-edit-modal-close')?.click();
+            
+            this.router.navigate(['/login']);
+            this.toaster.warning({detail:'WARNING', summary: 'Please login to do that', duration: 3000});       
           }
         }
         return throwError(() => new Error("Something went wrong"))
