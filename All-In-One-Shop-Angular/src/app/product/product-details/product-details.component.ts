@@ -6,6 +6,12 @@ import { StorageResponseModel } from 'src/app/models/storageResponseModel';
 import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
 import { Subscription } from 'rxjs';
 import { ShopApiService } from 'src/app/services/shop-api.service';
+import { UserStoreService } from 'src/app/services/user-store.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { HttpClient } from '@angular/common/http';
+import { AppComponent } from 'src/app/app.component';
+import CheckUserRole from 'src/app/helpers/checkUserRole';
+import { ShoppingCartService } from 'src/app/services/shopping-cart.service';
 
 
 
@@ -16,7 +22,7 @@ import { ShopApiService } from 'src/app/services/shop-api.service';
 })
 export class ProductDetailsComponent implements OnInit {
 
-  constructor(private route:ActivatedRoute, private service: ShopApiService, private router: Router) { }
+  constructor(private route:ActivatedRoute, private service: ShopApiService, private router: Router, private userStore: UserStoreService, private auth: AuthService, private http: HttpClient, private shoppingCart: ShoppingCartService) { }
 
   // The Id used to get the current item's storage with which we can display all information about a product
   storageId : string | null = null
@@ -37,6 +43,9 @@ export class ProductDetailsComponent implements OnInit {
     this.storageId = this.route.snapshot.paramMap.get('storageId');
  
     this.assignProductInfo();
+    
+    AppComponent.IsLoggedIn = this.auth.isLoggedIn();
+    CheckUserRole.checkUserRole(this.userStore, this.auth, this.http);
   }
 
   assignProductInfo(){
@@ -79,10 +88,14 @@ export class ProductDetailsComponent implements OnInit {
                 showDeleteSuccess.style.display = "none"
               }
             }, 4000)
-          })  
+          })
           })
       })                 
      }
+  }
+
+  addToShoppingCart(){
+    this.shoppingCart.addToCart(this.product);
   }
 
   modalClose(){
@@ -92,6 +105,10 @@ export class ProductDetailsComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  get getIsAdmin(){
+    return AppComponent.IsAdmin;
   }
 
 }

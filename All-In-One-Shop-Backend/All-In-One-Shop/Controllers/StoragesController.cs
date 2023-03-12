@@ -43,6 +43,19 @@ namespace All_In_One_Shop.Controllers
 
             return storage;
         }
+        
+        [HttpGet("p{id}")]
+        public async Task<ActionResult<Storage>> GetStoragebyProductId(int id)
+        {
+            var storage = await _storageRepo.GetStorageByProductId(id);
+
+            if (storage == null)
+            {
+                return NotFound();
+            }
+
+            return storage;
+        }
 
         // PUT: api/Storages/5
         [HttpPut("{id}")]

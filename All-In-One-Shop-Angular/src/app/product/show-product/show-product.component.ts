@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppComponent } from 'src/app/app.component';
+import CheckUserRole from 'src/app/helpers/checkUserRole';
 import { ProductResponseModel } from 'src/app/models/productResponseModel';
 import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
 import { StorageResponseModel } from 'src/app/models/storageResponseModel';
@@ -31,11 +32,9 @@ export class ShowProductComponent implements OnInit {
     this.productTypesList$ = this.service.getProductTypesList();
     this.storagesList$ = this.service.getStoragesList();
     this.mapStoragesWithProducts(); 
-    this.userStore.getRoleFromStore().subscribe(role => {
-      this.auth = new AuthService(this.http);
-      let authRole = this.auth.isAdmin();
-      AppComponent.IsAdmin = authRole || role == 'Admin';
-    });
+
+    // gets current role of user without the need to refresh the page
+    CheckUserRole.checkUserRole(this.userStore, this.auth, this.http);
   }
 
   //Variables(properties)

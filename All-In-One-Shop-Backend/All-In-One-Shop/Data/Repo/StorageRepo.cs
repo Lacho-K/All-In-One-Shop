@@ -47,6 +47,14 @@ namespace All_In_One_Shop.Data.Repo
             return storage;
         }
 
+        public async Task<ActionResult<Storage>> GetStorageByProductId(int productId)
+        {
+            var storage = await _context.Storages.FirstOrDefaultAsync(s => s.ProductId == productId);
+
+            return storage;
+        }
+
+
         public bool StorageExists(int id)
         {
             return _context.Storages.Any(e => e.Id == id);

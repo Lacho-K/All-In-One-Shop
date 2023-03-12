@@ -51,7 +51,7 @@ export class NavbarComponent implements OnInit {
   openCart(){
     this.modalTitle = "Shopping Cart";
     this.activeShoppingCart = true;
-    console.log(this.activeShoppingCart);  
+    //console.log(this.activeShoppingCart);  
   }
 
 }

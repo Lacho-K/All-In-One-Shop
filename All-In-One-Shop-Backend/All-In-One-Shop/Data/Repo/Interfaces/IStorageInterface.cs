@@ -9,6 +9,8 @@ namespace All_In_One_Shop.Data.Repo.Interfaces
 
         Task<ActionResult<Storage>> GetStorageById(int id);
 
+        Task<ActionResult<Storage>> GetStorageByProductId(int productId);
+
         Task UpdateStorage(int id, Storage product);
 
         Task AddStorage(Storage product);

@@ -50,6 +50,10 @@ export class ShopApiService {
     return this.http.get<StorageResponseModel>(this.shopAPIUrl + `/storages/${id}`)
   }
 
+  getStorageByProductId(productId:number|string): Observable<StorageResponseModel>{
+    return this.http.get<StorageResponseModel>(this.shopAPIUrl + `/storages/p${productId}`)
+  }
+
   addStorage(data:StorageModel){
     return this.http.post(this.shopAPIUrl + '/storages', data)
   }
