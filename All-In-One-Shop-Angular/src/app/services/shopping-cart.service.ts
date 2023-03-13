@@ -7,7 +7,7 @@ import { StorageResponseModel } from '../models/storageResponseModel';
   providedIn: 'root'
 })
 export class ShoppingCartService {
-  private cartItems$ = new BehaviorSubject<ProductResponseModel[]>([]);
+  private cartItems$ = new BehaviorSubject<StorageResponseModel[]>([]);
   private cartKey = 'cartItems';
 
   constructor() {
@@ -23,8 +23,8 @@ export class ShoppingCartService {
     return this.cartItems$.asObservable();
   }
 
-  getStaticCartItems(): ProductResponseModel[]{
-    let products: ProductResponseModel[] = [];
+  getStaticCartItems(): StorageResponseModel[]{
+    let products: StorageResponseModel[] = [];
     this.getObservableCartItems().subscribe(p => {
       for (let i = 0; i < p.length; i++) {
         products.push(p[i]);
@@ -33,14 +33,14 @@ export class ShoppingCartService {
     return products;
   }
 
-  addToCart(item: ProductResponseModel) {
+  addToCart(item: StorageResponseModel) {
     const cartItems = this.cartItems$.value;
     cartItems.push(item);
     this.cartItems$.next(cartItems);
     localStorage.setItem(this.cartKey, JSON.stringify(cartItems));
   }
 
-  removeFromCart(item: ProductResponseModel) {
+  removeFromCart(item: StorageResponseModel) {
     let cartItems = this.cartItems$.value;
     cartItems = cartItems.filter((cartItem) => cartItem.id !== item.id);
     this.cartItems$.next(cartItems);

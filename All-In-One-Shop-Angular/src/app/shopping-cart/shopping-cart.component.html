@@ -1,5 +1,5 @@
 <ul>
-    <li *ngFor="let product of productList; let i = index" >{{product.name}} - {{product.price}}</li>
+    <li *ngFor="let product of productList; let i = index" (click)="navigation(i)">{{product.name}} - {{product.price}}</li>
 </ul>
 
 <h3>Sum: {{this.displaySum}}</h3>

@@ -95,7 +95,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToShoppingCart(){
-    this.shoppingCart.addToCart(this.product);
+    this.shoppingCart.addToCart(this.storage);
   }
 
   modalClose(){
