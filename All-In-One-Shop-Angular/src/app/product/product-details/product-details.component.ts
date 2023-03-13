@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import { AppComponent } from 'src/app/app.component';
 import CheckUserRole from 'src/app/helpers/checkUserRole';
 import { ShoppingCartService } from 'src/app/services/shopping-cart.service';
+import { NgToastService } from 'ng-angular-popup';
 
 
 
@@ -22,7 +23,7 @@ import { ShoppingCartService } from 'src/app/services/shopping-cart.service';
 })
 export class ProductDetailsComponent implements OnInit {
 
-  constructor(private route:ActivatedRoute, private service: ShopApiService, private router: Router, private userStore: UserStoreService, private auth: AuthService, private http: HttpClient, private shoppingCart: ShoppingCartService) { }
+  constructor(private route:ActivatedRoute, private service: ShopApiService, private router: Router, private userStore: UserStoreService, private auth: AuthService, private http: HttpClient, private shoppingCart: ShoppingCartService, private toaster: NgToastService) { }
 
   // The Id used to get the current item's storage with which we can display all information about a product
   storageId : string | null = null
@@ -96,6 +97,7 @@ export class ProductDetailsComponent implements OnInit {
 
   addToShoppingCart(){
     this.shoppingCart.addToCart(this.storage);
+    this.toaster.success({detail: "SUCCESS", summary: "Product successfully added to shopping cart", duration: 3000});
   }
 
   modalClose(){

@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgToastService } from 'ng-angular-popup';
 import { Observable } from 'rxjs/internal/Observable';
 import { ProductResponseModel } from '../models/productResponseModel';
 import { StorageResponseModel } from '../models/storageResponseModel';
@@ -19,50 +20,44 @@ export class ShoppingCartComponent implements OnInit {
   storageList: StorageResponseModel[] = [];
 
   // the sum price of items in shopping-cart
-  displaySum: string = "";
-
-  initialCheck: boolean = false;
+  displaySum: number = 0;
 
   ngOnInit(): void { 
-    if(!this.initialCheck){
-      this.getProductsInCart();
-      this.getSumOfProducts();
-    }
+    
+    this.getProductsInCart();
 
-    this.initialCheck = true;
     console.log(this.productList);
 
-
     this.shoppingCart.getObservableCartItems().subscribe((storages) => {
-    this.storageList = storages;
+      this.storageList = storages;
     
-    this.getSumOfProducts();
-    this.getLastProduct();
-    
-   });   
+      this.addProductToShoppingCart();
+    });   
+
   }
 
-  getSumOfProducts(){
-   let currentSum = 0;
-   for (let i = 0; i < this.productList.length; i++) {
-      currentSum += this.productList[i].price;
-   }
-   this.displaySum = currentSum.toFixed(2);
-  }
 
-  getLastProduct(){
+  addProductToShoppingCart(){
       this.shopApi.getProductById(this.storageList[this.storageList.length - 1].productId)
-      .subscribe((p) => {
-        this.productList.push(p);
+      .subscribe((lastAddedProduct) => {
+        this.productList.push(lastAddedProduct);
+
+        this.displaySum += lastAddedProduct.price;
+
+        // rounds the number to second decimal point
+        this.displaySum = Math.round(this.displaySum * 1e2) / 1e2;
       })
   }
 
   getProductsInCart(){
     let previouslyAddedProducts = this.shoppingCart.getStaticCartItems();
 
+    // loop skips last element because it gets added at the start anyways
     for (let i = 0; i < previouslyAddedProducts.length - 1; i++) {
-      this.shopApi.getProductById(previouslyAddedProducts[i].id).subscribe(p => {
-        this.productList.push(p);
+      this.shopApi.getProductById(previouslyAddedProducts[i].id).subscribe(product => {
+        this.productList.push(product);
+
+        this.displaySum += product.price;
       })
     }
   }

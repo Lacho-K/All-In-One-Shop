@@ -5,3 +5,7 @@
 .shoppingCart{
     border-left: 1px solid black; padding: 0.5rem;
 }
+
+.shoppingCart:hover{
+    color:  rgb(67, 163, 248);
+}
