@@ -96,8 +96,14 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToShoppingCart(){
+    if(this.shoppingCart.checkIfItemIsDuplicate(this.storage.id)){
+      this.toaster.warning({detail: "WARNING", summary: "Product already in shopping cart", position: "tl", duration: 3000});
+      return;
+    }
+
+    this.toaster.success({detail: "SUCCESS", summary: "Product added to shopping cart", position: "tl", duration: 3000});
     this.shoppingCart.addToCart(this.storage);
-    this.toaster.success({detail: "SUCCESS", summary: "Product successfully added to shopping cart", duration: 3000});
+
   }
 
   modalClose(){

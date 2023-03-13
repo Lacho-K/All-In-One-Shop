@@ -48,12 +48,12 @@ export class ShoppingCartService {
   }
 
   checkIfItemIsDuplicate(id: number | string): boolean{
-    this.getObservableCartItems().subscribe((items) => {
+    let resultBool = false;
+    this.getObservableCartItems().subscribe((items) => {      
       if(items.find(item => item.id == id)){
-        return true;
+        resultBool = true;
       }
-      return false;
     })
-    return false;
+    return resultBool;
   }
 }
