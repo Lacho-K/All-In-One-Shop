@@ -14,5 +14,7 @@ namespace All_In_One_Shop.Data
         public DbSet<Storage> Storages { get; set; }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
     }
 }
