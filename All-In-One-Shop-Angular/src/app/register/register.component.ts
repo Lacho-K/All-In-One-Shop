@@ -56,7 +56,7 @@ export class RegisterComponent implements OnInit {
       .subscribe({
         next: (()=>{
           //login automaticaly after registering
-          this.userLogin = new UserLoginModel(this.registerForm.value.username, this.registerForm.value.password);
+          this.userLogin = new UserLoginModel(this.registerForm.value.username, this.registerForm.value.password, 9);
           this.auth.login(this.userLogin).subscribe((res: any) => {
             
             this.auth.storeToken(res.token);     
@@ -64,6 +64,7 @@ export class RegisterComponent implements OnInit {
 
             this.userStore.setFullNameForStore(tokenPayload.name);
             this.userStore.setRoleForStore(tokenPayload.role);
+            this.userStore.setIdForStore(tokenPayload.userId);
 
             this.router.navigate(['/dashboard']);
 

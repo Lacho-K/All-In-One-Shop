@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
+import { forkJoin, switchMap } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { ProductResponseModel } from '../models/productResponseModel';
 import { ProductTypeResponseModel } from '../models/productTypeResponseModel';
@@ -25,71 +26,68 @@ export class ShoppingCartComponent implements OnInit {
 
   removing: boolean = false;
 
-  ngOnInit(): void { 
-    
+  ngOnInit(): void {
+
     this.getProductsInCart();
 
-    console.log(this.productList);
+    // this.shoppingCart.getObservableCartItems().subscribe((storages) => {
+    //   this.storageList = storages;
 
-    this.shoppingCart.getObservableCartItems().subscribe((storages) => {
-      this.storageList = storages;
-    
-      this.addProductToShoppingCart(storages);
-    });   
+    //   this.addProductToShoppingCart(storages);
+    // });   
 
   }
 
 
   addProductToShoppingCart(storages: StorageResponseModel[]) {
-  let products: ProductResponseModel[] = [];
+    let products: ProductResponseModel[] = [];
 
-  let productObservables: Observable<ProductResponseModel>[] = [];
-  for (let i = 0; i < storages.length; i++) {
-    productObservables.push(this.shopApi.getProductById(storages[i].productId));
-  }
-
-  Promise.all(productObservables).then((productResponses) => {
-    productResponses.forEach((observable) => {
-      observable.subscribe((product) => {
-        products.push(product);
-      });
-      this.productList = products;
-      console.log(this.productList);
-      
-    });
-  });
-}
-
-
-  getProductsInCart(){
-    let previouslyAddedProducts = this.shoppingCart.getStaticCartItems();
-    let currentProducts: ProductResponseModel[] = []
-
-    // loop skips last element because it gets added at the start anyways
-    for (let i = 0; i < previouslyAddedProducts.length; i++) {
-      this.shopApi.getProductById(previouslyAddedProducts[i].id).subscribe(product => {
-        currentProducts.push(product);
-      })
+    let productObservables: Observable<ProductResponseModel>[] = [];
+    for (let i = 0; i < storages.length; i++) {
+      productObservables.push(this.shopApi.getProductById(storages[i].productId));
     }
 
-    this.productList = currentProducts;
+    Promise.all(productObservables).then((productResponses) => {
+      productResponses.forEach((observable) => {
+        observable.subscribe((product) => {
+          products.push(product);
+        });
+        this.productList = products;
+        console.log(this.productList);
+
+      });
+    });
   }
 
-  navigation(i: number){
-    this.router.navigate([`products/productDetails/${this.storageList[i].id}`]).then(() => window.location.reload());
+
+  getProductsInCart() {
+    this.shoppingCart.getStoragesInShoppngCart(24).pipe(
+      switchMap(storageList => {
+        this.storageList = storageList;
+        const productObservables = storageList.map(storage => this.shopApi.getProductById(storage.productId));
+        return forkJoin(productObservables);
+      })
+    ).subscribe(products => {
+      this.productList = products;
+    });
   }
 
-  removeItemFromCart(i: number){
-    
-    this.shoppingCart.removeFromCart(this.storageList[i]);
-
-    //this.displaySum -= this.productList[i].price;
-      
-    //this.productList = this.productList.splice(i,1);
-    
-    console.log(this.productList);
-    console.log(this.storageList);
-    
+  navigation(i: number) {
+    this.router.navigate(['products']).then(() => this.router.navigate([`products/productDetails/${this.storageList[i].id}`]));
+    document.getElementById('shopping-cart-modal-close')?.click(); 
   }
+
+  // removeItemFromCart(i: number){
+
+  //   this.shoppingCart.removeFromCart(this.storageList[i]);
+
+  //   //this.displaySum -= this.productList[i].price;
+
+  //   //this.productList = this.productList.splice(i,1);
+
+  //   console.log(this.productList);
+  //   console.log(this.storageList);
+
+  // }
 
 }

@@ -44,7 +44,7 @@
           id="shopping-cart-modal-close"></button>
       </div>
       <div class="modal-body">
-        <app-shopping-cart></app-shopping-cart>
+        <app-shopping-cart *ngIf="activeShoppingCart"></app-shopping-cart>
       </div>
     </div>
   </div>

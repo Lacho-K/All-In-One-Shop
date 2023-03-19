@@ -18,5 +18,7 @@ namespace All_In_One_Shop.Models
 
         [StringLength(50)]
         public string ProductRatings { get; set; } = string.Empty;
+
+        public ICollection<ShoppingCartStorage>? ShoppingCartStorages { get; set; }
     }
 }

@@ -59,7 +59,6 @@ namespace All_In_One_Shop.Controllers
 
         // PUT: api/Storages/5
         [HttpPut("{id}")]
-        [Authorize]
         public async Task<IActionResult> PutStorage(int id, Storage storage)
         {
             if (id != storage.Id)
@@ -90,7 +89,6 @@ namespace All_In_One_Shop.Controllers
 
         // POST: api/Storages
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult<Storage>> PostStorage(Storage storage)
         {
 
@@ -102,7 +100,6 @@ namespace All_In_One_Shop.Controllers
 
         // DELETE: api/Storages/5
         [HttpDelete("{id}")]
-        [Authorize]
         public async Task<IActionResult> DeleteStorage(int id)
         {
             var storage = await _storageRepo.DeleteStorage(id);

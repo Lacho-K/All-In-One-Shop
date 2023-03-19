@@ -13,6 +13,8 @@ import { AppComponent } from 'src/app/app.component';
 import CheckUserRole from 'src/app/helpers/checkUserRole';
 import { ShoppingCartService } from 'src/app/services/shopping-cart.service';
 import { NgToastService } from 'ng-angular-popup';
+import { ShoppingCartModel } from 'src/app/models/shoppingCartModel';
+import { StorageModel } from 'src/app/models/storageModel';
 
 
 
@@ -72,7 +74,7 @@ export class ProductDetailsComponent implements OnInit {
 
   deleteProduct(deleteProduct : any, storageAssociatedWithProduct : any){
 
-    if(confirm(`Are you sure you want to delete this Product:  "${deleteProduct.name}"`))
+    if(confirm(`Are you sure you want to delete "${deleteProduct.name}"`))
     {
       this.service.deleteStorage(storageAssociatedWithProduct.id).subscribe(() => {
 
@@ -101,8 +103,23 @@ export class ProductDetailsComponent implements OnInit {
     //   return;
     // }
 
-    this.toaster.success({detail: "SUCCESS", summary: "Product added to shopping cart", position: "tl", duration: 3000});
-    this.shoppingCart.addToCart(this.storage);
+    //this.toaster.success({detail: "SUCCESS", summary: "Product added to shopping cart", position: "tl", duration: 3000});
+
+
+    // this.shoppingCart.getStoragesInShoppngCart(24).subscribe(res => {
+    //   console.log(res);
+    // })
+
+    // this.service.getUsersList().subscribe(res => {
+    //   console.log(res);
+      
+    // })
+
+    this.userStore.getIdFromStore().subscribe(id => {
+      let idFromService = this.auth.getIdFromToken();
+      console.log(id || idFromService);
+    })
+    
 
   }
 

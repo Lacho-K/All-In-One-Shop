@@ -4,6 +4,7 @@ using All_In_One_Shop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace All_In_One_Shop.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230318165031_ShoppingCartNowStoresStorages")]
+    partial class ShoppingCartNowStoresStorages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,30 +84,9 @@ namespace All_In_One_Shop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
                     b.ToTable("ShoppingCarts");
-                });
-
-            modelBuilder.Entity("All_In_One_Shop.Models.ShoppingCartStorage", b =>
-                {
-                    b.Property<int>("ShoppingCartId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StorageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ShoppingCartId", "StorageId");
-
-                    b.HasIndex("StorageId");
-
-                    b.ToTable("ShoppingCartStorage");
                 });
 
             modelBuilder.Entity("All_In_One_Shop.Models.Storage", b =>
@@ -132,9 +113,14 @@ namespace All_In_One_Shop.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("ShoppingCartId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("ShoppingCartId");
 
                     b.ToTable("Storages");
                 });
@@ -167,6 +153,9 @@ namespace All_In_One_Shop.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
+                    b.Property<int>("ShoppingCartId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Token")
                         .HasColumnType("nvarchar(max)");
 
@@ -176,6 +165,8 @@ namespace All_In_One_Shop.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ShoppingCartId");
 
                     b.ToTable("Users");
                 });
@@ -191,36 +182,6 @@ namespace All_In_One_Shop.Migrations
                     b.Navigation("ProductType");
                 });
 
-            modelBuilder.Entity("All_In_One_Shop.Models.ShoppingCart", b =>
-                {
-                    b.HasOne("All_In_One_Shop.Models.User", "User")
-                        .WithOne("ShoppingCart")
-                        .HasForeignKey("All_In_One_Shop.Models.ShoppingCart", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("All_In_One_Shop.Models.ShoppingCartStorage", b =>
-                {
-                    b.HasOne("All_In_One_Shop.Models.ShoppingCart", "ShoppingCart")
-                        .WithMany("ShoppingCartStorages")
-                        .HasForeignKey("ShoppingCartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("All_In_One_Shop.Models.Storage", "Storage")
-                        .WithMany("ShoppingCartStorages")
-                        .HasForeignKey("StorageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ShoppingCart");
-
-                    b.Navigation("Storage");
-                });
-
             modelBuilder.Entity("All_In_One_Shop.Models.Storage", b =>
                 {
                     b.HasOne("All_In_One_Shop.Models.Product", "Product")
@@ -229,23 +190,27 @@ namespace All_In_One_Shop.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("All_In_One_Shop.Models.ShoppingCart", null)
+                        .WithMany("storages")
+                        .HasForeignKey("ShoppingCartId");
+
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("All_In_One_Shop.Models.ShoppingCart", b =>
-                {
-                    b.Navigation("ShoppingCartStorages");
-                });
-
-            modelBuilder.Entity("All_In_One_Shop.Models.Storage", b =>
-                {
-                    b.Navigation("ShoppingCartStorages");
                 });
 
             modelBuilder.Entity("All_In_One_Shop.Models.User", b =>
                 {
-                    b.Navigation("ShoppingCart")
+                    b.HasOne("All_In_One_Shop.Models.ShoppingCart", "ShoppingCart")
+                        .WithMany()
+                        .HasForeignKey("ShoppingCartId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ShoppingCart");
+                });
+
+            modelBuilder.Entity("All_In_One_Shop.Models.ShoppingCart", b =>
+                {
+                    b.Navigation("storages");
                 });
 #pragma warning restore 612, 618
         }

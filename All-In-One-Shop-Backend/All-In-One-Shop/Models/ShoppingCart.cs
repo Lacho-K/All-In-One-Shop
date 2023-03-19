@@ -7,6 +7,9 @@ namespace All_In_One_Shop.Models
         [Key]
         public int Id { get; set; }
 
-        public Product[]? products { get; set; }
+        public int UserId { get; set; }
+        public User? User { get; set; }
+
+        public ICollection<ShoppingCartStorage> ShoppingCartStorages { get; set; }
     }
 }

@@ -24,8 +24,7 @@ namespace All_In_One_Shop.Models
         [StringLength(50)]
         public string? Email { get; set; }
 
-        public int ShoppingCartId { get; set; }
-
+        //public int ShoppingCartId { get; set; }
         public ShoppingCart? ShoppingCart { get; set; }
     }
 }

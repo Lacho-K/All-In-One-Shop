@@ -16,83 +16,122 @@ namespace All_In_One_Shop.Controllers
     [ApiController]
     public class ShoppingCartsController : ControllerBase
     {
-        private readonly IProductInterface _productRepo;
+        private readonly IShoppingCartInterface _shoppingCartRepo;
 
-        public ShoppingCartsController(IProductInterface productRepo)
+        public ShoppingCartsController(IShoppingCartInterface shoppingCartRepo)
         {
-            this._productRepo = productRepo;
+            this._shoppingCartRepo = shoppingCartRepo;
         }
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<ShoppingCart>>> GetShoppingCarts()
         {
-            return await this._productRepo.GetAllProducts();
+            return await this._shoppingCartRepo.GetAllCarts();
         }
 
         // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<ShoppingCart>> GetShoppingCartById(int id)
         {
-            var product = await _productRepo.GetProductById(id);
+            var shoppingCart = await _shoppingCartRepo.GetShoppingCartById(id);
 
-            if (product == null)
+            if (shoppingCart == null)
             {
                 return NotFound();
             }
 
-            return product;
+            return shoppingCart;
         }
 
         // PUT: api/Products/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, Product product)
-        {
-            if (id != product.Id)
-            {
-                return BadRequest();
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutProduct(int id, Product product)
+        //{
+        //    if (id != product.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            try
-            {
-                await _productRepo.UpdateProduct(id, product);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_productRepo.ProductExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _productRepo.UpdateProduct(id, product);
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!_productRepo.ProductExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         // POST: api/Products
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<ShoppingCart>> AddShoppingCart(ShoppingCart shoppingCart)
         {
-            await _productRepo.AddProduct(product);
+            await _shoppingCartRepo.AddShoppingCart(shoppingCart);
 
-            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+            return CreatedAtAction("GetShoppingCartById", new { id = shoppingCart.Id }, shoppingCart);
         }
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public async Task<IActionResult> DeleteShoppingCart(int id)
         {
-            var product = await _productRepo.DeleteProduct(id);
+            var shoppingCart = await _shoppingCartRepo.DeleteShoppingCart(id);
 
-            if (product == null)
+            if (shoppingCart == null)
             {
                 return NotFound();
             }
 
             return NoContent();
+        }
+
+        [HttpGet("{id}/storages")]
+        public async Task<ActionResult<IEnumerable<Storage>>> GetStoragesInCart(int id)
+        {
+            var storages = await _shoppingCartRepo.GetStoragesByCartId(id);
+
+            if (storages == null)
+            {
+                return NotFound();
+            }
+
+            return storages;
+        }
+
+        [HttpPut("{id}/storages")]
+        public async Task<IActionResult> AddStorageToShoppingCart(int cartId, int storageId)
+        {
+            var token = await this._shoppingCartRepo.AddStorageToShoppingCart(cartId, storageId);
+
+            if(token == "")
+            {
+                return Ok();
+            }
+
+            return NotFound(token);
+        }
+
+        [HttpDelete("{id}/storages")]
+        public async Task<IActionResult> DeleteStorageFromShoppingCart(int cartId, int storageId)
+        {
+            var token = await this._shoppingCartRepo.DeleteStorageFromShoppingCart(cartId, storageId);
+
+            if (token == "")
+            {
+                return Ok();
+            }
+
+            return NotFound(token);
         }
     }
 }

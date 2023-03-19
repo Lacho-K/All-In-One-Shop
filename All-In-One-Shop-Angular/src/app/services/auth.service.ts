@@ -68,4 +68,10 @@ export class AuthService {
         return this.userPayload.role;
       }
     }
+
+    getIdFromToken(){
+      if(this.userPayload){
+        return this.userPayload.userId;
+      }
+    }
 }

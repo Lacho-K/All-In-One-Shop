@@ -1,10 +1,13 @@
 ﻿using All_In_One_Shop.Data.Repo.Interfaces;
 using All_In_One_Shop.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace All_In_One_Shop.Data.Repo
 {
-    public class ShoppingCartRepo : ShoppingCartInterface
+    public class ShoppingCartRepo : IShoppingCartInterface
     {
         private readonly DataContext _context;
 
@@ -13,9 +16,21 @@ namespace All_In_One_Shop.Data.Repo
             _context = context;
         }
 
+        public async Task<ActionResult<IEnumerable<ShoppingCart>>> GetAllCarts()
+        {
+            return await _context.ShoppingCarts.ToListAsync();
+        }
+
+        public async Task<ActionResult<ShoppingCart>> GetShoppingCartById(int id)
+        {
+            var shoppingCart = await _context.ShoppingCarts.FindAsync(id);
+
+            return shoppingCart;
+        }
+
         public async Task AddShoppingCart(ShoppingCart shoppingCart)
         {
-            await this._context.ShoppingCarts.AddAsync(shoppingCart);
+            this._context.ShoppingCarts.Add(shoppingCart);
 
             await this._context.SaveChangesAsync();
         }
@@ -33,36 +48,82 @@ namespace All_In_One_Shop.Data.Repo
             return shoppingCart;
         }
 
-        public async Task<ActionResult<ShoppingCart>> GetShoppingCartById(int id)
+        public async Task<ActionResult<IEnumerable<Storage>>> GetStoragesByCartId(int id)
         {
-            var shoppingCart = await _context.ShoppingCarts.FindAsync(id);
+            var shoppingCart = await _context.ShoppingCarts
+                .Include(sc => sc.ShoppingCartStorages)
+                .ThenInclude(ss => ss.Storage)
+                .SingleOrDefaultAsync(sc => sc.Id == id);
 
-            return shoppingCart;
-        }
-
-        public async Task<ActionResult<IEnumerable<Product>>> GetProductsInCart(int id)
-        {
-            var targetShoppingCart = await this.GetShoppingCartById(id);
-
-            if(targetShoppingCart == null)
+            if(shoppingCart == null)
             {
                 return null;
             }
 
-            return targetShoppingCart.Value.products;
-        }
-        public async Task<string> AddProductToShoppingCart(int id, Product productToAdd)
-        {
-            var targetShoppingCart = await this.GetShoppingCartById(id);
+            var storages = shoppingCart.ShoppingCartStorages
+                .Select(ss => ss.Storage)
+                .ToList();
 
-            if(targetShoppingCart == null)
+            var options = new JsonSerializerOptions
             {
-                return "shopping cart not found!";
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            return new JsonResult(storages, options);
+        }
+        public async Task<string> AddStorageToShoppingCart(int id, int storageId)
+        {
+            var shoppingCart = await _context.ShoppingCarts
+                .Include(sc => sc.ShoppingCartStorages)
+                .ThenInclude(ss => ss.Storage)
+                .SingleOrDefaultAsync(sc => sc.Id == id);
+
+            var storageToAdd = await _context.Storages.FirstOrDefaultAsync(s => s.Id == storageId);
+
+            if(shoppingCart == null)
+            {
+                return "Not found!";
             }
 
-            targetShoppingCart.Value.products.Append(productToAdd);
+
+            shoppingCart.ShoppingCartStorages.Add(new ShoppingCartStorage { ShoppingCartId = id, StorageId = storageId });
+
+            _context.Update(shoppingCart);
+            await _context.SaveChangesAsync();
 
             return "";
+
+        }
+
+        public async Task<string> DeleteStorageFromShoppingCart(int id, int storageId)
+        {
+            var shoppingCart = await _context.ShoppingCarts
+                .Include(sc => sc.ShoppingCartStorages)
+                .ThenInclude(ss => ss.Storage)
+                .SingleOrDefaultAsync(sc => sc.Id == id);
+
+
+            if (shoppingCart == null)
+            {
+                return "Not found!";
+            }
+
+            var shoppingCartItemToRemove = shoppingCart.ShoppingCartStorages.SingleOrDefault(s => s.StorageId == storageId);
+
+
+            if (shoppingCartItemToRemove == null)
+            {
+                return "Not found!";
+            }
+
+            shoppingCart.ShoppingCartStorages.Remove(shoppingCartItemToRemove);
+
+            _context.Update(shoppingCart);
+            await _context.SaveChangesAsync();
+
+            return "";
+
         }
 
         public bool ProductExists(int id)

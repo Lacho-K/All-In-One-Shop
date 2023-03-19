@@ -61,7 +61,6 @@ namespace All_In_One_Shop.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {
             return await this._userRepo.GetAllUsers();

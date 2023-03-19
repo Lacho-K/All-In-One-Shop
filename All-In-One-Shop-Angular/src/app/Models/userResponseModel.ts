@@ -6,7 +6,8 @@ export class UserResponseModel{
         public password: string,
         public token: string,
         public role: string,
-        public email: string){
+        public email: string,
+        public shoppingCartId: number|string){
 
     }
 }
