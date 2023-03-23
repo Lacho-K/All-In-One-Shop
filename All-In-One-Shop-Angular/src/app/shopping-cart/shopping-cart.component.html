@@ -18,7 +18,7 @@
           </div>
   
           <div class="card rounded-3 mb-4" *ngFor="let product of productList; let i = index">
-            <div class="card-body p-4">
+            <div class="card-body p-4" *ngIf="this.storageList.length > 0">
               <div class="row d-flex justify-content-between align-items-center">
                 <div class="col-md-2 col-lg-2 col-xl-2" (click)="navigation(i)">
                   <img
@@ -37,7 +37,7 @@
                   </button>
 
                   <input id="form1" min="1" name="quantity" value="1" type="number"
-                    class="input-group input-group-sm" />
+                    class="input-group input-group-sm"/>
 
                   <button class="btn btn-link px-2"
                     onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
@@ -46,12 +46,14 @@
   
 
                 </div>
-                <div class="col-md-1 col-lg-1 col-xl-1">
-                  <a  class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+
+                <div class="col-md-1 col-lg-1 col-xl-1" (click)="removeItemFromCart(i)">
+                  <a class="text-danger clickable" (mouseover)='mouseHover(i)' (mouseout)='mouseOut(i)'><i class="fas fa-trash fa-lg"></i></a>
                 </div>
+
                 <div class="offset-md-10 px-2">
                     <h6 class="mb-0">{{product.price}}$</h6>
-                  </div>
+                </div>
               </div>
             </div>
           </div>

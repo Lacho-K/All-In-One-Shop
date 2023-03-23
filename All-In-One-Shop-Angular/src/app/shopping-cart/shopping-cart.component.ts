@@ -16,7 +16,7 @@ import { ShoppingCartService } from '../services/shopping-cart.service';
 })
 export class ShoppingCartComponent implements OnInit {
 
-  constructor(private shopApi: ShopApiService, private shoppingCart: ShoppingCartService, private router: Router) { }
+  constructor(private shopApi: ShopApiService, private shoppingCart: ShoppingCartService, private router: Router, private toaster: NgToastService) { }
 
   productList: ProductResponseModel[] = [];
   storageList: StorageResponseModel[] = [];
@@ -24,46 +24,20 @@ export class ShoppingCartComponent implements OnInit {
   // the sum price of items in shopping-cart
   displaySum: number = 0;
 
-  removing: boolean = false;
-
   ngOnInit(): void {
-
-    this.getProductsInCart();
-
-    // this.shoppingCart.getObservableCartItems().subscribe((storages) => {
-    //   this.storageList = storages;
-
-    //   this.addProductToShoppingCart(storages);
-    // });   
-
-  }
-
-
-  addProductToShoppingCart(storages: StorageResponseModel[]) {
-    let products: ProductResponseModel[] = [];
-
-    let productObservables: Observable<ProductResponseModel>[] = [];
-    for (let i = 0; i < storages.length; i++) {
-      productObservables.push(this.shopApi.getProductById(storages[i].productId));
-    }
-
-    Promise.all(productObservables).then((productResponses) => {
-      productResponses.forEach((observable) => {
-        observable.subscribe((product) => {
-          products.push(product);
-        });
-        this.productList = products;
-        console.log(this.productList);
-
-      });
-    });
+    this.shoppingCart.getObservableCartItems().subscribe(() => {
+      this.getProductsInCart();
+      console.log(this.productList);
+      
+    })
   }
 
 
   getProductsInCart() {
-    this.shoppingCart.getStoragesInShoppngCart(24).pipe(
+    this.shoppingCart.getStoragesInShoppngCart(1).pipe(
       switchMap(storageList => {
         this.storageList = storageList;
+        
         const productObservables = storageList.map(storage => this.shopApi.getProductById(storage.productId));
         return forkJoin(productObservables);
       })
@@ -77,17 +51,16 @@ export class ShoppingCartComponent implements OnInit {
     document.getElementById('shopping-cart-modal-close')?.click(); 
   }
 
-  // removeItemFromCart(i: number){
+  removeItemFromCart(i: number){
+    this.shoppingCart.deleteStorageFromShoppingCart(1, this.storageList[i].id);
+  }
 
-  //   this.shoppingCart.removeFromCart(this.storageList[i]);
+  mouseHover(i: number){
+    document.getElementsByClassName('text-danger clickable')[i].classList.remove('text-danger');
+  }
 
-  //   //this.displaySum -= this.productList[i].price;
-
-  //   //this.productList = this.productList.splice(i,1);
-
-  //   console.log(this.productList);
-  //   console.log(this.storageList);
-
-  // }
+  mouseOut(i : number){
+    document.getElementsByClassName('clickable')[i].classList.add('text-danger');
+  }
 
 }

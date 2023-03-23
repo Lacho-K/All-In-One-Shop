@@ -9,3 +9,7 @@ input[type=number] {
   -moz-appearance: textfield;
   text-align: center;
 }
+
+.clickable{
+  cursor: pointer;
+}

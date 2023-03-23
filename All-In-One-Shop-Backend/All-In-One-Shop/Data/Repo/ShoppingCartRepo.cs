@@ -62,7 +62,7 @@ namespace All_In_One_Shop.Data.Repo
 
             var storages = shoppingCart.ShoppingCartStorages
                 .Select(ss => ss.Storage)
-                .ToList();
+                .OrderBy(ss => ss.DateCreated);
 
             var options = new JsonSerializerOptions
             {
@@ -80,6 +80,9 @@ namespace All_In_One_Shop.Data.Repo
                 .SingleOrDefaultAsync(sc => sc.Id == id);
 
             var storageToAdd = await _context.Storages.FirstOrDefaultAsync(s => s.Id == storageId);
+
+            storageToAdd.DateCreated = DateTime.Now;
+
 
             if(shoppingCart == null)
             {

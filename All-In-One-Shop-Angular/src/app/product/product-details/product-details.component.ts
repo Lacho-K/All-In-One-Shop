@@ -29,9 +29,10 @@ export class ProductDetailsComponent implements OnInit {
 
   // The Id used to get the current item's storage with which we can display all information about a product
   storageId : string | null = null
+  dateObj: Date = new Date();
 
   //variables used to display all available information about a product
-  storage : StorageResponseModel = new StorageResponseModel('', 0, 0, '', '');
+  storage : StorageResponseModel = new StorageResponseModel('', 0, 0, '', '', this.dateObj);
   product : ProductResponseModel = new ProductResponseModel('', '', '', '', '', 0);
   productType : ProductTypeResponseModel = new ProductTypeResponseModel('', '');
 
@@ -97,30 +98,8 @@ export class ProductDetailsComponent implements OnInit {
      }
   }
 
-  addToShoppingCart(){
-    // if(this.shoppingCart.checkIfItemIsDuplicate(this.storage.id)){
-    //   this.toaster.warning({detail: "WARNING", summary: "Product already in shopping cart", position: "tl", duration: 3000});
-    //   return;
-    // }
-
-    //this.toaster.success({detail: "SUCCESS", summary: "Product added to shopping cart", position: "tl", duration: 3000});
-
-
-    // this.shoppingCart.getStoragesInShoppngCart(24).subscribe(res => {
-    //   console.log(res);
-    // })
-
-    // this.service.getUsersList().subscribe(res => {
-    //   console.log(res);
-      
-    // })
-
-    this.userStore.getIdFromStore().subscribe(id => {
-      let idFromService = this.auth.getIdFromToken();
-      console.log(id || idFromService);
-    })
-    
-
+  addToShoppingCart(){    
+    this.shoppingCart.addStorageToShoppingCart(1, (this.storageId as string));
   }
 
   modalClose(){

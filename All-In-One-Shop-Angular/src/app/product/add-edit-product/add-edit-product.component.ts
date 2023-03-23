@@ -22,6 +22,9 @@ export class AddEditProductComponent implements OnInit {
   //Form validation
   addEditForm !: FormGroup;
 
+  //Date for storage
+  dateObj : Date = new Date();
+
   constructor(private service: ShopApiService, private fb: FormBuilder) { }
 
 
@@ -34,14 +37,16 @@ export class AddEditProductComponent implements OnInit {
   price : FormControl = new FormControl('', [Validators.required, Validators.pattern('^\\d*[.,]?\\d{0,2}$')]);
   
 
-  @Input() storage : StorageResponseModel = new StorageResponseModel(0, 0, 0, "", "");
+  @Input() storage : StorageResponseModel = new StorageResponseModel(0, 0, 0, "", "", this.dateObj);
   id: number | string = 0;
   productQuantity : FormControl = new FormControl('', [Validators.required, Validators.pattern('^\\d*$')]);
   productLocation: FormControl = new FormControl('', Validators.required);
   productRatings: FormControl = new FormControl('', Validators.required);
 
-
   ngOnInit(): void {
+
+    console.log(this.dateObj);
+    
 
     this.addEditForm = this.fb.group({
       name: this.name,
@@ -90,7 +95,8 @@ export class AddEditProductComponent implements OnInit {
         productId: (lastAddedProduct as ProductResponseModel).id,
         productQuantity: this.productQuantity.value,
         productLocation: this.productLocation.value,
-        productRatings: this.productRatings.value
+        productRatings: this.productRatings.value,
+        dateAdded: this.dateObj
       }
       
 
@@ -130,7 +136,8 @@ export class AddEditProductComponent implements OnInit {
       productId: this.productId,
       productQuantity: this.productQuantity.value,
       productLocation: this.productLocation.value,
-      productRatings: this.productRatings.value
+      productRatings: this.productRatings.value,
+      dateAdded: this.dateObj
     }
 
     var productId: number | string = this.productId;
