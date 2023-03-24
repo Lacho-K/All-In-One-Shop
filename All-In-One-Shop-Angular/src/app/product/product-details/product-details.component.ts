@@ -29,6 +29,11 @@ export class ProductDetailsComponent implements OnInit {
 
   // The Id used to get the current item's storage with which we can display all information about a product
   storageId : string | null = null
+
+  // The Ids used to get the current user's shopping cart
+  userId: number = 0;
+  shoppingCartId: number|string = 0;
+
   dateObj: Date = new Date();
 
   //variables used to display all available information about a product
@@ -99,7 +104,18 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToShoppingCart(){    
-    this.shoppingCart.addStorageToShoppingCart(1, (this.storageId as string));
+
+    this.userStore.getIdFromStore()
+    .subscribe(id => {
+      let idFromRoken = this.auth.getIdFromToken();
+      this.userId = id || idFromRoken;
+
+      this.shoppingCart.getShoppingCartByUserId(this.userId).subscribe((s) => {
+        this.shoppingCartId = s.id;
+        console.log(this.shoppingCartId);
+        this.shoppingCart.addStorageToShoppingCart(this.shoppingCartId, (this.storageId as string));
+      });   
+    }); 
   }
 
   modalClose(){

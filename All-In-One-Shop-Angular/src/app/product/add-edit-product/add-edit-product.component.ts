@@ -43,10 +43,7 @@ export class AddEditProductComponent implements OnInit {
   productLocation: FormControl = new FormControl('', Validators.required);
   productRatings: FormControl = new FormControl('', Validators.required);
 
-  ngOnInit(): void {
-
-    console.log(this.dateObj);
-    
+  ngOnInit(): void {    
 
     this.addEditForm = this.fb.group({
       name: this.name,

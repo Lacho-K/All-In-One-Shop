@@ -44,33 +44,18 @@ namespace All_In_One_Shop.Controllers
             return shoppingCart;
         }
 
-        // PUT: api/Products/5
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutProduct(int id, Product product)
-        //{
-        //    if (id != product.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<ShoppingCart>> GetShoppingCartByUserId(int userId)
+        {
+            var shoppingCart = await _shoppingCartRepo.GetShoppingCartByUserId(userId);
 
-        //    try
-        //    {
-        //        await _productRepo.UpdateProduct(id, product);
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!_productRepo.ProductExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            if (shoppingCart == null)
+            {
+                return NotFound();
+            }
 
-        //    return NoContent();
-        //}
+            return shoppingCart;
+        }
 
         // POST: api/Products
         [HttpPost]

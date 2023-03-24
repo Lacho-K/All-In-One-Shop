@@ -41,7 +41,6 @@ export class NavbarComponent implements OnInit {
     AppComponent.IsAdmin = this.auth.isAdmin();
     this.userStore.clearStore();
     this.router.navigate(['/home']);
-    this.toast.info({detail: "INFO", summary: 'You have been logged out', duration: 3000});
   }
 
   get staticLoggin(){

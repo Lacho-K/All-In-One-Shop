@@ -40,6 +40,10 @@ export class ShoppingCartService {
     return this.http.get<ShoppingCartResponseModel>(this.shoppingCartApiUrl + `/${id}`);
   }
 
+  getShoppingCartByUserId(userId: number): Observable<ShoppingCartResponseModel>{
+    return this.http.get<ShoppingCartResponseModel>(this.shoppingCartApiUrl + `/user/${userId}?userId=${userId}`)
+  }
+
   addShoppingCart(shoppingCart: ShoppingCartModel) {
     return this.http.post(this.shoppingCartApiUrl, shoppingCart);
   }

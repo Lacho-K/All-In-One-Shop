@@ -13,6 +13,8 @@ namespace All_In_One_Shop.Data.Repo.Interfaces
 
         Task<ActionResult<ShoppingCart>> GetShoppingCartById(int id);
 
+        Task<ActionResult<ShoppingCart>> GetShoppingCartByUserId(int userId);
+
         Task<ActionResult<IEnumerable<Storage>>> GetStoragesByCartId(int id);
 
         Task<string> AddStorageToShoppingCart(int cartId, int storageId);

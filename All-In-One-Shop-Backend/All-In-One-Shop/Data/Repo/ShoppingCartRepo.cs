@@ -48,6 +48,30 @@ namespace All_In_One_Shop.Data.Repo
             return shoppingCart;
         }
 
+        public async Task<ActionResult<ShoppingCart>> GetShoppingCartByUserId(int userId)
+        {
+            var targetUser = await _context.Users
+                .Include(s => s.ShoppingCart)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (targetUser == null)
+            {
+                return null;
+            }
+
+            var targetShoppingCart = await _context.ShoppingCarts
+                .FirstOrDefaultAsync(s => s.Id == targetUser.ShoppingCart.Id);
+
+            var options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+
+            return new JsonResult(targetShoppingCart, options);
+        }
+
         public async Task<ActionResult<IEnumerable<Storage>>> GetStoragesByCartId(int id)
         {
             var shoppingCart = await _context.ShoppingCarts
