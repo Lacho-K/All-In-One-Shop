@@ -58,5 +58,19 @@ namespace All_In_One_Shop.Data.Repo
         {
             return await _context.Users.ToListAsync();
         }
+
+        public async Task<string> DeleteUser(int id)
+        {
+            var targetUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if(targetUser == null)
+            {
+                return "User not found";
+            }
+
+            _context.Users.Remove(targetUser);
+            await _context.SaveChangesAsync();
+            return null;
+        }
     }
 }

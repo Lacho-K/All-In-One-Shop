@@ -5,7 +5,10 @@ import { NgToastService } from 'ng-angular-popup';
 import { AppComponent } from '../app.component';
 import AnimateForm from '../helpers/animateForm';
 import ValidateForm from '../helpers/validateForm';
+import { ShoppingCartModel } from '../models/shoppingCartModel';
 import { UserLoginModel } from '../models/userLoginModel';
+import { UserModel } from '../models/userModel';
+import { UserResponseModel } from '../models/userResponseModel';
 import { AuthService } from '../services/auth.service';
 import { UserStoreService } from '../services/user-store.service';
 
@@ -18,7 +21,8 @@ import { UserStoreService } from '../services/user-store.service';
 export class RegisterComponent implements OnInit {
 
   registerForm !: FormGroup
-  userLogin !: UserLoginModel
+  userLogin : UserLoginModel = new UserLoginModel("", "");
+  userRegister : UserModel = new UserModel("", "", "", "", "", "", "", new ShoppingCartModel(0, []));
 
   
   //variables for showing/hiding password
@@ -49,14 +53,16 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(){
-    this.onPasswordChange();
+    this.onPasswordChange();    
     if(this.registerForm.valid){
-      //register
-      this.auth.register(this.registerForm.value)
+      //register the user with the form info plus a new shoopping cart just for the user
+      this.setUserObjInfo();      
+      this.auth.register(this.userRegister)
       .subscribe({
-        next: (()=>{
+        next: () => {
+
           //login automaticaly after registering
-          this.userLogin = new UserLoginModel(this.registerForm.value.username, this.registerForm.value.password, 9);
+          this.userLogin = new UserLoginModel(this.registerForm.value.username, this.registerForm.value.password);
           this.auth.login(this.userLogin).subscribe((res: any) => {
             
             this.auth.storeToken(res.token);     
@@ -73,15 +79,15 @@ export class RegisterComponent implements OnInit {
 
             this.toast.success({detail: "SUCCESS", summary: "logged in", duration: 3000})
           })         
-        }),
+        },
         error: (() => {
           this.toast.error({detail: 'ERROR', summary: 'Email or username already exists!', duration: 3000});
         })
       })
     }
     else{
-      ValidateForm.validateAllFormFields(this.registerForm)    
-
+      ValidateForm.validateAllFormFields(this.registerForm);
+      
       AnimateForm.assignAnimation('input.ng-invalid, input.mismatch');
     }
   }
@@ -92,6 +98,14 @@ export class RegisterComponent implements OnInit {
     } else {
       this.registerForm.setErrors({ mismatch: true });
     }
+  }
+
+  setUserObjInfo(){
+    this.userRegister.firstName = this.registerForm.value.firstName;
+    this.userRegister.lastName = this.registerForm.value.lastName;
+    this.userRegister.username = this.registerForm.value.username;
+    this.userRegister.email = this.registerForm.value.email;
+    this.userRegister.password = this.registerForm.value.password;
   }
 
   showHidePass(){

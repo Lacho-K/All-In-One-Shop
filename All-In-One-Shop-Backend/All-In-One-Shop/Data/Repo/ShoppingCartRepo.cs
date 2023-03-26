@@ -131,15 +131,10 @@ namespace All_In_One_Shop.Data.Repo
                 .SingleOrDefaultAsync(sc => sc.Id == id);
 
 
-            if (shoppingCart == null)
-            {
-                return "Not found!";
-            }
-
             var shoppingCartItemToRemove = shoppingCart.ShoppingCartStorages.SingleOrDefault(s => s.StorageId == storageId);
 
 
-            if (shoppingCartItemToRemove == null)
+            if (shoppingCartItemToRemove == null || shoppingCart == null)
             {
                 return "Not found!";
             }
@@ -151,16 +146,6 @@ namespace All_In_One_Shop.Data.Repo
 
             return "";
 
-        }
-
-        public bool ProductExists(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateProduct(int id, Product product)
-        {
-            throw new NotImplementedException();
         }
     }
 }

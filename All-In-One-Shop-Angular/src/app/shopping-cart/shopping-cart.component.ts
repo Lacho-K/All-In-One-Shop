@@ -37,7 +37,7 @@ export class ShoppingCartComponent implements OnInit {
       this.userStore.getIdFromStore()
         .subscribe(id => {
           let idFromRoken = this.authService.getIdFromToken();
-          this.userId = id || idFromRoken;
+          this.userId = id || idFromRoken || 1;
           this.shoppingCart.getShoppingCartByUserId(this.userId).subscribe(s => {
             this.shoppingCartId = s.id;
             this.getProductsInCart();

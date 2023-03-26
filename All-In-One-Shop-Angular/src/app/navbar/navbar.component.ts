@@ -40,7 +40,7 @@ export class NavbarComponent implements OnInit {
     AppComponent.IsLoggedIn = this.auth.isLoggedIn();
     AppComponent.IsAdmin = this.auth.isAdmin();
     this.userStore.clearStore();
-    this.router.navigate(['/home']);
+    this.router.navigate(['/home']).then(() => window.location.reload());
   }
 
   get staticLoggin(){

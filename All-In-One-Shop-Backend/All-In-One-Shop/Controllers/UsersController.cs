@@ -65,5 +65,14 @@ namespace All_In_One_Shop.Controllers
         {
             return await this._userRepo.GetAllUsers();
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            string token = await this._userRepo.DeleteUser(id);
+
+            return token == null ? Ok(new { Message = "Delete successful!" }) : NotFound(new { Message = token });
+        }
+
     }
 }

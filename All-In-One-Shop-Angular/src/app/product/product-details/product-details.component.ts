@@ -108,7 +108,7 @@ export class ProductDetailsComponent implements OnInit {
     this.userStore.getIdFromStore()
     .subscribe(id => {
       let idFromRoken = this.auth.getIdFromToken();
-      this.userId = id || idFromRoken;
+      this.userId = id || idFromRoken || 1;
 
       this.shoppingCart.getShoppingCartByUserId(this.userId).subscribe((s) => {
         this.shoppingCartId = s.id;

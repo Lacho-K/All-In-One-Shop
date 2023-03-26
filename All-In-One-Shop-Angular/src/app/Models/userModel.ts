@@ -1,3 +1,5 @@
+import { ShoppingCartModel } from "./shoppingCartModel";
+
 export class UserModel{
     constructor(public firstName: string,
         public lastName: string,
@@ -6,7 +8,7 @@ export class UserModel{
         public token: string,
         public role: string,
         public email: string,
-        public shoppingCartId: number|string){
+        public shoppingCart: ShoppingCartModel){
 
     }
 }
