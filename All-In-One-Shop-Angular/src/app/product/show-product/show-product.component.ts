@@ -51,6 +51,9 @@ export class ShowProductComponent implements OnInit {
         for (let i = 0; i < storages.length && products.length; i++) {
           this.storagesMap.set(storages[i].productId, products[i])
         }
+
+        console.log(products);
+        
       })
     })
   }

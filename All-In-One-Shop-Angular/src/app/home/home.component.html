@@ -11,7 +11,7 @@
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselDark" *ngFor="let product of (recentProducts$ | async)?.slice(productsLenght > 10 ? productsLenght - 10 : 0, productsLenght)?.reverse(); let i = index" [attr.data-bs-slide-to]="i" [ngClass]="i == 0 ? 'active' : '' "></button>
   </div>
-  <div class="carousel-inner">
+  <div class="carousel-inner" routerLink="/products">
     <div data-bs-interval="5000" *ngFor="let product of (recentProducts$ | async)?.slice(productsLenght > 10 ? productsLenght - 10 : 0, productsLenght)?.reverse(); let i = index" [ngClass]="i == 0 ? 'carousel-item active' : 'carousel-item' ">
       <img class="img-fluid img-thumbnail mx-auto d-block" style="max-height: 32rem;" src={{product.productImageURL}} alt="Image Not Found"
       onerror="this.src='../../../assets/img.png';">

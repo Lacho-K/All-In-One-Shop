@@ -17,10 +17,10 @@
                   <img
                   src={{product.productImageURL}} alt="Image Not Found"
                   onerror="this.src='../../../assets/img.png';"
-                  class="img-fluid rounded-3">
+                  class="img-fluid rounded-3 clickable">
                 </div>
                 <div class="col-md-3 col-lg-3 col-xl-3" (click)="navigation(i)">
-                  <p class="lead fw-normal mb-2">{{product.name}}</p>
+                  <p class="lead fw-normal mb-2 clickable">{{product.name}}</p>
                 </div>
                 <div class="col-md-3 col-lg-3 col-xl-2 d-block">
 
@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="col-md-1 col-lg-1 col-xl-1" (click)="removeItemFromCart(i)">
-                  <a class="text-danger clickable" (mouseover)='mouseHover(i)' (mouseout)='mouseOut(i)'><i class="fas fa-trash fa-lg"></i></a>
+                  <a class="text-danger trashcan" (mouseover)='mouseHover(i)' (mouseout)='mouseOut(i)'><i class="fas fa-trash fa-lg"></i></a>
                 </div>
 
                 <div class="offset-md-10 px-2">

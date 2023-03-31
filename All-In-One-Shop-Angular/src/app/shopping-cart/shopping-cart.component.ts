@@ -79,11 +79,11 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   mouseHover(i: number) {
-    document.getElementsByClassName('text-danger clickable')[i].classList.remove('text-danger');
+    document.getElementsByClassName('text-danger trashcan')[i].classList.remove('text-danger');
   }
 
   mouseOut(i: number) {
-    document.getElementsByClassName('clickable')[i].classList.add('text-danger');
+    document.getElementsByClassName('trashcan')[i].classList.add('text-danger');
   }
 
 
@@ -97,6 +97,6 @@ export class ShoppingCartComponent implements OnInit {
     for (let i = 0; i < this.productList.length; i++) {
       sum += this.productList[i].price * this.productQuantity[i];
     }
-    return isNaN(sum) ? 0 : sum;
+    return isNaN(sum) ? 0 : sum.toFixed(2);
   }
 }
