@@ -1,3 +1,8 @@
+<div class="input-group px-5 py-1">
+  <input type="search" class="form-control rounded" placeholder="Type in the name of the desired product" aria-label="Search" aria-describedby="search-addon" />
+  <button type="button" class="btn btn-outline-primary">Search</button>
+</div>
+
 <!-- Add Product trigger modal -->
 <button *ngIf="getIsAdmin" type="button" class="btn btn-primary mx-auto d-block my-4" data-bs-toggle="modal"
   data-bs-target="#modal1" (click)="modalAdd()">

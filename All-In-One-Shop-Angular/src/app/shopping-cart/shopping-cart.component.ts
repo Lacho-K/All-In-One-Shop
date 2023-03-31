@@ -26,9 +26,7 @@ export class ShoppingCartComponent implements OnInit {
   userId: number = 0;
   shoppingCartId: number | string = 0;
 
-
-  // the sum price of items in shopping-cart
-  displaySum: number = 0;
+  productQuantity: number[] = [];
 
   ngOnInit(): void {
 
@@ -44,15 +42,13 @@ export class ShoppingCartComponent implements OnInit {
           });
         });
 
-      console.log(this.productList);
-
     })
   }
 
 
   getProductsInCart() {
     console.log(this.shoppingCartId);
-    
+
     this.shoppingCart.getStoragesInShoppngCart(this.shoppingCartId).pipe(
       switchMap(storageList => {
         this.storageList = storageList;
@@ -62,6 +58,13 @@ export class ShoppingCartComponent implements OnInit {
       })
     ).subscribe(products => {
       this.productList = products;
+      if (typeof this.productQuantity !== 'undefined' && this.productQuantity.length === 0) {
+        this.productQuantity = new Array(this.productList.length).fill(1);
+      }
+      else if(this.productQuantity.length < this.productList.length){
+        this.productQuantity.push(1);
+      }
+      console.log(this.productQuantity);
     });
   }
 
@@ -72,14 +75,28 @@ export class ShoppingCartComponent implements OnInit {
 
   removeItemFromCart(i: number) {
     this.shoppingCart.deleteStorageFromShoppingCart(this.shoppingCartId, this.storageList[i].id);
+    this.productQuantity.splice(i,1);
   }
 
   mouseHover(i: number) {
-    document.getElementsByClassName('text-danger clickable')[i].classList.remove('text-danger');
+    document.getElementsByClassName('text-danger trashcan')[i].classList.remove('text-danger');
   }
 
   mouseOut(i: number) {
-    document.getElementsByClassName('clickable')[i].classList.add('text-danger');
+    document.getElementsByClassName('trashcan')[i].classList.add('text-danger');
   }
 
+
+  calculateTotalPrice(i: number) {
+    const currentQuantity = (document.getElementById(`${i}`) as HTMLInputElement).value;
+    this.productQuantity[i] = (currentQuantity as unknown as number);
+  }
+
+  get displaySum() {
+    let sum = 0;
+    for (let i = 0; i < this.productList.length; i++) {
+      sum += this.productList[i].price * this.productQuantity[i];
+    }
+    return isNaN(sum) ? 0 : sum.toFixed(2);
+  }
 }

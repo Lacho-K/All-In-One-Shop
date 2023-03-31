@@ -10,6 +10,11 @@ input[type=number] {
   text-align: center;
 }
 
-.clickable{
+.trashcan, .clickable{
   cursor: pointer;
+}
+
+.clickable:hover{
+  color: rgb(67, 163, 248);
+  text-decoration: underline;
 }
