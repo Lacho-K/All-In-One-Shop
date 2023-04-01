@@ -10,11 +10,9 @@ import { UserStoreService } from 'src/app/services/user-store.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { AppComponent } from 'src/app/app.component';
-import CheckUserRole from 'src/app/helpers/checkUserRole';
 import { ShoppingCartService } from 'src/app/services/shopping-cart.service';
 import { NgToastService } from 'ng-angular-popup';
-import { ShoppingCartModel } from 'src/app/models/shoppingCartModel';
-import { StorageModel } from 'src/app/models/storageModel';
+
 
 
 
@@ -25,41 +23,39 @@ import { StorageModel } from 'src/app/models/storageModel';
 })
 export class ProductDetailsComponent implements OnInit {
 
-  constructor(private route:ActivatedRoute, private service: ShopApiService, private router: Router, private userStore: UserStoreService, private auth: AuthService, private http: HttpClient, private shoppingCart: ShoppingCartService, private toaster: NgToastService) { }
+  constructor(private route: ActivatedRoute, private service: ShopApiService, private router: Router, private userStore: UserStoreService, private auth: AuthService, private http: HttpClient, private shoppingCart: ShoppingCartService, private toaster: NgToastService) { }
 
   // The Id used to get the current item's storage with which we can display all information about a product
-  storageId : string | null = null
+  storageId: string | null = null
 
   // The Ids used to get the current user's shopping cart
   userId: number = 0;
-  shoppingCartId: number|string = 0;
+  shoppingCartId: number | string = 0;
 
   dateObj: Date = new Date();
 
   //variables used to display all available information about a product
-  storage : StorageResponseModel = new StorageResponseModel('', 0, 0, '', '', this.dateObj);
-  product : ProductResponseModel = new ProductResponseModel('', '', '', '', '', 0);
-  productType : ProductTypeResponseModel = new ProductTypeResponseModel('', '');
+  storage: StorageResponseModel = new StorageResponseModel('', 0, 0, '', '', this.dateObj);
+  product: ProductResponseModel = new ProductResponseModel('', '', '', '', '', 0);
+  productType: ProductTypeResponseModel = new ProductTypeResponseModel('', '');
 
   //Modal variables
-  modalTitle:string = '';
-  activeAddEditProductComponent:boolean = false;
+  modalTitle: string = '';
+  activeAddEditProductComponent: boolean = false;
 
   //Subscriptions we need to destroy after we're done with displaying info to prevent memory leaks
   subscriptions: Subscription = new Subscription();
 
   ngOnInit(): void {
     this.storageId = this.route.snapshot.paramMap.get('storageId');
- 
+
     this.assignProductInfo();
-    
-    AppComponent.IsLoggedIn = this.auth.isLoggedIn();
-    CheckUserRole.checkUserRole(this.userStore, this.auth, this.http);
+
   }
 
-  assignProductInfo(){
+  assignProductInfo() {
     //Adding to 'subscriptions' to be able to unsubscribe from all subscriptions when they're not needed
-    this.subscriptions.add(this.service.getStoragetById((this.storageId as string)).subscribe(dbStorage =>{
+    this.subscriptions.add(this.service.getStoragetById((this.storageId as string)).subscribe(dbStorage => {
       this.storage = dbStorage;
       this.subscriptions.add(this.service.getProductById(this.storage.productId).subscribe(dbProduct => {
         this.product = dbProduct;
@@ -70,7 +66,7 @@ export class ProductDetailsComponent implements OnInit {
     }))
   }
 
-  modalEdit(product:any, storage: any){
+  modalEdit(product: any, storage: any) {
     this.product = product;
     this.storage = storage;
 
@@ -78,47 +74,51 @@ export class ProductDetailsComponent implements OnInit {
     this.activeAddEditProductComponent = true;
   }
 
-  deleteProduct(deleteProduct : any, storageAssociatedWithProduct : any){
+  deleteProduct(deleteProduct: any, storageAssociatedWithProduct: any) {
 
-    if(confirm(`Are you sure you want to delete "${deleteProduct.name}"`))
-    {
+    if (confirm(`Are you sure you want to delete "${deleteProduct.name}"`)) {
       this.service.deleteStorage(storageAssociatedWithProduct.id).subscribe(() => {
 
         this.service.deleteProduct(deleteProduct.id).subscribe(res => {
 
           this.router.navigate(['/products']).then(() => {
             var showDeleteSuccess = document.getElementById('delete-success-alert');
-            if(showDeleteSuccess){
+            if (showDeleteSuccess) {
               showDeleteSuccess.style.display = "block";
             }
-    
-            setTimeout(function (){
-              if(showDeleteSuccess){
+
+            setTimeout(function () {
+              if (showDeleteSuccess) {
                 showDeleteSuccess.style.display = "none"
               }
             }, 4000)
           })
-          })
-      })                 
-     }
+        })
+      })
+    }
   }
 
-  addToShoppingCart(){    
+  addToShoppingCart() {
 
     this.userStore.getIdFromStore()
-    .subscribe(id => {
-      let idFromRoken = this.auth.getIdFromToken();
-      this.userId = id || idFromRoken || 1;
+      .subscribe(id => {
+        let idFromRoken = this.auth.getIdFromToken();
+        this.userId = id || idFromRoken;
 
-      this.shoppingCart.getShoppingCartByUserId(this.userId).subscribe((s) => {
-        this.shoppingCartId = s.id;
-        console.log(this.shoppingCartId);
-        this.shoppingCart.addStorageToShoppingCart(this.shoppingCartId, (this.storageId as string));
-      });   
-    }); 
+        if (this.userId != undefined) {
+          this.shoppingCart.getShoppingCartByUserId(this.userId).subscribe((s) => {
+            this.shoppingCartId = s.id;
+            console.log(this.shoppingCartId);
+            this.shoppingCart.addStorageToShoppingCart(this.shoppingCartId, (this.storageId as string));
+          });
+        }
+        else{
+          this.shoppingCart.addToLocalStorageCart(this.storage);
+        }
+      });
   }
 
-  modalClose(){
+  modalClose() {
     this.assignProductInfo();
     this.activeAddEditProductComponent = false;
   }
@@ -127,8 +127,8 @@ export class ProductDetailsComponent implements OnInit {
     this.subscriptions.unsubscribe();
   }
 
-  get getIsAdmin(){
-    return AppComponent.IsAdmin;
+  get getIsAdmin() {
+    return this.auth.isAdmin();
   }
 
 }

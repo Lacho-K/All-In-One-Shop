@@ -21,9 +21,7 @@ export class NavbarComponent implements OnInit {
   modalTitle: string = "";
 
   public ngOnInit(): void {
-    
-    AppComponent.IsLoggedIn = this.auth.isLoggedIn();
-    
+        
     this.userStore.getFullNameFromStore()
     .subscribe(name => {
       let fullNameFromToken = this.auth.getFullNameFromToken();
@@ -37,14 +35,12 @@ export class NavbarComponent implements OnInit {
 
   logOut(){
     this.auth.signOut();
-    AppComponent.IsLoggedIn = this.auth.isLoggedIn();
-    AppComponent.IsAdmin = this.auth.isAdmin();
     this.userStore.clearStore();
     this.router.navigate(['/home']).then(() => window.location.reload());
   }
 
   get staticLoggin(){
-    return AppComponent.IsLoggedIn;
+    return this.auth.isLoggedIn();
   }
 
   openCart(){

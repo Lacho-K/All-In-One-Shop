@@ -7,6 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'All-In-One-Shop-Angular';
-  public static IsLoggedIn: boolean
-  public static IsAdmin: boolean
 }

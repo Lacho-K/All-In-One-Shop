@@ -72,12 +72,7 @@ export class RegisterComponent implements OnInit {
             this.userStore.setRoleForStore(tokenPayload.role);
             this.userStore.setIdForStore(tokenPayload.userId);
 
-            this.router.navigate(['/dashboard']);
-
-            AppComponent.IsLoggedIn = this.auth.isLoggedIn();
-            AppComponent.IsAdmin = this.auth.isAdmin();  
-
-            this.toast.success({detail: "SUCCESS", summary: "logged in", duration: 3000})
+            this.router.navigate(['/home']).then(() => window.location.reload());
           })         
         },
         error: (() => {

@@ -44,7 +44,7 @@
                   <a class="text-danger trashcan" (mouseover)='mouseHover(i)' (mouseout)='mouseOut(i)'><i class="fas fa-trash fa-lg"></i></a>
                 </div>
 
-                <div class="offset-md-10 px-2">
+                <div class="offset-md-10 mx-0">
                     <h6 class="mb-0">{{(product.price * productQuantity[i]).toFixed(2)}}$</h6>
                 </div>
               </div>
@@ -52,9 +52,9 @@
           </div>
   
           <div class="card">
-            <div class="card-body">
-              <button type="button" class="btn btn-warning btn-block btn-lg mx-3">Proceed to Pay</button>
-              <h5 class="d-inline">Sum: {{this.displaySum}} $</h5>
+            <div class="card-body text-center">
+              <button type="button" class="btn btn-warning btn-block btn-lg">Proceed to Pay</button>
+              <h5 class="pt-3">Sum: {{this.displaySum}} $</h5>
             </div>
           </div>
   

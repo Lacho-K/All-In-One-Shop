@@ -35,12 +35,21 @@ export class ShoppingCartComponent implements OnInit {
       this.userStore.getIdFromStore()
         .subscribe(id => {
           let idFromRoken = this.authService.getIdFromToken();
-          this.userId = id || idFromRoken || 1;
-          this.shoppingCart.getShoppingCartByUserId(this.userId).subscribe(s => {
-            this.shoppingCartId = s.id;
-            this.getProductsInCart();
-          });
-        });
+          this.userId = id || idFromRoken;
+
+          if (this.userId != undefined) {
+            // logged in
+            this.shoppingCart.getShoppingCartByUserId(this.userId).subscribe(s => {
+              this.shoppingCartId = s.id;
+              this.getProductsInCart();
+            })
+          }
+          else {
+            // not logged in
+            this.getProductsInLocalStorageCart();
+          }
+        })
+        ;
 
     })
   }
@@ -61,7 +70,27 @@ export class ShoppingCartComponent implements OnInit {
       if (typeof this.productQuantity !== 'undefined' && this.productQuantity.length === 0) {
         this.productQuantity = new Array(this.productList.length).fill(1);
       }
-      else if(this.productQuantity.length < this.productList.length){
+      else if (this.productQuantity.length < this.productList.length) {
+        this.productQuantity.push(1);
+      }
+      console.log(this.productQuantity);
+    });
+  }
+
+  getProductsInLocalStorageCart() {
+    this.shoppingCart.getObservableCartItems().pipe(
+      switchMap(storageList => {
+        this.storageList = storageList;
+
+        const productObservables = storageList.map(storage => this.shopApi.getProductById(storage.productId));
+        return forkJoin(productObservables);
+      })
+    ).subscribe(products => {
+      this.productList = products;
+      if (typeof this.productQuantity !== 'undefined' && this.productQuantity.length === 0) {
+        this.productQuantity = new Array(this.productList.length).fill(1);
+      }
+      else if (this.productQuantity.length < this.productList.length) {
         this.productQuantity.push(1);
       }
       console.log(this.productQuantity);
@@ -74,8 +103,16 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   removeItemFromCart(i: number) {
-    this.shoppingCart.deleteStorageFromShoppingCart(this.shoppingCartId, this.storageList[i].id);
-    this.productQuantity.splice(i,1);
+    if (this.userId != undefined) {
+      this.shoppingCart.deleteStorageFromShoppingCart(this.shoppingCartId, this.storageList[i].id);
+    }
+    else{
+      // get target product to delete
+      this.shopApi.getStoragetById(this.storageList[i].id).subscribe((targetStorage) => {
+        this.shoppingCart.removeFromlocalStorageCart(targetStorage);
+      })
+    }
+    this.productQuantity.splice(i, 1);
   }
 
   mouseHover(i: number) {

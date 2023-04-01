@@ -34,8 +34,6 @@ export class TokenInterceptor implements HttpInterceptor {
         if(err instanceof HttpErrorResponse){
           if(err.status === 401){
             this.auth.signOut();
-            AppComponent.IsLoggedIn = this.auth.isLoggedIn();
-
             //close open modal so that you can navigate the new loaded page
             document.getElementById('add-edit-modal-close')?.click();
             

@@ -45,7 +45,7 @@ export class AuthService {
     }
 
     signOut(){
-      localStorage.clear();
+      localStorage.removeItem('token');
     }
 
     decodedToken(){
