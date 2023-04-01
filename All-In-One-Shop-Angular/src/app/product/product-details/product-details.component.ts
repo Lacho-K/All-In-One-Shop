@@ -76,30 +76,15 @@ export class ProductDetailsComponent implements OnInit {
 
   deleteProduct(deleteProduct: any, storageAssociatedWithProduct: any) {
 
-    if (confirm(`Are you sure you want to delete "${deleteProduct.name}"`)) {
-      this.service.deleteStorage(storageAssociatedWithProduct.id).subscribe(() => {
-
-        this.service.deleteProduct(deleteProduct.id).subscribe(res => {
-
-          this.router.navigate(['/products']).then(() => {
-            var showDeleteSuccess = document.getElementById('delete-success-alert');
-            if (showDeleteSuccess) {
-              showDeleteSuccess.style.display = "block";
-            }
-
-            setTimeout(function () {
-              if (showDeleteSuccess) {
-                showDeleteSuccess.style.display = "none"
-              }
-            }, 4000)
-          })
-        })
+    if (confirm(`Are you sure you want to delete "${deleteProduct.name}"`)){
+      this.service.deleteProduct(deleteProduct.id).subscribe(() => {
+        this.router.navigate(['/products']).then(() => window.location.reload());
+        this.shoppingCart.resetLocalStorageCart();
       })
     }
   }
 
   addToShoppingCart() {
-
     this.userStore.getIdFromStore()
       .subscribe(id => {
         let idFromRoken = this.auth.getIdFromToken();
@@ -112,7 +97,7 @@ export class ProductDetailsComponent implements OnInit {
             this.shoppingCart.addStorageToShoppingCart(this.shoppingCartId, (this.storageId as string));
           });
         }
-        else{
+        else {
           this.shoppingCart.addToLocalStorageCart(this.storage);
         }
       });

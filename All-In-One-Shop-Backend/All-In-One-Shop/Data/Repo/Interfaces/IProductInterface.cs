@@ -9,6 +9,8 @@ namespace All_In_One_Shop.Data.Repo.Interfaces
 
         Task<ActionResult<Product>> GetProductById(int id);
 
+        Task<ActionResult<IEnumerable<Product>>> GetProductsByName(string name);
+
         Task UpdateProduct(int id, Product product);
 
         Task AddProduct(Product product);

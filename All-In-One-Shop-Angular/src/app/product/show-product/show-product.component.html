@@ -1,6 +1,6 @@
-<div class="input-group px-5 py-1">
-  <input type="search" class="form-control rounded" placeholder="Type in the name of the desired product" aria-label="Search" aria-describedby="search-addon" />
-  <button type="button" class="btn btn-outline-primary">Search</button>
+<div class="input-group px-5 py-5">
+  <input id="searchInput" type="search" class="form-control rounded" placeholder="Type in the name of the desired product" aria-label="Search" aria-describedby="search-addon" (input)="search()"/>
+  <button type="button" class="btn btn-outline-primary" (click)="search()">Search</button>
 </div>
 
 <!-- Add Product trigger modal -->
@@ -19,14 +19,14 @@
 
 <div class="text-center">
   <div class="card my-1 mx-2 border border-1 border-secondary rounded d-inline-block"
-    routerLink="productDetails/{{storage.id}}" *ngFor="let storage of storagesList$|async">
+   *ngFor="let product of productList$|async, let i = index" (click)="navigation(i)">
     <div class="container my-4">
-      <img class="card-img-top" src={{storagesMap.get(storage.productId)?.productImageURL}} alt="Image Not Found"
+      <img class="card-img-top" src={{product.productImageURL}} alt="Image Not Found"
         onerror="this.src='../../../assets/img.png'">
       <div class="card-body">
-        <h5 class="card-title">{{storagesMap.get(storage.productId)?.name}}</h5>
+        <h5 class="card-title">{{product.name}}</h5>
         <p class="card-text">
-          Price: {{storagesMap.get(storage.productId)?.price}}
+          Price: {{product.price}}
         </p>
       </div>
     </div>

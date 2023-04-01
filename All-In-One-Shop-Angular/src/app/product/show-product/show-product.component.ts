@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AppComponent } from 'src/app/app.component';
 import { ProductResponseModel } from 'src/app/models/productResponseModel';
 import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
 import { StorageResponseModel } from 'src/app/models/storageResponseModel';
@@ -18,21 +18,20 @@ export class ShowProductComponent implements OnInit {
 
   // Lists of database objects
   productList$!:Observable<ProductResponseModel[]>;
-  productTypesList$!:Observable<ProductTypeResponseModel[]>;
-  storagesList$!:Observable<StorageResponseModel[]>;
+  storagesList : StorageResponseModel[] = [];
   
-  // Map used to display data associated with foreign keys
-  storagesMap:Map<number | string, ProductResponseModel> = new Map();
-
-  constructor(private service: ShopApiService, private auth: AuthService, private userStore: UserStoreService, private http: HttpClient) { }
+  constructor(private shopApi: ShopApiService, private auth: AuthService, private userStore: UserStoreService, private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
-    this.productList$ = this.service.getProductsList();
-    this.productTypesList$ = this.service.getProductTypesList();
-    this.storagesList$ = this.service.getStoragesList();
-    this.mapStoragesWithProducts(); 
+    this.productList$ = this.shopApi.getProductsList();
+    this.assignStorageIds();
+  }
 
-    // gets current role of user without the need to refresh the page
+  // used for navigation between different product pages
+  assignStorageIds(){
+    this.shopApi.getStoragesList().subscribe(s => {
+      this.storagesList = s;
+    });
   }
 
   //Variables(properties)
@@ -40,21 +39,6 @@ export class ShowProductComponent implements OnInit {
   activeAddEditProductComponent:boolean = false;
   product:any;
   storage:any;
-
-  mapStoragesWithProducts(){
-    this.service.getStoragesList().subscribe(storages => {
-
-      this.service.getProductsList().subscribe(products => {
-
-        for (let i = 0; i < storages.length && products.length; i++) {
-          this.storagesMap.set(storages[i].productId, products[i])
-        }
-
-        console.log(products);
-        
-      })
-    })
-  }
 
   modalAdd(){
 
@@ -81,10 +65,17 @@ export class ShowProductComponent implements OnInit {
 
   modalClose(){
     this.activeAddEditProductComponent = false;
-    this.productList$ = this.service.getProductsList();
-    this.storagesList$ = this.service.getStoragesList();
+    this.productList$ = this.shopApi.getProductsList();
+    this.assignStorageIds();
+  }
 
-    this.mapStoragesWithProducts(); 
+  navigation(i:number){
+    this.router.navigate([`products/productDetails/${this.storagesList[i].id}`]);
+  }
+
+  search(){
+    const searchName = (document.getElementById('searchInput') as HTMLInputElement).value
+    this.productList$ = this.shopApi.getProductsByName(searchName);
   }
 
   get getIsAdmin(){

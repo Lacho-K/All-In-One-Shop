@@ -28,6 +28,13 @@ namespace All_In_One_Shop.Data.Repo
             return product;
         }
 
+        public async Task<ActionResult<IEnumerable<Product>>> GetProductsByName(string input)
+        {
+            var products = await _context.Products.Where(p => p.Name.Contains(input)).ToListAsync();
+
+            return products;
+        }
+
         public async Task AddProduct(Product product)
         {
             _context.Products.Add(product);

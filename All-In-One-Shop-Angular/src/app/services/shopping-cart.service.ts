@@ -26,15 +26,20 @@ export class ShoppingCartService {
   private loadCartItemsFrom() {
     let cartItems: StorageResponseModel[] = [];
     let userId: number | string | null = 0;
+    let shoppingCartId: number | string = 0;
 
     this.userStore.getIdFromStore().subscribe(id => {
       let idFromRoken = this.auth.getIdFromToken();
       userId = id || idFromRoken;
 
       if (userId != undefined) {
-        this.getStoragesInShoppngCart((userId as unknown as number)).subscribe((items) => {
-          cartItems = items;
-        });
+        this.getShoppingCartByUserId((userId as unknown as number)).subscribe(sc => {
+          shoppingCartId = sc.id;
+
+          this.getStoragesInShoppngCart((shoppingCartId as unknown as number)).subscribe((items) => {
+            cartItems = items;
+          });
+        })
       }
       else {
         cartItems = JSON.parse(localStorage.getItem(this.cartKey) || '[]');
@@ -95,13 +100,13 @@ export class ShoppingCartService {
 
   addToLocalStorageCart(item: StorageResponseModel) {
     const cartItems = this.cartItems$.value;
-    if (!this.isDuplicateItem(cartItems, item)){
+    if (!this.isDuplicateItem(cartItems, item)) {
       cartItems.push(item);
       this.cartItems$.next(cartItems);
       localStorage.setItem(this.cartKey, JSON.stringify(cartItems));
       this.toaster.success({ detail: "SUCCESS", summary: "Product added to Shopping Cart", duration: 2000, position: 'tl' })
     }
-    else{
+    else {
       this.toaster.error({ detail: "ERROR", summary: "Product already in cart", duration: 2000, position: 'tl' });
     }
   }
@@ -133,6 +138,10 @@ export class ShoppingCartService {
       return true;
     }
     return false;
+  }
+
+  resetLocalStorageCart(){
+    localStorage.removeItem(this.cartKey);
   }
 
 }
