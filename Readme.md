@@ -2,7 +2,7 @@
 
 Use the following commands to run the project on your machine:
 
-Backend: Open the ```.sln``` file, type in the package manager console: "update-database" to initialize the database and run the project from Visual Studio. <br />
+Backend: Open the ```.sln``` file, type in the package manager console: ```update-database``` to initialize the database and run the project from Visual Studio. <br />
 Frontend: Run ```npm install``` in ```/src``` folder to install the required npm packages and then ```ng serve``` to run the project.
 
 ## Used technologies
