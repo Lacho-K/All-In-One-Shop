@@ -17,20 +17,30 @@ import { UserStoreService } from 'src/app/services/user-store.service';
 export class ShowProductComponent implements OnInit {
 
   // Lists of database objects
-  productList$!:Observable<ProductResponseModel[]>;
+  productList$ !: Observable<ProductResponseModel[]>;
+  productTypesList$ !: Observable<ProductTypeResponseModel[]>;
   storagesList : StorageResponseModel[] = [];
+  selectedValue: any;
   
   constructor(private shopApi: ShopApiService, private auth: AuthService, private userStore: UserStoreService, private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
     this.productList$ = this.shopApi.getProductsList();
+    this.productTypesList$ = this.shopApi.getProductTypesList();
     this.assignStorageIds();
+    this.selectedValue = 'All categories'
   }
 
   // used for navigation between different product pages
   assignStorageIds(){
-    this.shopApi.getStoragesList().subscribe(s => {
-      this.storagesList = s;
+    let storages: StorageResponseModel[] = [];
+    this.productList$.subscribe(products => {
+      products.forEach(p => {
+        this.shopApi.getStorageByProductId(p.id).subscribe(s => {
+          storages.push(s);
+        })
+        this.storagesList = storages;        
+      })
     });
   }
 
@@ -76,6 +86,12 @@ export class ShowProductComponent implements OnInit {
   search(){
     const searchName = (document.getElementById('searchInput') as HTMLInputElement).value
     this.productList$ = this.shopApi.getProductsByName(searchName);
+    this.assignStorageIds();
+  }
+
+  filterProducts(type: string){    
+    this.productList$ = this.shopApi.getProductsByType(type);
+    this.assignStorageIds();
   }
 
   get getIsAdmin(){

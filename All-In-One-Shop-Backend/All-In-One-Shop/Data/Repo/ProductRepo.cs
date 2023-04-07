@@ -35,6 +35,13 @@ namespace All_In_One_Shop.Data.Repo
             return products;
         }
 
+        public async Task<ActionResult<IEnumerable<Product>>> GetProductsByType(string type)
+        {
+            var products = await _context.Products.Where(p => p.ProductType.ProductTypeStr.ToLower() == type.ToLower()).ToListAsync();
+
+            return products;
+        }
+
         public async Task AddProduct(Product product)
         {
             _context.Products.Add(product);

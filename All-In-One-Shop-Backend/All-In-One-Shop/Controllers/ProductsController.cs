@@ -57,6 +57,20 @@ namespace All_In_One_Shop.Controllers
             return products;
         }
 
+        [HttpGet("type")]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProductsByType(string? type)
+        {
+            if (type == "" || type == null)
+            {
+                return await this.GetProducts();
+            }
+
+            var products = await _productRepo.GetProductsByType(type);
+
+            return products;
+        }
+
+
         // PUT: api/Products/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduct(int id, Product product)

@@ -73,7 +73,6 @@ export class ShoppingCartComponent implements OnInit {
       else if (this.productQuantity.length < this.productList.length) {
         this.productQuantity.push(1);
       }
-      console.log(this.productQuantity);
     });
   }
 
@@ -93,7 +92,6 @@ export class ShoppingCartComponent implements OnInit {
       else if (this.productQuantity.length < this.productList.length) {
         this.productQuantity.push(1);
       }
-      console.log(this.productQuantity);
     });
   }
 

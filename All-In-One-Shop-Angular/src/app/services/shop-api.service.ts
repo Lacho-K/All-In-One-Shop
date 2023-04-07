@@ -32,6 +32,10 @@ export class ShopApiService {
     return this.http.get<ProductResponseModel[]>(this.shopAPIUrl + `/products/name/?name=${name}`)
   }
 
+  getProductsByType(type:string): Observable<ProductResponseModel[]>{
+    return this.http.get<ProductResponseModel[]>(this.shopAPIUrl + `/products/type/?type=${type}`)
+  }
+
   addProduct(data:ProductModel){
     return this.http.post(this.shopAPIUrl + '/products', data)
   }
