@@ -18,6 +18,7 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgToastModule } from 'ng-angular-popup';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NgToastModule
+    NgToastModule,
+    NgxPaginationModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

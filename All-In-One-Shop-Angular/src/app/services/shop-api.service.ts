@@ -36,6 +36,10 @@ export class ShopApiService {
     return this.http.get<ProductResponseModel[]>(this.shopAPIUrl + `/products/type/?type=${type}`)
   }
 
+  getFilteredProducts(type:string, name: string): Observable<ProductResponseModel[]>{
+    return this.http.get<ProductResponseModel[]>(this.shopAPIUrl + `/products/filtered?type=${type}&name=${name}`)
+  }
+
   addProduct(data:ProductModel){
     return this.http.post(this.shopAPIUrl + '/products', data)
   }

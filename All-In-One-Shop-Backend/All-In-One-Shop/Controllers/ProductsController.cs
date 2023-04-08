@@ -70,6 +70,27 @@ namespace All_In_One_Shop.Controllers
             return products;
         }
 
+        [HttpGet("filtered")]
+        public async Task<ActionResult<IEnumerable<Product>>> GetFilteredProducts(string? type, string? name)
+        {
+            if(String.IsNullOrEmpty(type) && String.IsNullOrEmpty(name))
+            {
+                return await this.GetProducts();
+            }
+            else if(String.IsNullOrEmpty(type) && !String.IsNullOrEmpty(name))
+            {
+                return await this.GetProductsByName(name);
+            }
+            else if(!String.IsNullOrEmpty(type) && String.IsNullOrEmpty(name))
+            {
+                return await this.GetProductsByType(type);
+            }
+            else
+            {
+                return await _productRepo.GetFilteredProducts(type, name);
+            }
+        }
+
 
         // PUT: api/Products/5
         [HttpPut("{id}")]

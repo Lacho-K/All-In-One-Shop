@@ -1,29 +1,13 @@
-<div class="border border-1">
-  <div class="input-group">
-    <input id="searchInput" type="search" class="form-control rounded"
-      placeholder="Type in the name of the desired product" aria-label="Search" aria-describedby="search-addon"
-      (input)="search()" />
-    <button type="button" class="btn btn-outline-primary" (click)="search()">Search</button>
-  </div>
-
-  <div class="form-check form-check-inline">
-    <div class="mb-3">
-      <label for="productType">Product Type</label>
-      <select class="form-control" name="productTypeId" id="productTypeId" [ngModel]="selectedValue" (ngModelChange)="selectedValue=$event" (change)="filterProducts(selectedValue)">
-        <option value="" selected>All categories</option>
-        <option *ngFor="let type of productTypesList$|async" [value]="type.productTypeStr">{{type.productTypeStr}}</option>
-      </select>
-    </div>
-  </div>
-  <div class="form-check form-check-inline">
-    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-    <label class="form-check-label" for="inlineRadio2">2</label>
-  </div>
-  <div class="form-check form-check-inline">
-    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" disabled>
-    <label class="form-check-label" for="inlineRadio3">3 (disabled)</label>
-  </div>
-
+<div class="input-group px-5 pt-2 pb-5">
+  <input id="searchInput" type="search" class="form-control rounded me-2"
+    placeholder="Type in the name of the desired product" aria-label="Search" aria-describedby="search-addon"
+    (input)="search()" />
+  <select class="form-select form-select-sm me-2" name="productTypeId" id="productTypeId" [ngModel]="selectedProductType"
+    (ngModelChange)="selectedProductType=$event" (change)="search()">
+    <option value="">All product types</option>
+    <option *ngFor="let type of productTypesList$|async" [value]="type.productTypeStr">{{type.productTypeStr}}</option>
+  </select>
+  <button type="button" class="btn btn-outline-primary" (click)="search()">Search</button>
 </div>
 
 <!-- Add Product trigger modal -->
@@ -42,7 +26,7 @@
 
 <div class="text-center">
   <div class="card my-1 mx-2 border border-1 border-secondary rounded d-inline-block"
-    *ngFor="let product of productList$|async, let i = index" (click)="navigation(i)">
+    *ngFor="let product of (productList$ | async) | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage } , let i = index" (click)="navigation(i)">
     <div class="container my-4">
       <img class="card-img-top" src={{product.productImageURL}} alt="Image Not Found"
         onerror="this.src='../../../assets/img.png'">
@@ -55,6 +39,7 @@
     </div>
   </div>
 </div>
+<pagination-controls (pageChange)="currentPage = $event" (click)="getProductsOnCurrentPage()"></pagination-controls>
 
 <!-- Add Product Modal -->
 <div class="modal fade" id="modal1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

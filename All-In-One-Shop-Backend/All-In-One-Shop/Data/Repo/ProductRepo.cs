@@ -30,16 +30,32 @@ namespace All_In_One_Shop.Data.Repo
 
         public async Task<ActionResult<IEnumerable<Product>>> GetProductsByName(string input)
         {
-            var products = await _context.Products.Where(p => p.Name.Contains(input)).ToListAsync();
+            var products = await _context.Products.Where(p => p.Name.ToLower().Contains(input.ToLower())).ToListAsync();
 
             return products;
         }
 
         public async Task<ActionResult<IEnumerable<Product>>> GetProductsByType(string type)
         {
-            var products = await _context.Products.Where(p => p.ProductType.ProductTypeStr.ToLower() == type.ToLower()).ToListAsync();
+            var products = await _context.Products
+                .Where(p => p.ProductType.ProductTypeStr.ToLower() == type.ToLower()).ToListAsync();
 
             return products;
+        }
+
+        public async Task<ActionResult<IEnumerable<Product>>> GetFilteredProducts(string type, string name)
+        {
+            var productsToBeFiltered = await this.GetAllProducts();
+
+            if(!String.IsNullOrEmpty(type))
+            {
+                productsToBeFiltered = await this.GetProductsByType(type);
+            }
+
+            var filteredProducts = String.IsNullOrEmpty(name) ? productsToBeFiltered : productsToBeFiltered.Value
+                .Where(p => p.Name.ToLower().Contains(name.ToLower())).ToList();
+
+            return filteredProducts;
         }
 
         public async Task AddProduct(Product product)

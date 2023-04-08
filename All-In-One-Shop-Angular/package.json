@@ -20,6 +20,7 @@
     "@angular/router": "^14.2.0",
     "@auth0/angular-jwt": "^5.1.2",
     "ng-angular-popup": "^0.2.0",
+    "ngx-pagination": "^6.0.3",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
