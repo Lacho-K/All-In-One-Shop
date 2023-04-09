@@ -39,7 +39,10 @@
     </div>
   </div>
 </div>
-<pagination-controls (pageChange)="currentPage = $event" (click)="getProductsOnCurrentPage()"></pagination-controls>
+
+<div *ngIf="storagesList.length === 0" class="text-center">
+<p>No item matches your search!</p>
+</div>
 
 <!-- Add Product Modal -->
 <div class="modal fade" id="modal1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -58,3 +61,6 @@
     </div>
   </div>
 </div>
+
+<!-- Controls for product pages -->
+<pagination-controls (pageChange)="currentPage = $event" (click)="getProductsOnCurrentPage()"></pagination-controls>

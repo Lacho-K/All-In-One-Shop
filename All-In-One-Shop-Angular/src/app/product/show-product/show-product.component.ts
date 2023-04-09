@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, map, shareReplay } from 'rxjs';
+import { BehaviorSubject, Observable, forkJoin, map, shareReplay } from 'rxjs';
 import { ProductResponseModel } from 'src/app/models/productResponseModel';
 import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
 import { StorageResponseModel } from 'src/app/models/storageResponseModel';
@@ -32,22 +32,19 @@ export class ShowProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.productTypesList$ = this.shopApi.getProductTypesList();
-    //this.assignStorageIds();
     this.getProductsOnCurrentPage();
   }
 
   // used for navigation between different product pages
   assignStorageIds() {
-    let storages: StorageResponseModel[] = [];
     this.currentProductList$.subscribe(products => {
+      const productObservables = products.map(p => {
+        return this.shopApi.getStorageByProductId(p.id);
+      });
 
-      products.forEach((p: { id: string | number; }) => {
-        this.shopApi.getStorageByProductId(p.id).subscribe(s => {
-          storages.push(s);
-        })
-      })
-
-      this.storagesList = storages;
+      forkJoin(productObservables).subscribe((results: StorageResponseModel[]) => {
+        this.storagesList = results;
+      });
     });
   }
 
@@ -107,8 +104,7 @@ export class ShowProductComponent implements OnInit {
 
   search() {
     const searchName = (document.getElementById('searchInput') as HTMLInputElement).value
-    this.currentProductList$ = this.shopApi.getFilteredProducts(this.selectedProductType, searchName);
-    this.productList$ = this.currentProductList$;
+    this.productList$ = this.shopApi.getFilteredProducts(this.selectedProductType, searchName);
     this.getProductsOnCurrentPage();
     this.currentPage = 1;
   }
