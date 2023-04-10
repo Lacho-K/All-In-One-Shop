@@ -41,7 +41,7 @@
 </div>
 
 <div *ngIf="storagesList.length === 0" class="text-center">
-<p>No item matches your search!</p>
+  <p class="border border-1">No item matches your search!</p>
 </div>
 
 <!-- Add Product Modal -->
@@ -63,4 +63,4 @@
 </div>
 
 <!-- Controls for product pages -->
-<pagination-controls (pageChange)="currentPage = $event" (click)="getProductsOnCurrentPage()"></pagination-controls>
+<pagination-controls (pageChange)="currentPage = $event; getProductsOnCurrentPage()"></pagination-controls>

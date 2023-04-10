@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, forkJoin, map, shareReplay } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { ProductResponseModel } from 'src/app/models/productResponseModel';
 import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
 import { StorageResponseModel } from 'src/app/models/storageResponseModel';
@@ -22,9 +22,7 @@ export class ShowProductComponent implements OnInit {
   productList$!: Observable<any>;
   productTypesList$ !: Observable<ProductTypeResponseModel[]>;
   storagesList: StorageResponseModel[] = [];
-  currentProductList$!: Observable<ProductResponseModel[]>;
-
-  private currentProductListSubject = new BehaviorSubject<ProductResponseModel[]>([]);
+  currentProductList: ProductResponseModel[] = [];
 
   constructor(private shopApi: ShopApiService, private auth: AuthService, private userStore: UserStoreService, private http: HttpClient, private router: Router) {
     this.productList$ = this.shopApi.getProductsList();
@@ -37,27 +35,26 @@ export class ShowProductComponent implements OnInit {
 
   // used for navigation between different product pages
   assignStorageIds() {
-    this.currentProductList$.subscribe(products => {
-      const productObservables = products.map(p => {
-        return this.shopApi.getStorageByProductId(p.id);
-      });
-
-      forkJoin(productObservables).subscribe((results: StorageResponseModel[]) => {
-        this.storagesList = results;
-      });
+    if (this.currentProductList.length === 0) {
+      this.storagesList = [];
+      return;
+    }
+    const storageObservables = this.currentProductList.map(p => {
+      return this.shopApi.getStorageByProductId(p.id);
+    });
+    forkJoin(storageObservables).subscribe((results: StorageResponseModel[]) => {
+      this.storagesList = results;
     });
   }
 
   getProductsOnCurrentPage() {
     this.productList$.subscribe(paginatedProducts => {
-      const currentProductList = paginatedProducts.slice(
+      this.currentProductList = paginatedProducts.slice(
         (this.currentPage - 1) * this.itemsPerPage,
         this.currentPage * this.itemsPerPage
       );
-      this.currentProductListSubject.next(currentProductList);
       this.assignStorageIds();
     });
-    this.currentProductList$ = this.currentProductListSubject.asObservable();
   }
 
   //Variables(properties)
