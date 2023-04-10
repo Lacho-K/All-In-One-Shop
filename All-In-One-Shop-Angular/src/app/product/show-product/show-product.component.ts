@@ -43,7 +43,7 @@ export class ShowProductComponent implements OnInit {
       return this.shopApi.getStorageByProductId(p.id);
     });
     forkJoin(storageObservables).subscribe((results: StorageResponseModel[]) => {
-      this.storagesList = results;
+      this.storagesList = results;      
     });
   }
 
@@ -104,6 +104,10 @@ export class ShowProductComponent implements OnInit {
     this.productList$ = this.shopApi.getFilteredProducts(this.selectedProductType, searchName);
     this.getProductsOnCurrentPage();
     this.currentPage = 1;
+  }
+
+  checkAllCategories(){
+    this.selectedProductType = '';
   }
 
   get getIsAdmin() {

@@ -42,6 +42,7 @@
 
 <div *ngIf="storagesList.length === 0" class="text-center">
   <p class="border border-1">No item matches your search!</p>
+  <a class="clickable" (click)="checkAllCategories(); search()">Click here to search in all item categories</a>
 </div>
 
 <!-- Add Product Modal -->
