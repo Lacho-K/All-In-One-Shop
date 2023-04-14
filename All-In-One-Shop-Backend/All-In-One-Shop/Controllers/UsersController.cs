@@ -28,14 +28,9 @@ namespace All_In_One_Shop.Controllers
 
             var user = await _userRepo.Authenticate(userObj);
 
-            if (user.Value == null)
+            if (user.Value == null || !PasswordHasher.VerifyPassword(userObj.Password, user.Value.Password))
             {
-                return NotFound(new { Message = "User Not found!" });
-            }
-
-            if (!PasswordHasher.VerifyPassword(userObj.Password, user.Value.Password))
-            {
-                return BadRequest(new { Message = "Invalid Password!" });
+                return BadRequest(new { Message = "Invalid username or password!" });
             }
 
             user.Value.Token = TokenGenerator.GenerateJwt(user.Value);

@@ -40,6 +40,9 @@ export class TokenInterceptor implements HttpInterceptor {
             this.router.navigate(['/login']);
             this.toaster.warning({detail:'WARNING', summary: 'Please login to do that', duration: 3000});       
           }
+          else if(err.status === 400){
+            this.toaster.error({detail:'WARNING', summary: `${err.error.message}`, duration: 3000});       
+          }
         }
         return throwError(() => new Error("Something went wrong"))
       })

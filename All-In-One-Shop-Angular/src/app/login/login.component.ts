@@ -10,6 +10,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { ShowProductComponent } from '../product/show-product/show-product.component';
 import { HttpClient } from '@angular/common/http';
 import { AppComponent } from '../app.component';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -49,8 +50,8 @@ export class LoginComponent implements OnInit {
           
           this.router.navigate(['/home']).then(() => window.location.reload());
         }),
-        error: (() => {
-          this.toast.error({detail: "ERROR", summary: "Invalid password or username", duration: 3000})
+        error: ((err) => {
+          return throwError(err);
         })
       });
     }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
+import { throwError } from 'rxjs';
 import { AppComponent } from '../app.component';
 import AnimateForm from '../helpers/animateForm';
 import ValidateForm from '../helpers/validateForm';
@@ -60,23 +61,26 @@ export class RegisterComponent implements OnInit {
       this.auth.register(this.userRegister)
       .subscribe({
         next: () => {
-
           //login automaticaly after registering
           this.userLogin = new UserLoginModel(this.registerForm.value.username, this.registerForm.value.password);
-          this.auth.login(this.userLogin).subscribe((res: any) => {
-            
-            this.auth.storeToken(res.token);     
-            const tokenPayload = this.auth.decodedToken();
-
-            this.userStore.setFullNameForStore(tokenPayload.name);
-            this.userStore.setRoleForStore(tokenPayload.role);
-            this.userStore.setIdForStore(tokenPayload.userId);
-
-            this.router.navigate(['/home']).then(() => window.location.reload());
+          this.auth.login(this.userLogin).subscribe({
+            next: ((res:any) => {
+              this.auth.storeToken(res.token);     
+              const tokenPayload = this.auth.decodedToken();
+              
+              this.userStore.setFullNameForStore(tokenPayload.name);
+              this.userStore.setRoleForStore(tokenPayload.role);
+              this.userStore.setIdForStore(tokenPayload.userId);
+              
+              this.router.navigate(['/home']).then(() => window.location.reload());
+            }),
+            error: ((err) => {
+              return throwError(err);
+            })
           })         
         },
-        error: (() => {
-          this.toast.error({detail: 'ERROR', summary: 'Email or username already exists!', duration: 3000});
+        error: ((err) => {
+          return throwError(err);
         })
       })
     }
