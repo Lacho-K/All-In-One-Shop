@@ -11,6 +11,7 @@ import { UserLoginModel } from '../models/userLoginModel';
 import { UserModel } from '../models/userModel';
 import { UserResponseModel } from '../models/userResponseModel';
 import { AuthService } from '../services/auth.service';
+import { LoginService } from '../services/login.service';
 import { UserStoreService } from '../services/user-store.service';
 
 
@@ -34,7 +35,7 @@ export class RegisterComponent implements OnInit {
   eyeIconPass: string = 'fa-eye-slash';
   eyeIconRePass: string = 'fa-eye-slash';
   
-  constructor(private fb: FormBuilder, private auth: AuthService, private toast: NgToastService, private userStore: UserStoreService, private router: Router) { }
+  constructor(private fb: FormBuilder, private auth: AuthService, private loginService: LoginService) { }
 
   ngOnInit(): void {
 
@@ -63,21 +64,7 @@ export class RegisterComponent implements OnInit {
         next: () => {
           //login automaticaly after registering
           this.userLogin = new UserLoginModel(this.registerForm.value.username, this.registerForm.value.password);
-          this.auth.login(this.userLogin).subscribe({
-            next: ((res:any) => {
-              this.auth.storeToken(res.token);     
-              const tokenPayload = this.auth.decodedToken();
-              
-              this.userStore.setFullNameForStore(tokenPayload.name);
-              this.userStore.setRoleForStore(tokenPayload.role);
-              this.userStore.setIdForStore(tokenPayload.userId);
-              
-              this.router.navigate(['/home']).then(() => window.location.reload());
-            }),
-            error: ((err) => {
-              return throwError(err);
-            })
-          })         
+          this.loginService.loginUser(this.userLogin);
         },
         error: ((err) => {
           return throwError(err);

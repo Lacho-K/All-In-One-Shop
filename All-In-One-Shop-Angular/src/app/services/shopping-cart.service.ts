@@ -17,13 +17,13 @@ export class ShoppingCartService {
 
   readonly shoppingCartApiUrl = "https://localhost:7220/api/shoppingCarts"
   private cartItems$ = new BehaviorSubject<StorageResponseModel[]>([]);
-  private cartKey = 'cartItems';
+  readonly cartKey = 'cartItems';
 
   constructor(private http: HttpClient, private shopApi: ShopApiService, private toaster: NgToastService, private userStore: UserStoreService, private auth: AuthService) {
-    this.loadCartItemsFrom();
+    this.loadCartItems();
   }
 
-  private loadCartItemsFrom() {
+  private loadCartItems() {
     let cartItems: StorageResponseModel[] = [];
     let userId: number | string | null = 0;
     let shoppingCartId: number | string = 0;
@@ -49,7 +49,7 @@ export class ShoppingCartService {
     })
   }
 
-  getObservableCartItems() {
+  getLocalStorageCartItems() {
     return this.cartItems$.asObservable();
   }
 
@@ -142,6 +142,10 @@ export class ShoppingCartService {
 
   resetLocalStorageCart(){
     localStorage.removeItem(this.cartKey);
+  }
+
+  emptyUserShoppingCart(cartId: number|string){
+    return this.http.delete(this.shoppingCartApiUrl + `/${cartId}/storages/clear?cartId=${cartId}`)
   }
 
 }

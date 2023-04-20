@@ -103,7 +103,8 @@ namespace All_In_One_Shop.Data.Repo
                 .ThenInclude(ss => ss.Storage)
                 .SingleOrDefaultAsync(sc => sc.Id == id);
 
-            var storageToAdd = await _context.Storages.FirstOrDefaultAsync(s => s.Id == storageId);
+            var storageToAdd = await _context.Storages
+                .FirstOrDefaultAsync(s => s.Id == storageId);
 
             storageToAdd.DateCreated = DateTime.Now;
 
@@ -131,8 +132,8 @@ namespace All_In_One_Shop.Data.Repo
                 .SingleOrDefaultAsync(sc => sc.Id == id);
 
 
-            var shoppingCartItemToRemove = shoppingCart.ShoppingCartStorages.SingleOrDefault(s => s.StorageId == storageId);
-
+            var shoppingCartItemToRemove = shoppingCart.ShoppingCartStorages
+                .SingleOrDefault(s => s.StorageId == storageId);
 
             if (shoppingCartItemToRemove == null || shoppingCart == null)
             {
@@ -146,6 +147,25 @@ namespace All_In_One_Shop.Data.Repo
 
             return "";
 
+        }
+
+        public async Task<string> EmptyShoppingCart(int id)
+        {
+            var shoppingCart = await _context.ShoppingCarts
+                .Include(sc => sc.ShoppingCartStorages)
+                .SingleOrDefaultAsync(sc => sc.Id == id);
+
+            if (shoppingCart == null)
+            {
+                return "Not found!";
+            }
+
+            shoppingCart.ShoppingCartStorages.Clear();
+
+            _context.Update(shoppingCart);
+            await _context.SaveChangesAsync();
+
+            return "";
         }
     }
 }

@@ -1,7 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
-import { forkJoin, switchMap } from 'rxjs';
+import { forkJoin, switchMap, throwError } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { ProductResponseModel } from '../models/productResponseModel';
 import { ProductTypeResponseModel } from '../models/productTypeResponseModel';
@@ -30,7 +31,7 @@ export class ShoppingCartComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.shoppingCart.getObservableCartItems().subscribe(() => {
+    this.shoppingCart.getLocalStorageCartItems().subscribe(() => {
 
       this.userStore.getIdFromStore()
         .subscribe(id => {
@@ -77,7 +78,7 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   getProductsInLocalStorageCart() {
-    this.shoppingCart.getObservableCartItems().pipe(
+    this.shoppingCart.getLocalStorageCartItems().pipe(
       switchMap(storageList => {
         this.storageList = storageList;
 
@@ -97,14 +98,14 @@ export class ShoppingCartComponent implements OnInit {
 
   navigation(i: number) {
     this.router.navigate(['products']).then(() => this.router.navigate([`products/productDetails/${this.storageList[i].id}`]));
-    document.getElementById('shopping-cart-modal-close')?.click();
+    document.getElementById('modal-close')?.click();
   }
 
   removeItemFromCart(i: number) {
     if (this.userId != undefined) {
       this.shoppingCart.deleteStorageFromShoppingCart(this.shoppingCartId, this.storageList[i].id);
     }
-    else{
+    else {
       // get target product to delete
       this.shopApi.getStoragetById(this.storageList[i].id).subscribe((targetStorage) => {
         this.shoppingCart.removeFromlocalStorageCart(targetStorage);
@@ -129,9 +130,17 @@ export class ShoppingCartComponent implements OnInit {
 
   get displaySum() {
     let sum = 0;
+
     for (let i = 0; i < this.productList.length; i++) {
       sum += this.productList[i].price * this.productQuantity[i];
     }
+
     return isNaN(sum) ? 0 : sum.toFixed(2);
+  }
+
+  proceedToPay() {
+    this.shoppingCart.emptyUserShoppingCart(this.shoppingCartId).subscribe(() => {
+      this.router.navigate(['home']).then(() => window.location.reload());
+    })
   }
 }

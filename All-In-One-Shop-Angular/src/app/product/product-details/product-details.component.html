@@ -61,7 +61,7 @@
       <div class="modal-header">
         <h5 class="modal-title" id="staticBackdropLabel">{{modalTitle}}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modalClose()"
-          id="add-edit-modal-close"></button>
+          id="modal-close"></button>
       </div>
       <div class="modal-body">
         <app-add-edit-product [storage]="storage" [product]="product" *ngIf="activeAddEditProductComponent">

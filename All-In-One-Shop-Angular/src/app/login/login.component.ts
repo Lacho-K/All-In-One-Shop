@@ -11,6 +11,9 @@ import { ShowProductComponent } from '../product/show-product/show-product.compo
 import { HttpClient } from '@angular/common/http';
 import { AppComponent } from '../app.component';
 import { throwError } from 'rxjs';
+import { ShoppingCartService } from '../services/shopping-cart.service';
+import { StorageResponseModel } from '../models/storageResponseModel';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +30,7 @@ export class LoginComponent implements OnInit {
   inputType: string = 'password';
   eyeIcon: string = 'fa-eye-slash';
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private userStore: UserStoreService, private toast: NgToastService, private http: HttpClient) { }
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private userStore: UserStoreService, private toast: NgToastService, private http: HttpClient, private shoppingCart: ShoppingCartService, private loginService: LoginService) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -36,34 +39,19 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  onSubmit(){
-    if(this.loginForm.valid){
-      this.auth.login(this.loginForm.value)
-      .subscribe({
-        next: ((res:any) => {
-          this.auth.storeToken(res.token);     
-          const tokenPayload = this.auth.decodedToken();
-          
-          this.userStore.setFullNameForStore(tokenPayload.name);
-          this.userStore.setRoleForStore(tokenPayload.role);
-          this.userStore.setIdForStore(tokenPayload.userId);
-          
-          this.router.navigate(['/home']).then(() => window.location.reload());
-        }),
-        error: ((err) => {
-          return throwError(err);
-        })
-      });
+  onSubmit() {
+    if (this.loginForm.valid) {
+      this.loginService.loginUser(this.loginForm.value);
     }
-    else{
+    else {
       ValidateForm.validateAllFormFields(this.loginForm)
-     
+
       // Assign shake animation to all invalid inputs
-      AnimateForm.assignAnimation('input.ng-invalid');  
+      AnimateForm.assignAnimation('input.ng-invalid');
     }
   }
 
-  showHidePass(){
+  showHidePass() {
     this.showPass = !this.showPass;
     this.showPass ? this.eyeIcon = 'fa-eye' : this.eyeIcon = 'fa-eye-slash';
     this.showPass ? this.inputType = 'text' : this.inputType = 'password';

@@ -20,5 +20,7 @@ namespace All_In_One_Shop.Data.Repo.Interfaces
         Task<string> AddStorageToShoppingCart(int cartId, int storageId);
 
         Task<string> DeleteStorageFromShoppingCart(int id, int storageId);
+
+        Task<string> EmptyShoppingCart(int id);
     }
 }

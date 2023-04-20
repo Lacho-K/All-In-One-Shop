@@ -9,6 +9,7 @@ using All_In_One_Shop.Data;
 using All_In_One_Shop.Models;
 using All_In_One_Shop.Data.Repo;
 using All_In_One_Shop.Data.Repo.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace All_In_One_Shop.Controllers
 {
@@ -94,6 +95,7 @@ namespace All_In_One_Shop.Controllers
         }
 
         [HttpPut("{id}/storages")]
+        [Authorize]
         public async Task<IActionResult> AddStorageToShoppingCart(int cartId, int storageId)
         {
             var token = await this._shoppingCartRepo.AddStorageToShoppingCart(cartId, storageId);
@@ -107,6 +109,7 @@ namespace All_In_One_Shop.Controllers
         }
 
         [HttpDelete("{id}/storages")]
+        [Authorize]
         public async Task<IActionResult> DeleteStorageFromShoppingCart(int cartId, int storageId)
         {
             var token = await this._shoppingCartRepo.DeleteStorageFromShoppingCart(cartId, storageId);
@@ -118,5 +121,20 @@ namespace All_In_One_Shop.Controllers
 
             return NotFound(token);
         }
+
+        [HttpDelete("{id}/storages/clear")]
+        [Authorize]
+        public async Task<IActionResult> ClearShoppingCart(int cartId)
+        {
+            var token = await this._shoppingCartRepo.EmptyShoppingCart(cartId);
+
+            if (token == "")
+            {
+                return Ok();
+            }
+
+            return NotFound(token);
+        }
+
     }
 }
