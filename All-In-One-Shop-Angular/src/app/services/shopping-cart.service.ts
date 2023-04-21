@@ -49,7 +49,7 @@ export class ShoppingCartService {
     })
   }
 
-  getLocalStorageCartItems() {
+  getObservableCartItems() {
     return this.cartItems$.asObservable();
   }
 
@@ -74,7 +74,7 @@ export class ShoppingCartService {
   }
 
   getStoragesInShoppngCart(id: number | string): Observable<StorageResponseModel[]> {
-    return this.http.get<StorageResponseModel[]>(this.shoppingCartApiUrl + `/${id}/storages`)
+    return this.http.get<StorageResponseModel[]>(this.shoppingCartApiUrl + `/${id}/storages`);
   }
 
   addStorageToShoppingCart(id: number | string, storageId: number | string) {
@@ -104,7 +104,7 @@ export class ShoppingCartService {
       cartItems.push(item);
       this.cartItems$.next(cartItems);
       localStorage.setItem(this.cartKey, JSON.stringify(cartItems));
-      this.toaster.success({ detail: "SUCCESS", summary: "Product added to Shopping Cart", duration: 2000, position: 'tl' })
+      this.toaster.success({ detail: "SUCCESS", summary: "Product added to Shopping Cart", duration: 2000, position: 'tl' });
     }
     else {
       this.toaster.error({ detail: "ERROR", summary: "Product already in cart", duration: 2000, position: 'tl' });
@@ -117,7 +117,7 @@ export class ShoppingCartService {
         let cartItems = this.cartItems$.value;
         cartItems = cartItems.filter((cartItem) => cartItem.id !== storageId);
         this.cartItems$.next(cartItems);
-        this.toaster.info({ detail: "INFO", summary: "Product removed from Shopping Cart", duration: 2000, position: 'tl' })
+        this.toaster.info({ detail: "INFO", summary: "Product removed from Shopping Cart", duration: 2000, position: 'tl' });
       }),
       error: ((e) => {
         this.toaster.error({ detail: "ERROR", summary: `${e.message}`, duration: 2000, position: 'tl' });
@@ -130,7 +130,7 @@ export class ShoppingCartService {
     cartItems = cartItems.filter((cartItem) => cartItem.id !== item.id);
     this.cartItems$.next(cartItems);
     localStorage.setItem(this.cartKey, JSON.stringify(cartItems));
-    this.toaster.info({ detail: "INFO", summary: "Product removed from Shopping Cart", duration: 2000, position: 'tl' })
+    this.toaster.info({ detail: "INFO", summary: "Product removed from Shopping Cart", duration: 2000, position: 'tl' });
   }
 
   isDuplicateItem(items: StorageResponseModel[], newItem: StorageResponseModel): boolean {
@@ -145,7 +145,6 @@ export class ShoppingCartService {
   }
 
   emptyUserShoppingCart(cartId: number|string){
-    return this.http.delete(this.shoppingCartApiUrl + `/${cartId}/storages/clear?cartId=${cartId}`)
+    return this.http.delete(this.shoppingCartApiUrl + `/${cartId}/storages/clear?cartId=${cartId}`);
   }
-
 }

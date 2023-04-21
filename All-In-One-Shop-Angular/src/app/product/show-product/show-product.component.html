@@ -2,8 +2,8 @@
   <input id="searchInput" type="search" class="form-control rounded me-2"
     placeholder="Type in the name of the desired product" aria-label="Search" aria-describedby="search-addon"
     (input)="search()" />
-  <select class="form-select form-select-sm me-2" name="productTypeId" id="productTypeId" [ngModel]="selectedProductType"
-    (ngModelChange)="selectedProductType=$event" (change)="search()">
+  <select class="form-select form-select-sm me-2" name="productTypeId" id="productTypeId"
+    [ngModel]="selectedProductType" (ngModelChange)="selectedProductType=$event" (change)="search()">
     <option value="">All product types</option>
     <option *ngFor="let type of productTypesList$|async" [value]="type.productTypeStr">{{type.productTypeStr}}</option>
   </select>
@@ -26,10 +26,13 @@
 
 <div class="text-center">
   <div class="card my-1 mx-2 border border-1 border-secondary rounded d-inline-block"
-    *ngFor="let product of (productList$ | async) | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage } , let i = index" (click)="navigation(i)">
+    *ngFor="let product of (productList$ | async) | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage } , let i = index"
+    (click)="navigation(i)">
     <div class="container my-4">
-      <img class="card-img-top" src={{product.productImageURL}} alt="Image Not Found"
-        onerror="this.src='../../../assets/img.png'">
+      <img class="card-img-top" *ngIf="pattern.test(product.productImageURL)" src={{product.productImageURL}}
+        alt="Image Not Found" onerror="this.src='../../../assets/img.png'">
+      <img class="card-img-top" *ngIf="!pattern.test(product.productImageURL)" src='../../../assets/img.png'
+        alt="Image Not Found" onerror="this.src='../../../assets/img.png'">
       <div class="card-body">
         <h5 class="card-title">{{product.name}}</h5>
         <p class="card-text">
@@ -42,7 +45,8 @@
 
 <div *ngIf="storagesList.length === 0" class="text-center">
   <p class="border border-1">No item matches your search!</p>
-  <a class="clickable" *ngIf="selectedProductType != ''" (click)="checkAllCategories(); search()">Click here to search in all item categories</a>
+  <a class="clickable" *ngIf="selectedProductType != ''" (click)="checkAllCategories(); search()">Click here to search
+    in all item categories</a>
 </div>
 
 <!-- Add Product Modal -->

@@ -23,6 +23,15 @@ export class ShowProductComponent implements OnInit {
   productTypesList$ !: Observable<ProductTypeResponseModel[]>;
   storagesList: StorageResponseModel[] = [];
   currentProductList: ProductResponseModel[] = [];
+  pattern = new RegExp(
+    '^([a-zA-Z]+:\\/\\/)?' + // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+      '(\\#[-a-z\\d_]*)?$', // fragment locator
+    'i'
+  );
 
   constructor(private shopApi: ShopApiService, private auth: AuthService, private userStore: UserStoreService, private http: HttpClient, private router: Router) {
     this.productList$ = this.shopApi.getProductsList();
@@ -57,6 +66,7 @@ export class ShowProductComponent implements OnInit {
     });
   }
 
+  
   //Variables(properties)
   selectedProductType: string = "";
   modalTitle: string = "";

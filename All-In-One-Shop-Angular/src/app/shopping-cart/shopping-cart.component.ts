@@ -30,9 +30,7 @@ export class ShoppingCartComponent implements OnInit {
   productQuantity: number[] = [];
 
   ngOnInit(): void {
-
-    this.shoppingCart.getLocalStorageCartItems().subscribe(() => {
-
+    this.shoppingCart.getObservableCartItems().subscribe(() => {
       this.userStore.getIdFromStore()
         .subscribe(id => {
           let idFromRoken = this.authService.getIdFromToken();
@@ -43,6 +41,8 @@ export class ShoppingCartComponent implements OnInit {
             this.shoppingCart.getShoppingCartByUserId(this.userId).subscribe(s => {
               this.shoppingCartId = s.id;
               this.getProductsInCart();
+              console.log('getting');
+              
             })
           }
           else {
@@ -50,15 +50,11 @@ export class ShoppingCartComponent implements OnInit {
             this.getProductsInLocalStorageCart();
           }
         })
-        ;
-
     })
   }
 
 
   getProductsInCart() {
-    console.log(this.shoppingCartId);
-
     this.shoppingCart.getStoragesInShoppngCart(this.shoppingCartId).pipe(
       switchMap(storageList => {
         this.storageList = storageList;
@@ -78,7 +74,7 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   getProductsInLocalStorageCart() {
-    this.shoppingCart.getLocalStorageCartItems().pipe(
+    this.shoppingCart.getObservableCartItems().pipe(
       switchMap(storageList => {
         this.storageList = storageList;
 
