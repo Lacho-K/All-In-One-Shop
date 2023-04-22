@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import AnimateForm from 'src/app/helpers/animateForm';
+import ModalCloser from 'src/app/helpers/closeModals';
 import ValidateForm from 'src/app/helpers/validateForm';
 import { ProductResponseModel } from 'src/app/models/productResponseModel';
 import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
@@ -84,9 +85,7 @@ export class AddEditProductComponent implements OnInit {
       price: this.price.value
     }           
     
-    this.service.addProduct(product).subscribe(lastAddedProduct => {
-      var closeModalBtn = document.getElementById('add-edit-modal-close');
-      
+    this.service.addProduct(product).subscribe(lastAddedProduct => {      
       var currentProductStorage = {
         // casts last added product to type 'ProductResponseModel' and gets its id
         productId: (lastAddedProduct as ProductResponseModel).id,
@@ -98,10 +97,9 @@ export class AddEditProductComponent implements OnInit {
       
 
       this.service.addStorage(currentProductStorage).subscribe(() => {
-        if(closeModalBtn){
-          closeModalBtn.click();
-        }
   
+        ModalCloser.closeOpenModals();
+
         var showAddSuccess = document.getElementById('add-success-alert');
   
         if(showAddSuccess){
@@ -144,11 +142,7 @@ export class AddEditProductComponent implements OnInit {
 
       this.service.updateProduct(productId, product).subscribe(() => {
 
-        var closeModalBtn = document.getElementById('add-edit-modal-close');
-
-        if(closeModalBtn){
-          closeModalBtn.click();
-        }
+        ModalCloser.closeOpenModals();
 
         var showUpdateSuccess = document.getElementById('update-success-alert');
 

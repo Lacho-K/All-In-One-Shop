@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { AppComponent } from '../app.component';
+import ModalCloser from '../helpers/closeModals';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -34,8 +35,9 @@ export class TokenInterceptor implements HttpInterceptor {
         if(err instanceof HttpErrorResponse){
           if(err.status === 401){
             this.auth.signOut();
+            
             //close open modal so that you can navigate the new loaded page
-            document.getElementById('modal-close')?.click();
+            ModalCloser.closeOpenModals();
             
             this.router.navigate(['/login']);
             this.toaster.warning({detail:'WARNING', summary: 'Please login to do that', duration: 3000});  

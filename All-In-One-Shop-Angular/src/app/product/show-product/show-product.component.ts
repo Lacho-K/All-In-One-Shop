@@ -1,13 +1,12 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, forkJoin } from 'rxjs';
+import UrlValidator from 'src/app/helpers/validateUrl';
 import { ProductResponseModel } from 'src/app/models/productResponseModel';
 import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
 import { StorageResponseModel } from 'src/app/models/storageResponseModel';
 import { AuthService } from 'src/app/services/auth.service';
 import { ShopApiService } from 'src/app/services/shop-api.service';
-import { UserStoreService } from 'src/app/services/user-store.service';
 
 
 
@@ -23,17 +22,8 @@ export class ShowProductComponent implements OnInit {
   productTypesList$ !: Observable<ProductTypeResponseModel[]>;
   storagesList: StorageResponseModel[] = [];
   currentProductList: ProductResponseModel[] = [];
-  pattern = new RegExp(
-    '^([a-zA-Z]+:\\/\\/)?' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$', // fragment locator
-    'i'
-  );
 
-  constructor(private shopApi: ShopApiService, private auth: AuthService, private userStore: UserStoreService, private http: HttpClient, private router: Router) {
+  constructor(private shopApi: ShopApiService, private auth: AuthService, private router: Router) {
     this.productList$ = this.shopApi.getProductsList();
   }
 
@@ -61,7 +51,7 @@ export class ShowProductComponent implements OnInit {
       this.currentProductList = paginatedProducts.slice(
         (this.currentPage - 1) * this.itemsPerPage,
         this.currentPage * this.itemsPerPage
-      );
+      );      
       this.assignStorageIds();
     });
   }
@@ -118,6 +108,11 @@ export class ShowProductComponent implements OnInit {
 
   checkAllCategories(){
     this.selectedProductType = '';
+  }
+
+  // method that determines the validity of product image urls
+  validateUrl(url:string){
+    return UrlValidator.testUrl(url);
   }
 
   get getIsAdmin() {

@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import { AppComponent } from 'src/app/app.component';
 import { ShoppingCartService } from 'src/app/services/shopping-cart.service';
 import { NgToastService } from 'ng-angular-popup';
+import UrlValidator from 'src/app/helpers/validateUrl';
 
 
 
@@ -76,7 +77,7 @@ export class ProductDetailsComponent implements OnInit {
 
   deleteProduct(deleteProduct: any, storageAssociatedWithProduct: any) {
 
-    if (confirm(`Are you sure you want to delete "${deleteProduct.name}"`)){
+    if (confirm(`Are you sure you want to delete "${deleteProduct.name}"`)) {
       this.service.deleteProduct(deleteProduct.id).subscribe(() => {
         this.router.navigate(['/products']).then(() => window.location.reload());
         this.shoppingCart.resetLocalStorageCart();
@@ -110,6 +111,11 @@ export class ProductDetailsComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  // method that determines the validity of product image urls
+  validateUrl(url: string) {
+    return UrlValidator.testUrl(url);
   }
 
   get getIsAdmin() {

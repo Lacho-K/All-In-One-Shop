@@ -6,6 +6,7 @@ import { NgToastService } from 'ng-angular-popup';
 import { AppComponent } from '../app.component';
 import { HttpClient } from '@angular/common/http';
 import { ShoppingCartService } from '../services/shopping-cart.service';
+import { PaginationService } from 'ngx-pagination';
 
 @Component({
   selector: 'app-navbar',
@@ -23,6 +24,8 @@ export class NavbarComponent implements OnInit {
   shoppingCartItemsCount: number = 0;
   userId: number = 0;
   shoppingCartId: number|string = 0;
+  paginator!: PaginationService;
+
 
   public ngOnInit(): void {
         
@@ -43,7 +46,6 @@ export class NavbarComponent implements OnInit {
               this.shoppingCartId = s.id;
               this.shoppingCart.getStoragesInShoppngCart(s.id).subscribe(st => {
                 this.shoppingCartItemsCount = st.length;
-                console.log('its faked');                                               
               })
             });
           }) 
@@ -75,4 +77,7 @@ export class NavbarComponent implements OnInit {
     this.activeShoppingCart = true;
   }
 
+  closeCart(){
+    //window.location.reload();
+  }
 }

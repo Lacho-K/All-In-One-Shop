@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
-import { forkJoin, switchMap, throwError } from 'rxjs';
+import { forkJoin, map, switchMap, throwError } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { ProductResponseModel } from '../models/productResponseModel';
 import { ProductTypeResponseModel } from '../models/productTypeResponseModel';
@@ -11,6 +11,8 @@ import { AuthService } from '../services/auth.service';
 import { ShopApiService } from '../services/shop-api.service';
 import { ShoppingCartService } from '../services/shopping-cart.service';
 import { UserStoreService } from '../services/user-store.service';
+import UrlValidator from '../helpers/validateUrl';
+import { PaginationService } from 'ngx-pagination';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -19,7 +21,7 @@ import { UserStoreService } from '../services/user-store.service';
 })
 export class ShoppingCartComponent implements OnInit {
 
-  constructor(private shopApi: ShopApiService, private shoppingCart: ShoppingCartService, private router: Router, private toaster: NgToastService, private authService: AuthService, private userStore: UserStoreService) { }
+  constructor(private shopApi: ShopApiService, private shoppingCart: ShoppingCartService, private router: Router, private toaster: NgToastService, private authService: AuthService, private userStore: UserStoreService, private pagService: PaginationService) { }
 
   productList: ProductResponseModel[] = [];
   storageList: StorageResponseModel[] = [];
@@ -29,8 +31,13 @@ export class ShoppingCartComponent implements OnInit {
 
   productQuantity: number[] = [];
 
+  //pagination variables
+  currentPage: number = 1;
+  itemsPerPage: number = 2;
+  currentProductList: StorageResponseModel[] = [];
+
   ngOnInit(): void {
-    this.shoppingCart.getObservableCartItems().subscribe(() => {
+    this.shoppingCart.getObservableCartItems().subscribe((localStorageItems) => {
       this.userStore.getIdFromStore()
         .subscribe(id => {
           let idFromRoken = this.authService.getIdFromToken();
@@ -40,21 +47,19 @@ export class ShoppingCartComponent implements OnInit {
             // logged in
             this.shoppingCart.getShoppingCartByUserId(this.userId).subscribe(s => {
               this.shoppingCartId = s.id;
-              this.getProductsInCart();
-              console.log('getting');
-              
+              this.getProductsInUserCart();
             })
           }
           else {
             // not logged in
-            this.getProductsInLocalStorageCart();
+            this.getProductsInLocalStorageCart(localStorageItems);
           }
         })
     })
   }
 
 
-  getProductsInCart() {
+  getProductsInUserCart() {
     this.shoppingCart.getStoragesInShoppngCart(this.shoppingCartId).pipe(
       switchMap(storageList => {
         this.storageList = storageList;
@@ -64,6 +69,7 @@ export class ShoppingCartComponent implements OnInit {
       })
     ).subscribe(products => {
       this.productList = products;
+      this.getProductsOnCurrentPage();
       if (typeof this.productQuantity !== 'undefined' && this.productQuantity.length === 0) {
         this.productQuantity = new Array(this.productList.length).fill(1);
       }
@@ -73,16 +79,12 @@ export class ShoppingCartComponent implements OnInit {
     });
   }
 
-  getProductsInLocalStorageCart() {
-    this.shoppingCart.getObservableCartItems().pipe(
-      switchMap(storageList => {
-        this.storageList = storageList;
-
-        const productObservables = storageList.map(storage => this.shopApi.getProductById(storage.productId));
-        return forkJoin(productObservables);
-      })
-    ).subscribe(products => {
-      this.productList = products;
+  getProductsInLocalStorageCart(localStorageItems: StorageResponseModel[]) {
+    this.storageList = localStorageItems;
+    const productObservables = localStorageItems.map(item => this.shopApi.getProductById(item.productId));
+    forkJoin(productObservables).subscribe(resultProducts => {
+      this.productList = resultProducts;
+      this.getProductsOnCurrentPage();
       if (typeof this.productQuantity !== 'undefined' && this.productQuantity.length === 0) {
         this.productQuantity = new Array(this.productList.length).fill(1);
       }
@@ -93,17 +95,24 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   navigation(i: number) {
-    this.router.navigate(['products']).then(() => this.router.navigate([`products/productDetails/${this.storageList[i].id}`]));
-    document.getElementById('modal-close')?.click();
+    this.router.navigate(['products']).then(() => this.router.navigate([`products/productDetails/${this.currentProductList[i].id}`]));
+    document.getElementById('cart-modal-close')?.click();
+  }
+
+  getProductsOnCurrentPage() {
+    this.currentProductList = this.storageList.slice(
+      (this.currentPage - 1) * this.itemsPerPage,
+      this.currentPage * this.itemsPerPage
+    );    
   }
 
   removeItemFromCart(i: number) {
     if (this.userId != undefined) {
-      this.shoppingCart.deleteStorageFromShoppingCart(this.shoppingCartId, this.storageList[i].id);
+      this.shoppingCart.deleteStorageFromShoppingCart(this.shoppingCartId, this.currentProductList[i].id);
     }
     else {
       // get target product to delete
-      this.shopApi.getStoragetById(this.storageList[i].id).subscribe((targetStorage) => {
+      this.shopApi.getStoragetById(this.currentProductList[i].id).subscribe((targetStorage) => {
         this.shoppingCart.removeFromlocalStorageCart(targetStorage);
       })
     }
@@ -132,6 +141,11 @@ export class ShoppingCartComponent implements OnInit {
     }
 
     return isNaN(sum) ? 0 : sum.toFixed(2);
+  }
+
+  // method that determines the validity of product image urls
+  validateUrl(url: string) {
+    return UrlValidator.testUrl(url);
   }
 
   proceedToPay() {

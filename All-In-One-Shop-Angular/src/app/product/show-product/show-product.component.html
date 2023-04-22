@@ -29,9 +29,11 @@
     *ngFor="let product of (productList$ | async) | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage } , let i = index"
     (click)="navigation(i)">
     <div class="container my-4">
-      <img class="card-img-top" *ngIf="pattern.test(product.productImageURL)" src={{product.productImageURL}}
+      <!-- Image that shows if the url is valid -->
+      <img class="card-img-top" *ngIf="validateUrl(product.productImageURL)" src={{product.productImageURL}}
         alt="Image Not Found" onerror="this.src='../../../assets/img.png'">
-      <img class="card-img-top" *ngIf="!pattern.test(product.productImageURL)" src='../../../assets/img.png'
+      <!-- Image that shows if the url is isvalid -->
+      <img class="card-img-top" *ngIf="!validateUrl(product.productImageURL)" src='../../../assets/img.png'
         alt="Image Not Found" onerror="this.src='../../../assets/img.png'">
       <div class="card-body">
         <h5 class="card-title">{{product.name}}</h5>
@@ -57,7 +59,7 @@
       <div class="modal-header">
         <h5 class="modal-title" id="modal1Label">{{modalTitle}}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modalClose()"
-          id="modal-close"></button>
+          id="add-modal-close"></button>
       </div>
       <div class="modal-body">
         <app-add-edit-product [storage]="storage" [product]="product" *ngIf="activeAddEditProductComponent">
