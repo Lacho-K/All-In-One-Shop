@@ -50,6 +50,7 @@
   
                     <small *ngIf="registerForm.controls['password'].dirty && registerForm.hasError('required', 'password')" class="text-danger">*Password is required</small>
                     <small *ngIf="registerForm.controls['password'].dirty && registerForm.hasError('minlength', 'password')" class="text-danger">Password must be at least 8 characters long</small>
+                    <small *ngIf="registerForm.controls['password'].dirty && registerForm.hasError('maxlength', 'password')" class="text-danger">Password must be shorter than 16 characters long</small>
                     <small *ngIf="registerForm.controls['password'].dirty && registerForm.hasError('digits', 'password')" class="text-danger">Password must contain digits</small>
                     <small *ngIf="registerForm.controls['password'].dirty && registerForm.hasError('capitals', 'password')" class="text-danger">Password must contain capital letters</small>
                     <small *ngIf="registerForm.controls['password'].dirty && registerForm.hasError('lowerCase', 'password')" class="text-danger">Password must contain lower case letters</small>

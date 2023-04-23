@@ -118,4 +118,9 @@ export class ShowProductComponent implements OnInit {
   get getIsAdmin() {
     return this.auth.isAdmin();
   }
+
+  onPageChange1(pageNumber: number) {
+    this.currentPage = pageNumber;
+    this.getProductsOnCurrentPage();
+  }
 }

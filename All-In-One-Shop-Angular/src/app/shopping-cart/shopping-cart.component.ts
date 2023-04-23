@@ -32,7 +32,7 @@ export class ShoppingCartComponent implements OnInit {
   productQuantity: number[] = [];
 
   //pagination variables
-  currentPage: number = 1;
+  currentPageSC: number = 1;
   itemsPerPage: number = 2;
   currentProductList: StorageResponseModel[] = [];
 
@@ -101,8 +101,8 @@ export class ShoppingCartComponent implements OnInit {
 
   getProductsOnCurrentPage() {
     this.currentProductList = this.storageList.slice(
-      (this.currentPage - 1) * this.itemsPerPage,
-      this.currentPage * this.itemsPerPage
+      (this.currentPageSC - 1) * this.itemsPerPage,
+      this.currentPageSC * this.itemsPerPage
     );    
   }
 
@@ -152,5 +152,10 @@ export class ShoppingCartComponent implements OnInit {
     this.shoppingCart.emptyUserShoppingCart(this.shoppingCartId).subscribe(() => {
       this.router.navigate(['home']).then(() => window.location.reload());
     })
+  }
+
+  onPageChange2(pageNumber: number) {
+    this.currentPageSC = pageNumber;
+    this.getProductsOnCurrentPage();
   }
 }

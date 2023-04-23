@@ -78,6 +78,6 @@ export class NavbarComponent implements OnInit {
   }
 
   closeCart(){
-    //window.location.reload();
+    
   }
 }
