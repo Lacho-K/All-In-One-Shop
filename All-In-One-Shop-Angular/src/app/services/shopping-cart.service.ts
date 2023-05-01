@@ -145,6 +145,14 @@ export class ShoppingCartService {
   }
 
   emptyUserShoppingCart(cartId: number|string){
-    return this.http.delete(this.shoppingCartApiUrl + `/${cartId}/storages/clear?cartId=${cartId}`);
+    return this.http.delete(this.shoppingCartApiUrl + `/${cartId}/storages/clear?cartId=${cartId}`).subscribe({
+      next: (() => {
+        this.cartItems$.next([]);
+        this.toaster.success({ detail: "INFO", summary: "Thanks for your purchase!", duration: 2000});
+      }),
+      error: ((e) => {
+        this.toaster.error({ detail: "ERROR", summary: `${e.message}`, duration: 2000, position: 'tl' });
+      })
+    });;
   }
 }

@@ -95,7 +95,6 @@ namespace All_In_One_Shop.Controllers
         }
 
         [HttpPut("{id}/storages")]
-        [Authorize]
         public async Task<IActionResult> AddStorageToShoppingCart(int cartId, int storageId)
         {
             var token = await this._shoppingCartRepo.AddStorageToShoppingCart(cartId, storageId);
@@ -109,7 +108,6 @@ namespace All_In_One_Shop.Controllers
         }
 
         [HttpDelete("{id}/storages")]
-        [Authorize]
         public async Task<IActionResult> DeleteStorageFromShoppingCart(int cartId, int storageId)
         {
             var token = await this._shoppingCartRepo.DeleteStorageFromShoppingCart(cartId, storageId);

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using All_In_One_Shop.Data;
 using All_In_One_Shop.Models;
 using All_In_One_Shop.Data.Repo.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace All_In_One_Shop.Controllers
 {
@@ -45,6 +46,8 @@ namespace All_In_One_Shop.Controllers
 
         // PUT: api/ProductTypes/5
         [HttpPut("{id}")]
+        [Authorize]
+
         public async Task<IActionResult> PutProductType(int id, ProductType productType)
         {
             if (id != productType.Id)
@@ -75,6 +78,8 @@ namespace All_In_One_Shop.Controllers
 
         // POST: api/ProductTypes
         [HttpPost]
+        [Authorize]
+
         public async Task<ActionResult<ProductType>> PostProductType(ProductType productType)
         {
             await _productTypeRepo.AddProductType(productType);
@@ -84,6 +89,8 @@ namespace All_In_One_Shop.Controllers
 
         // DELETE: api/ProductTypes/5
         [HttpDelete("{id}")]
+        [Authorize]
+
         public async Task<IActionResult> DeleteProductType(int id)
         {
             var productType = await _productTypeRepo.DeleteProductType(id);

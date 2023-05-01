@@ -51,7 +51,6 @@ export class ProductDetailsComponent implements OnInit {
     this.storageId = this.route.snapshot.paramMap.get('storageId');
 
     this.assignProductInfo();
-
   }
 
   assignProductInfo() {
@@ -75,14 +74,11 @@ export class ProductDetailsComponent implements OnInit {
     this.activeAddEditProductComponent = true;
   }
 
-  deleteProduct(deleteProduct: any, storageAssociatedWithProduct: any) {
-
-    if (confirm(`Are you sure you want to delete "${deleteProduct.name}"`)) {
-      this.service.deleteProduct(deleteProduct.id).subscribe(() => {
-        this.router.navigate(['/products']).then(() => window.location.reload());
-        this.shoppingCart.resetLocalStorageCart();
-      })
-    }
+  deleteProduct(productToDelete: any) {
+    this.service.deleteProduct(productToDelete.id).subscribe(() => {
+      this.router.navigate(['/products']).then(() => window.location.reload());
+      this.shoppingCart.resetLocalStorageCart();
+    })
   }
 
   addToShoppingCart() {
@@ -94,7 +90,6 @@ export class ProductDetailsComponent implements OnInit {
         if (this.userId != undefined) {
           this.shoppingCart.getShoppingCartByUserId(this.userId).subscribe((s) => {
             this.shoppingCartId = s.id;
-            console.log(this.shoppingCartId);
             this.shoppingCart.addStorageToShoppingCart(this.shoppingCartId, (this.storageId as string));
           });
         }

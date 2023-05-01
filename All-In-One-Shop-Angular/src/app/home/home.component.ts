@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
+import UrlValidator from '../helpers/validateUrl';
 import { ProductResponseModel } from '../models/productResponseModel';
 import { ShopApiService } from '../services/shop-api.service';
 
@@ -12,7 +13,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private service: ShopApiService) { }
 
-  recentProducts$!:Observable<ProductResponseModel[]>;
+  recentProducts$!: Observable<ProductResponseModel[]>;
 
   productsLenght: number = 0;
 
@@ -20,7 +21,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.recentProducts$ = this.service.getProductsList()
-    
+
     this.subscription = this.recentProducts$.subscribe((res) => {
       this.productsLenght = res.length;
     })
@@ -28,6 +29,11 @@ export class HomeComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe(); // Unsubscribe from recentProducts$ subscription to prevent memory leaks
-}
+  }
+
+  // method that determines the validity of product image urls
+  validateUrl(url: string) {
+    return UrlValidator.testUrl(url);
+  }
 
 }

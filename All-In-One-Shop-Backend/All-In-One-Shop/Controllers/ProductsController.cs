@@ -9,6 +9,7 @@ using All_In_One_Shop.Data;
 using All_In_One_Shop.Models;
 using All_In_One_Shop.Data.Repo;
 using All_In_One_Shop.Data.Repo.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace All_In_One_Shop.Controllers
 {
@@ -94,6 +95,8 @@ namespace All_In_One_Shop.Controllers
 
         // PUT: api/Products/5
         [HttpPut("{id}")]
+        [Authorize]
+
         public async Task<IActionResult> PutProduct(int id, Product product)
         {
             if (id != product.Id)
@@ -122,6 +125,8 @@ namespace All_In_One_Shop.Controllers
 
         // POST: api/Products
         [HttpPost]
+        [Authorize]
+
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
             await _productRepo.AddProduct(product);
@@ -131,6 +136,8 @@ namespace All_In_One_Shop.Controllers
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]
+        [Authorize]
+
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var product = await _productRepo.DeleteProduct(id);

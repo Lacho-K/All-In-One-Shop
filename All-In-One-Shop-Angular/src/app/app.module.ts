@@ -20,6 +20,7 @@ import { NgToastModule } from 'ng-angular-popup';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +43,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     FormsModule,
     ReactiveFormsModule,
     NgToastModule,
-    NgxPaginationModule
+    NgxPaginationModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

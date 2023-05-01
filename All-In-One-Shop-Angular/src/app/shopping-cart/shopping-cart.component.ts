@@ -12,16 +12,17 @@ import { ShopApiService } from '../services/shop-api.service';
 import { ShoppingCartService } from '../services/shopping-cart.service';
 import { UserStoreService } from '../services/user-store.service';
 import UrlValidator from '../helpers/validateUrl';
-import { PaginationService } from 'ngx-pagination';
+import ModalCloser from '../helpers/closeModals';
+
 
 @Component({
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.component.html',
-  styleUrls: ['./shopping-cart.component.css']
+  styleUrls: ['./shopping-cart.component.css'],
 })
 export class ShoppingCartComponent implements OnInit {
 
-  constructor(private shopApi: ShopApiService, private shoppingCart: ShoppingCartService, private router: Router, private toaster: NgToastService, private authService: AuthService, private userStore: UserStoreService, private pagService: PaginationService) { }
+  constructor(private shopApi: ShopApiService, private shoppingCart: ShoppingCartService, private router: Router, private toaster: NgToastService, private authService: AuthService, private userStore: UserStoreService) { }
 
   productList: ProductResponseModel[] = [];
   storageList: StorageResponseModel[] = [];
@@ -30,11 +31,6 @@ export class ShoppingCartComponent implements OnInit {
   shoppingCartId: number | string = 0;
 
   productQuantity: number[] = [];
-
-  //pagination variables
-  currentPageSC: number = 1;
-  itemsPerPage: number = 2;
-  currentProductList: StorageResponseModel[] = [];
 
   ngOnInit(): void {
     this.shoppingCart.getObservableCartItems().subscribe((localStorageItems) => {
@@ -69,7 +65,6 @@ export class ShoppingCartComponent implements OnInit {
       })
     ).subscribe(products => {
       this.productList = products;
-      this.getProductsOnCurrentPage();
       if (typeof this.productQuantity !== 'undefined' && this.productQuantity.length === 0) {
         this.productQuantity = new Array(this.productList.length).fill(1);
       }
@@ -84,7 +79,6 @@ export class ShoppingCartComponent implements OnInit {
     const productObservables = localStorageItems.map(item => this.shopApi.getProductById(item.productId));
     forkJoin(productObservables).subscribe(resultProducts => {
       this.productList = resultProducts;
-      this.getProductsOnCurrentPage();
       if (typeof this.productQuantity !== 'undefined' && this.productQuantity.length === 0) {
         this.productQuantity = new Array(this.productList.length).fill(1);
       }
@@ -95,24 +89,17 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   navigation(i: number) {
-    this.router.navigate(['products']).then(() => this.router.navigate([`products/productDetails/${this.currentProductList[i].id}`]));
+    this.router.navigate(['products']).then(() => this.router.navigate([`products/productDetails/${this.storageList[i].id}`]));
     document.getElementById('cart-modal-close')?.click();
-  }
-
-  getProductsOnCurrentPage() {
-    this.currentProductList = this.storageList.slice(
-      (this.currentPageSC - 1) * this.itemsPerPage,
-      this.currentPageSC * this.itemsPerPage
-    );    
   }
 
   removeItemFromCart(i: number) {
     if (this.userId != undefined) {
-      this.shoppingCart.deleteStorageFromShoppingCart(this.shoppingCartId, this.currentProductList[i].id);
+      this.shoppingCart.deleteStorageFromShoppingCart(this.shoppingCartId, this.storageList[i].id);
     }
     else {
       // get target product to delete
-      this.shopApi.getStoragetById(this.currentProductList[i].id).subscribe((targetStorage) => {
+      this.shopApi.getStoragetById(this.storageList[i].id).subscribe((targetStorage) => {
         this.shoppingCart.removeFromlocalStorageCart(targetStorage);
       })
     }
@@ -149,13 +136,8 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   proceedToPay() {
-    this.shoppingCart.emptyUserShoppingCart(this.shoppingCartId).subscribe(() => {
-      this.router.navigate(['home']).then(() => window.location.reload());
-    })
-  }
-
-  onPageChange2(pageNumber: number) {
-    this.currentPageSC = pageNumber;
-    this.getProductsOnCurrentPage();
+    this.shoppingCart.emptyUserShoppingCart(this.shoppingCartId);
+    ModalCloser.closeOpenModals();
+    this.router.navigate(['/home']);
   }
 }
