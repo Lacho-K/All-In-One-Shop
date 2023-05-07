@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   subscription !: Subscription;
 
   ngOnInit(): void {
-    this.recentProducts$ = this.service.getProductsList()
+    this.recentProducts$ = this.service.getProductsList();
 
     this.subscription = this.recentProducts$.subscribe((res) => {
       this.productsLenght = res.length;

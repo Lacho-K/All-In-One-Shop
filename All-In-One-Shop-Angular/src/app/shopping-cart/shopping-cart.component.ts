@@ -14,7 +14,6 @@ import { UserStoreService } from '../services/user-store.service';
 import UrlValidator from '../helpers/validateUrl';
 import ModalCloser from '../helpers/closeModals';
 
-
 @Component({
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.component.html',

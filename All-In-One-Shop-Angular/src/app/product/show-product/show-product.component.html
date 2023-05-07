@@ -32,7 +32,7 @@
       <!-- Image that shows if the url is valid -->
       <img class="card-img-top" *ngIf="validateUrl(product.productImageURL)" src={{product.productImageURL}}
         alt="Image Not Found" onerror="this.src='../../../assets/img.png'">
-      <!-- Image that shows if the url is isvalid -->
+      <!-- Image that shows if the url is invalid -->
       <img class="card-img-top" *ngIf="!validateUrl(product.productImageURL)" src='../../../assets/img.png'
         alt="Image Not Found" onerror="this.src='../../../assets/img.png'">
       <div class="card-body">

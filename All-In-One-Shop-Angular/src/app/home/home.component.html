@@ -22,7 +22,7 @@
       <!-- Image that shows if the url is valid -->
       <img class="img-fluid img-thumbnail mx-auto d-block" *ngIf="validateUrl(product.productImageURL)" src={{product.productImageURL}}
         alt="Image Not Found" onerror="this.src='../../../assets/img.png'">
-      <!-- Image that shows if the url is isvalid -->
+      <!-- Image that shows if the url is invalid -->
       <img class="img-fluid img-thumbnail mx-auto d-block" *ngIf="!validateUrl(product.productImageURL)" src='../../../assets/img.png'>
       <div class="carousel-caption d-none d-md-block shadow-none p-3 mb-3 bg-light rounded" style="opacity: 0.6">
         <h5>{{product.name}}</h5>
