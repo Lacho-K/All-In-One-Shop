@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
@@ -28,8 +27,10 @@ export class ShoppingCartComponent implements OnInit {
 
   userId: number = 0;
   shoppingCartId: number | string = 0;
+  sortingParameter: string = '';
 
   productQuantity: number[] = [];
+  productQuantityMap: Map<number | string, Map<number, number>> = new Map<number | string, Map<number, number>>();
 
   ngOnInit(): void {
     this.shoppingCart.getObservableCartItems().subscribe((localStorageItems) => {
@@ -58,12 +59,12 @@ export class ShoppingCartComponent implements OnInit {
     this.shoppingCart.getStoragesInShoppngCart(this.shoppingCartId).pipe(
       switchMap(storageList => {
         this.storageList = storageList;
-
         const productObservables = storageList.map(storage => this.shopApi.getProductById(storage.productId));
         return forkJoin(productObservables);
       })
     ).subscribe(products => {
       this.productList = products;
+      this.setProductQuantityIndexes();
       if (typeof this.productQuantity !== 'undefined' && this.productQuantity.length === 0) {
         this.productQuantity = new Array(this.productList.length).fill(1);
       }
@@ -117,6 +118,7 @@ export class ShoppingCartComponent implements OnInit {
   calculateTotalPrice(i: number) {
     const currentQuantity = (document.getElementById(`${i}`) as HTMLInputElement).value;
     this.productQuantity[i] = (currentQuantity as unknown as number);
+    this.productQuantityMap.get(this.productList[i].id)?.set(i, this.productQuantity[i]);
   }
 
   get displaySum() {
@@ -138,5 +140,55 @@ export class ShoppingCartComponent implements OnInit {
     this.shoppingCart.emptyUserShoppingCart(this.shoppingCartId);
     ModalCloser.closeOpenModals();
     this.router.navigate(['/home']);
+  }
+
+  sortProductsByPrice() {
+    this.sortingParameter = 'price';
+    this.productList = this.productList.sort((p1, p2) => (p1.price * this.getProductQuantity(p1) > p2.price * this.getProductQuantity(p2)) ? 1 : -1);
+    this.updateProductQuantities();
+  }
+
+  sortProductsByName() {
+    this.sortingParameter = 'name';
+    this.productList = this.productList.sort((p1, p2) => (p1.name > p2.name) ? 1 : -1);
+    this.updateProductQuantities();
+  }
+
+  sortProductsByQuantity() {
+    this.sortingParameter = 'quantity';
+    this.productList = this.productList.sort((p1, p2) => (this.getProductQuantity(p1) > this.getProductQuantity(p2)) ? 1 : -1);
+  }
+
+  getProductQuantity(product: ProductResponseModel) {
+    const index = this.productList.indexOf(product);
+    return this.productQuantity[index];
+  }
+
+  updateProductQuantities() {
+    console.log(this.productQuantityMap);
+
+    for (let i = 0; i < this.productList.length; i++) {
+      
+      //console.log(this.productList[i]);
+      
+      //this.productQuantity[i] = this.productQuantityMap.get(this.productList[i].id)?.get(i)!;
+      const keys = this.productQuantityMap.get(this.productList[i].id)?.keys();
+
+      for (const key of keys!) {
+        console.log(key);
+        
+        this.productQuantity[key] = this.productQuantityMap.get(this.productList[i].id)?.get(key)!;        
+      }
+    }
+
+  }
+
+  setProductQuantityIndexes() {
+    for (let i = 0; i < this.productList.length; i++) {
+      if (!this.productQuantityMap.has(this.productList[i].id)) {
+        this.productQuantityMap.set(this.productList[i].id, new Map<number, number>());
+        this.productQuantityMap.get(this.productList[i].id)?.set(i, 1);
+      }
+    }
   }
 }
