@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, map, switchMap } from 'rxjs';
 import UrlValidator from 'src/app/helpers/validateUrl';
 import { ProductResponseModel } from 'src/app/models/productResponseModel';
 import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
@@ -23,6 +23,7 @@ export class ShowProductComponent implements OnInit {
   storagesList: StorageResponseModel[] = [];
   currentProductList: ProductResponseModel[] = [];
 
+
   constructor(private shopApi: ShopApiService, private auth: AuthService, private router: Router) {
     this.productList$ = this.shopApi.getProductsList();
   }
@@ -42,7 +43,7 @@ export class ShowProductComponent implements OnInit {
       return this.shopApi.getStorageByProductId(p.id);
     });
     forkJoin(storageObservables).subscribe((results: StorageResponseModel[]) => {
-      this.storagesList = results;      
+      this.storagesList = results;
     });
   }
 
@@ -51,12 +52,33 @@ export class ShowProductComponent implements OnInit {
       this.currentProductList = paginatedProducts.slice(
         (this.currentPage - 1) * this.itemsPerPage,
         this.currentPage * this.itemsPerPage
-      );      
+      );
       this.assignStorageIds();
     });
   }
 
-  
+  // gets current storages's products
+  getStoragesProducts(): Observable<ProductResponseModel[]> {
+    const productObservables = this.storagesList.map(s => {
+      return this.shopApi.getProductById(s.productId);
+    });
+
+    return forkJoin(productObservables);
+  }
+
+  // gets current products's storages
+  getProductStorages(): Observable<StorageResponseModel[] | unknown> {
+
+    const productStorages =this.productList$.pipe(
+      switchMap(pl => {
+        const storageObservables = pl.map((p: { id: string | number; }) => this.shopApi.getStorageByProductId(p.id));
+        return forkJoin(storageObservables);
+      })
+    )
+
+    return productStorages
+  }
+
   //Variables(properties)
   selectedProductType: string = "";
   modalTitle: string = "";
@@ -65,6 +87,7 @@ export class ShowProductComponent implements OnInit {
   storage: any;
   currentPage: number = 1;
   itemsPerPage: number = 2;
+  sortingParameter: string = '';
 
   modalAdd() {
 
@@ -104,14 +127,15 @@ export class ShowProductComponent implements OnInit {
     this.productList$ = this.shopApi.getFilteredProducts(this.selectedProductType, searchName);
     this.getProductsOnCurrentPage();
     this.currentPage = 1;
+    this.sortingParameter = '';
   }
 
-  checkAllCategories(){
+  checkAllCategories() {
     this.selectedProductType = '';
   }
 
   // method that determines the validity of product image urls
-  validateUrl(url:string){
+  validateUrl(url: string) {
     return UrlValidator.testUrl(url);
   }
 
@@ -119,8 +143,38 @@ export class ShowProductComponent implements OnInit {
     return this.auth.isAdmin();
   }
 
-  onPageChange1(pageNumber: number) {
+  onPageChange(pageNumber: number) {
     this.currentPage = pageNumber;
     this.getProductsOnCurrentPage();
+  }
+
+  sortProductsByPrice() {
+    this.sortingParameter = 'price';
+
+    let sortedProducts$ = this.productList$.pipe(
+      map((products) => [...products].sort((p1, p2) => p1.price - p2.price))
+    );
+
+    this.productList$ = sortedProducts$;
+  }
+
+  sortProductsByName() {
+    this.sortingParameter = 'name';
+
+    let sortedProducts$ = this.productList$.pipe(
+      map((products) => [...products].sort((p1, p2) => p1.name.localeCompare(p2.name)))
+    );
+
+    this.productList$ = sortedProducts$;
+  }
+
+  sortProductsByDateAdded() {
+    this.sortingParameter = 'date added';
+
+    this.getProductStorages().subscribe(storages => {
+      this.storagesList = storages as StorageResponseModel[];
+      this.storagesList.sort((s1, s2) => s1.dateAdded > s2.dateAdded ? 1 : -1);
+      this.productList$ = this.getStoragesProducts();
+    })
   }
 }

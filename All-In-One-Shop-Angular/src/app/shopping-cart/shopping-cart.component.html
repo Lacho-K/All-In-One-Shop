@@ -4,15 +4,7 @@
       <div class="col-10">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <div class="dropdown">
-            <p class="mb - 0 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="text-muted">Sort by: </span> 
-              <a class="text-body">{{sortingParameter}} <i></i></a></p>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" (click)="sortProductsByPrice()">price</a></li>
-              <li><a class="dropdown-item" (click)="sortProductsByName()">name</a></li>
-              <li><a class="dropdown-item" (click)="sortProductsByQuantity()">quantity</a></li>
-            </ul>
-          </div>
+          
         </div>
 
         <div *ngIf="this.storageList.length > 0" style="overflow:auto; max-height: 24rem;">
