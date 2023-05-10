@@ -92,7 +92,7 @@ export class AddEditProductComponent implements OnInit {
         productQuantity: this.productQuantity.value,
         productLocation: this.productLocation.value,
         productRatings: this.productRatings.value,
-        dateAdded: this.dateObj
+        dateCreated: this.dateObj
       }
       
 
@@ -132,7 +132,7 @@ export class AddEditProductComponent implements OnInit {
       productQuantity: this.productQuantity.value,
       productLocation: this.productLocation.value,
       productRatings: this.productRatings.value,
-      dateAdded: this.dateObj
+      dateCreated: this.dateObj
     }
 
     var productId: number | string = this.productId;

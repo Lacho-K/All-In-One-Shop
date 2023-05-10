@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, forkJoin, map, switchMap } from 'rxjs';
+import { Observable, combineLatest, forkJoin, map, switchMap } from 'rxjs';
 import UrlValidator from 'src/app/helpers/validateUrl';
 import { ProductResponseModel } from 'src/app/models/productResponseModel';
 import { ProductTypeResponseModel } from 'src/app/models/productTypeResponseModel';
@@ -67,16 +67,16 @@ export class ShowProductComponent implements OnInit {
   }
 
   // gets current products's storages
-  getProductStorages(): Observable<StorageResponseModel[] | unknown> {
-
-    const productStorages =this.productList$.pipe(
-      switchMap(pl => {
-        const storageObservables = pl.map((p: { id: string | number; }) => this.shopApi.getStorageByProductId(p.id));
+  sortProductByStorageDateAdded() {
+    this.productList$.pipe(
+      switchMap(productList => {
+        const storageObservables = productList.map((p: { id: string | number; }) => this.shopApi.getStorageByProductId(p.id));
         return forkJoin(storageObservables);
       })
-    )
-
-    return productStorages
+    ).subscribe(storages => {
+      this.storagesList = (storages as StorageResponseModel[]).sort((s1, s2) => s1.dateCreated > s2.dateCreated ? 1 : -1);
+      this.productList$ = this.getStoragesProducts();
+    })
   }
 
   //Variables(properties)
@@ -171,10 +171,6 @@ export class ShowProductComponent implements OnInit {
   sortProductsByDateAdded() {
     this.sortingParameter = 'date added';
 
-    this.getProductStorages().subscribe(storages => {
-      this.storagesList = storages as StorageResponseModel[];
-      this.storagesList.sort((s1, s2) => s1.dateAdded > s2.dateAdded ? 1 : -1);
-      this.productList$ = this.getStoragesProducts();
-    })
+    this.sortProductByStorageDateAdded();
   }
 }

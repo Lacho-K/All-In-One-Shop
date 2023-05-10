@@ -4,6 +4,6 @@ export class StorageResponseModel{
         public productQuantity : number,
         public productLocation : string,
         public productRatings : string,
-        public dateAdded: Date){       
+        public dateCreated: Date){       
     }
 }
