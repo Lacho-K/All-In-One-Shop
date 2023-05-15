@@ -52,7 +52,7 @@ namespace All_In_One_Shop.Controllers
 
             string token = await this._userRepo.Register(userObj);
 
-            return token == null ? Ok(new { Message = "Register success!" }) : BadRequest(new {Message = token});
+            return token == "" ? Ok(new { Message = "Register success!" }) : BadRequest(new {Message = token});
         }
 
         [HttpGet]
@@ -66,7 +66,7 @@ namespace All_In_One_Shop.Controllers
         {
             string token = await this._userRepo.DeleteUser(id);
 
-            return token == null ? Ok(new { Message = "Delete successful!" }) : NotFound(new { Message = token });
+            return token == "" ? Ok(new { Message = "Delete successful!" }) : NotFound(new { Message = token });
         }
 
     }

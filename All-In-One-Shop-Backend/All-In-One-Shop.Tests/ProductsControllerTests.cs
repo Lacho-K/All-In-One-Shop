@@ -10,17 +10,17 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using Xunit;
 
-namespace All_In_One_Shop.Tests.Controllers
+namespace All_In_One_Shop.Tests
 {
     public class ProductsControllerTests
     {
         private readonly Mock<IProductInterface> _productRepoMock;
-        private readonly ProductsController _controller;
+        private readonly ProductsController _productsController;
 
         public ProductsControllerTests()
         {
             _productRepoMock = new Mock<IProductInterface>();
-            _controller = new ProductsController(_productRepoMock.Object);
+            _productsController = new ProductsController(_productRepoMock.Object);
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace All_In_One_Shop.Tests.Controllers
                 .ReturnsAsync(products);
 
             // Act
-            var result = await _controller.GetProducts();
+            var result = await _productsController.GetProducts();
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<IEnumerable<Product>>>(result);
@@ -56,7 +56,7 @@ namespace All_In_One_Shop.Tests.Controllers
                 .ReturnsAsync(product);
 
             // Act
-            var result = await _controller.GetProduct(id);
+            var result = await _productsController.GetProduct(id);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<Product>>(result);
@@ -71,7 +71,7 @@ namespace All_In_One_Shop.Tests.Controllers
             var id = 1;
 
             // Act
-            var getByIdTask = await _controller.GetProduct(id);
+            var getByIdTask = await _productsController.GetProduct(id);
 
             // Assert
             Assert.IsType<NotFoundResult>(getByIdTask.Result);
@@ -91,7 +91,7 @@ namespace All_In_One_Shop.Tests.Controllers
                 .ReturnsAsync(products);
 
             // Act
-            var result = await _controller.GetProductsByName(null);
+            var result = await _productsController.GetProductsByName(null);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<IEnumerable<Product>>>(result);
@@ -114,7 +114,7 @@ namespace All_In_One_Shop.Tests.Controllers
                 .ReturnsAsync(products);
 
             // Act
-            var result = await _controller.GetProductsByType(null);
+            var result = await _productsController.GetProductsByType(null);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<IEnumerable<Product>>>(result);
@@ -137,7 +137,7 @@ namespace All_In_One_Shop.Tests.Controllers
                 .ReturnsAsync(allProducts);
 
             // Act
-            var result = await _controller.GetFilteredProducts(null, null);
+            var result = await _productsController.GetFilteredProducts(null, null);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<IEnumerable<Product>>>(result);
@@ -160,7 +160,7 @@ namespace All_In_One_Shop.Tests.Controllers
                 .ReturnsAsync(products);
 
             // Act
-            var result = await _controller.GetFilteredProducts(null, name);
+            var result = await _productsController.GetFilteredProducts(null, name);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<IEnumerable<Product>>>(result);
@@ -182,7 +182,7 @@ namespace All_In_One_Shop.Tests.Controllers
                 .ReturnsAsync(products);
 
             // Act
-            var result = await _controller.GetFilteredProducts(type, null);
+            var result = await _productsController.GetFilteredProducts(type, null);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<IEnumerable<Product>>>(result);
@@ -206,7 +206,7 @@ namespace All_In_One_Shop.Tests.Controllers
                 .ReturnsAsync(products);
 
             // Act
-            var result = await _controller.GetFilteredProducts(type, name);
+            var result = await _productsController.GetFilteredProducts(type, name);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<IEnumerable<Product>>>(result);
@@ -225,7 +225,7 @@ namespace All_In_One_Shop.Tests.Controllers
 
             // Act
 
-            var putTask = _controller.PutProduct(id, testProduct);
+            var putTask = _productsController.PutProduct(id, testProduct);
 
             // Assert
 
@@ -242,7 +242,7 @@ namespace All_In_One_Shop.Tests.Controllers
 
             // Act
 
-            var putTask = _controller.PutProduct(id, testProduct);
+            var putTask = _productsController.PutProduct(id, testProduct);
 
             // Assert
 
@@ -265,7 +265,7 @@ namespace All_In_One_Shop.Tests.Controllers
 
             // Act
 
-            var putTask = _controller.PutProduct(id, testProduct);
+            var putTask = _productsController.PutProduct(id, testProduct);
 
             // Assert
 
@@ -282,7 +282,7 @@ namespace All_In_One_Shop.Tests.Controllers
                 .Returns(Task.CompletedTask);
 
             // Act
-            var result = await _controller.PostProduct(product);
+            var result = await _productsController.PostProduct(product);
 
             // Assert
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result.Result);
@@ -300,7 +300,7 @@ namespace All_In_One_Shop.Tests.Controllers
                 .ReturnsAsync(new Product { Id = id });
 
             // Act
-            var result = await _controller.DeleteProduct(id);
+            var result = await _productsController.DeleteProduct(id);
 
             // Assert
             Assert.IsType<NoContentResult>(result);
@@ -313,7 +313,7 @@ namespace All_In_One_Shop.Tests.Controllers
             var id = 1;
 
             // Act
-            var result = await _controller.DeleteProduct(id);
+            var result = await _productsController.DeleteProduct(id);
 
             // Assert
             Assert.IsType<NotFoundResult>(result);

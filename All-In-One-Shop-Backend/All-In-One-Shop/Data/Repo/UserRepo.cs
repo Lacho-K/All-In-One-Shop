@@ -42,7 +42,7 @@ namespace All_In_One_Shop.Data.Repo
             await _context.Users.AddAsync(userObj);
             await _context.SaveChangesAsync();
 
-            return null;
+            return "";
         }
 
         private async Task<bool> CheckUserNameExist(string username)
@@ -70,7 +70,8 @@ namespace All_In_One_Shop.Data.Repo
 
             _context.Users.Remove(targetUser);
             await _context.SaveChangesAsync();
-            return null;
+
+            return "";
         }
     }
 }
