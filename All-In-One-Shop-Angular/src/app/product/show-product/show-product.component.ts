@@ -86,7 +86,7 @@ export class ShowProductComponent implements OnInit {
   product: any;
   storage: any;
   currentPage: number = 1;
-  itemsPerPage: number = 2;
+  itemsPerPage: number = 3;
   sortingParameter: string = '';
 
   modalAdd() {
@@ -115,7 +115,7 @@ export class ShowProductComponent implements OnInit {
   modalClose() {
     this.activeAddEditProductComponent = false;
     this.productList$ = this.shopApi.getProductsList();
-    this.assignStorageIds();
+    this.getProductsOnCurrentPage();
   }
 
   navigation(i: number) {

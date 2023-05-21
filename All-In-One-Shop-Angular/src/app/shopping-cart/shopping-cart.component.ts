@@ -115,7 +115,7 @@ export class ShoppingCartComponent implements OnInit {
   calculateTotalPrice(i: number) {
     const currentQuantity = (document.getElementById(`${i}`) as HTMLInputElement).value;
     this.productQuantity[i] = (currentQuantity as unknown as number);
-    }
+  }
 
   get displaySum() {
     let sum = 0;
@@ -133,6 +133,31 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   proceedToPay() {
+
+    for (let i = 0; i < this.storageList.length; i++) {
+      if (this.storageList[i].productQuantity >= this.productQuantity[i]) {
+
+        this.storageList[i].productQuantity -= this.productQuantity[i];
+
+        var storageToEdit = {
+          id: this.storageList[i].id,
+          productId: this.storageList[i].productId,
+          productQuantity: this.storageList[i].productQuantity,
+          productLocation: this.storageList[i].productLocation,
+          productRatings: this.storageList[i].productRatings,
+          dateCreated: this.storageList[i].dateCreated
+        }
+  
+        this.shopApi.updateStorage(storageToEdit.id, storageToEdit).subscribe();
+      }
+      else{
+        this.toaster.info({ detail: "INFO", summary: `${this.productList[i].name} doesn't have enough quantity`, duration: 5000, position: 'tl' });
+        ModalCloser.closeOpenModals();
+        this.router.navigate(['products']).then(() => this.router.navigate([`products/productDetails/${this.storageList[i].id}`]));
+        return;
+      }
+    }
+
     this.shoppingCart.emptyUserShoppingCart(this.shoppingCartId);
     ModalCloser.closeOpenModals();
     this.router.navigate(['/home']);

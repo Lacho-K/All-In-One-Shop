@@ -38,7 +38,7 @@
     <small *ngIf="addEditForm.controls['quantity'].dirty && addEditForm.hasError('required', 'quantity')" class="text-danger">*Product Quantity is required</small>
     <small *ngIf="addEditForm.controls['quantity'].dirty && addEditForm.hasError('pattern', 'quantity')" class="text-danger">Product Quantity must be a positive whole number</small>
     <div class="mb-3">
-        <label for="productQuantity" class="form-label">Product ProductQuantity </label>
+        <label for="productQuantity" class="form-label">Product Quantity </label>
         <Input type="text" class="form-control" [formControl]="productQuantity" name="productQuantity" ngDefaultControl [ngClass]="{'border border-danger': addEditForm.controls['quantity'].dirty && !addEditForm.controls['quantity'].valid}">
     </div>
 
