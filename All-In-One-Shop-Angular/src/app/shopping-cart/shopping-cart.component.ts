@@ -133,7 +133,6 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   proceedToPay() {
-
     for (let i = 0; i < this.storageList.length; i++) {
       if (this.storageList[i].productQuantity >= this.productQuantity[i]) {
 
@@ -147,7 +146,8 @@ export class ShoppingCartComponent implements OnInit {
           productRatings: this.storageList[i].productRatings,
           dateCreated: this.storageList[i].dateCreated
         }
-  
+        
+        if(this.userId != undefined)
         this.shopApi.updateStorage(storageToEdit.id, storageToEdit).subscribe();
       }
       else{
