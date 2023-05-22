@@ -44,3 +44,8 @@
 .clickable{
     cursor: pointer;
 }
+
+pagination-controls{
+    text-align: center;
+    margin: 2rem;
+}

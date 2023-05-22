@@ -82,6 +82,7 @@ export class ShowProductComponent implements OnInit {
       (storages as StorageResponseModel[]).sort((s1, s2) => s1.dateCreated > s2.dateCreated ? -1 : 1) 
 
       this.productList$ = this.getStoragesProducts();
+      this.getProductsOnCurrentPage();
     })
   }
 
@@ -174,6 +175,7 @@ export class ShowProductComponent implements OnInit {
     this.productList$ = sortedProducts$;
     this.sortingByPriceAsc = !this.sortingByPriceAsc;
     this.sortingIconForPrice = this.sortingByPriceAsc ? "fa-solid fa-arrow-down" : "fa-solid fa-arrow-up";
+    this.getProductsOnCurrentPage();
   }
 
   sortProductsByName() {
@@ -191,6 +193,7 @@ export class ShowProductComponent implements OnInit {
     this.productList$ = sortedProducts$;
     this.sortingByNameAsc = !this.sortingByNameAsc;
     this.sortingIconForName = this.sortingByNameAsc ? "fa-solid fa-arrow-down" : "fa-solid fa-arrow-up";
+    this.getProductsOnCurrentPage();
   }
 
   sortProductsByDateAdded() {
