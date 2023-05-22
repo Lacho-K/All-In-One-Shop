@@ -74,7 +74,13 @@ export class ShowProductComponent implements OnInit {
         return forkJoin(storageObservables);
       })
     ).subscribe(storages => {
-      this.storagesList = (storages as StorageResponseModel[]).sort((s1, s2) => s1.dateCreated > s2.dateCreated ? 1 : -1);
+      this.storagesList = this.sortingByDateAsc ? 
+      // sort ascending
+      (storages as StorageResponseModel[]).sort((s1, s2) => s1.dateCreated > s2.dateCreated ? 1 : -1) 
+      : 
+      // sort descending
+      (storages as StorageResponseModel[]).sort((s1, s2) => s1.dateCreated > s2.dateCreated ? -1 : 1) 
+
       this.productList$ = this.getStoragesProducts();
     })
   }
@@ -88,6 +94,12 @@ export class ShowProductComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 3;
   sortingParameter: string = '';
+  sortingIconForDate: string = "fa-solid fa-arrow-up";
+  sortingIconForName: string = "fa-solid fa-arrow-up";
+  sortingIconForPrice: string = "fa-solid fa-arrow-up";
+  sortingByDateAsc: boolean = false;
+  sortingByPriceAsc: boolean = false;
+  sortingByNameAsc: boolean = false;
 
   modalAdd() {
 
@@ -151,26 +163,42 @@ export class ShowProductComponent implements OnInit {
   sortProductsByPrice() {
     this.sortingParameter = 'price';
 
-    let sortedProducts$ = this.productList$.pipe(
+    let sortedProducts$ = this.sortingByPriceAsc ? this.productList$.pipe(
+      // sort ascending
       map((products) => [...products].sort((p1, p2) => p1.price - p2.price))
+    ) : this.productList$.pipe(
+      // sort ascending
+      map((products) => [...products].sort((p1, p2) => p2.price - p1.price))
     );
 
     this.productList$ = sortedProducts$;
+    this.sortingByPriceAsc = !this.sortingByPriceAsc;
+    this.sortingIconForPrice = this.sortingByPriceAsc ? "fa-solid fa-arrow-down" : "fa-solid fa-arrow-up";
   }
 
   sortProductsByName() {
     this.sortingParameter = 'name';
 
-    let sortedProducts$ = this.productList$.pipe(
+    let sortedProducts$ = this.sortingByNameAsc ? this.productList$.pipe(
+      // sort ascending
       map((products) => [...products].sort((p1, p2) => p1.name.localeCompare(p2.name)))
+    ) :
+    this.productList$.pipe(
+      // sort descending
+      map((products) => [...products].sort((p1, p2) => p2.name.localeCompare(p1.name)))
     );
 
     this.productList$ = sortedProducts$;
+    this.sortingByNameAsc = !this.sortingByNameAsc;
+    this.sortingIconForName = this.sortingByNameAsc ? "fa-solid fa-arrow-down" : "fa-solid fa-arrow-up";
   }
 
   sortProductsByDateAdded() {
     this.sortingParameter = 'date added';
-
+    
     this.sortProductByStorageDateAdded();
+
+    this.sortingByDateAsc = !this.sortingByDateAsc;
+    this.sortingIconForDate = this.sortingByDateAsc ? "fa-solid fa-arrow-down" : "fa-solid fa-arrow-up";
   }
 }

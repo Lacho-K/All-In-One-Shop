@@ -31,57 +31,69 @@
       <a class="text-body">{{sortingParameter}} <i></i></a>
     </p>
     <ul class="dropdown-menu">
-      <li><a class="dropdown-item" (click)="sortProductsByPrice()">price</a></li>
-      <li><a class="dropdown-item" (click)="sortProductsByName()">name</a></li>
-      <li><a class="dropdown-item" (click)="sortProductsByDateAdded()">date added</a></li>
+      <li>
+        <a class="dropdown-item" (click)="sortProductsByPrice()">price
+          <i class={{this.sortingIconForPrice}}></i>
+        </a>
+      </li>
+      <li>
+        <a class="dropdown-item" (click)="sortProductsByName()">name
+          <i class={{this.sortingIconForName}}></i>
+        </a>
+      </li>
+      <li>
+        <a class="dropdown-item" (click)="sortProductsByDateAdded()">date added
+          <i class={{this.sortingIconForDate}}></i>
+        </a>
+      </li>
     </ul>
   </div>
 </div>
 
-  <div class="text-center">
-    <div class="card my-1 mx-2 border border-1 border-secondary rounded d-inline-block"
-      *ngFor="let product of (productList$ | async) | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage } , let i = index"
-      (click)="navigation(i)">
-      <div class="container my-4">
-        <!-- Image that shows if the url is valid -->
-        <img class="card-img-top" *ngIf="validateUrl(product.productImageURL)" src={{product.productImageURL}}
-          alt="Image Not Found" onerror="this.src='../../../assets/img.png'">
-        <!-- Image that shows if the url is invalid -->
-        <img class="card-img-top" *ngIf="!validateUrl(product.productImageURL)" src='../../../assets/img.png'
-          alt="Image Not Found" onerror="this.src='../../../assets/img.png'">
-        <div class="card-body">
-          <h5 class="card-title">{{product.name}}</h5>
-          <p class="card-text">
-            Price: {{product.price}}
-          </p>
-        </div>
+<div class="text-center">
+  <div class="card my-1 mx-2 border border-1 border-secondary rounded d-inline-block"
+    *ngFor="let product of (productList$ | async) | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage } , let i = index"
+    (click)="navigation(i)">
+    <div class="container my-4">
+      <!-- Image that shows if the url is valid -->
+      <img class="card-img-top" *ngIf="validateUrl(product.productImageURL)" src={{product.productImageURL}}
+        alt="Image Not Found" onerror="this.src='../../../assets/img.png'">
+      <!-- Image that shows if the url is invalid -->
+      <img class="card-img-top" *ngIf="!validateUrl(product.productImageURL)" src='../../../assets/img.png'
+        alt="Image Not Found" onerror="this.src='../../../assets/img.png'">
+      <div class="card-body">
+        <h5 class="card-title">{{product.name}}</h5>
+        <p class="card-text">
+          Price: {{product.price}}
+        </p>
       </div>
     </div>
   </div>
+</div>
 
-  <div *ngIf="storagesList.length === 0" class="text-center">
-    <p class="border border-1">No item matches your search!</p>
-    <a class="clickable" *ngIf="selectedProductType != ''" (click)="checkAllCategories(); search()">Click here to search
-      in all item categories</a>
-  </div>
+<div *ngIf="storagesList.length === 0" class="text-center">
+  <p class="border border-1">No item matches your search!</p>
+  <a class="clickable" *ngIf="selectedProductType != ''" (click)="checkAllCategories(); search()">Click here to search
+    in all item categories</a>
+</div>
 
-  <!-- Add Product Modal -->
-  <div class="modal fade" id="modal1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="modal1Label" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modal1Label">{{modalTitle}}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modalClose()"
-            id="add-modal-close"></button>
-        </div>
-        <div class="modal-body">
-          <app-add-edit-product [storage]="storage" [product]="product" *ngIf="activeAddEditProductComponent">
-          </app-add-edit-product>
-        </div>
+<!-- Add Product Modal -->
+<div class="modal fade" id="modal1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="modal1Label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal1Label">{{modalTitle}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modalClose()"
+          id="add-modal-close"></button>
+      </div>
+      <div class="modal-body">
+        <app-add-edit-product [storage]="storage" [product]="product" *ngIf="activeAddEditProductComponent">
+        </app-add-edit-product>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Controls for product pages -->
-  <pagination-controls *ngIf="storagesList.length !== 0" (pageChange)="onPageChange($event)"></pagination-controls>
+<!-- Controls for product pages -->
+<pagination-controls *ngIf="storagesList.length !== 0" (pageChange)="onPageChange($event)"></pagination-controls>
