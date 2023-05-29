@@ -30,13 +30,20 @@ export class LoginComponent implements OnInit {
   inputType: string = 'password';
   eyeIcon: string = 'fa-eye-slash';
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private userStore: UserStoreService, private toast: NgToastService, private http: HttpClient, private shoppingCart: ShoppingCartService, private loginService: LoginService) { }
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private userStore: UserStoreService, private toast: NgToastService, private http: HttpClient, private shoppingCart: ShoppingCartService, private loginService: LoginService, private toaster: NgToastService) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     })
+
+    if(localStorage.getItem("isOk")){
+      this.toaster.error({ detail: 'WARNING', summary: `Please login`, duration: 3000 });
+      setTimeout(function (){
+        localStorage.removeItem("isOk");
+      }, 3000)
+    }
   }
 
   onSubmit() {

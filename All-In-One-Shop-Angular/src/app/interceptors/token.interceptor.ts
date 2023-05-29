@@ -36,7 +36,9 @@ export class TokenInterceptor implements HttpInterceptor {
             //close open modal so that you can navigate the new loaded page
             ModalCloser.closeOpenModals();
           
-            alert('Please login to do that.')
+            //alert('Please login to do that.')
+
+            localStorage.setItem("isOk", "true")
 
             this.router.navigate(['/login']).then(() => window.location.reload());
           

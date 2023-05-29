@@ -106,11 +106,7 @@ export class AddEditProductComponent implements OnInit {
           showAddSuccess.style.display = "block";
         }
   
-        setTimeout(function (){
-          if(showAddSuccess){
-            showAddSuccess.style.display = "none"
-          }
-        }, 4000)
+        
       });
     })
   }

@@ -77,6 +77,10 @@
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                       <button (click)="onSubmit()" type="button" class="btn btn-primary btn-lg" [ngClass]="{'btn-danger': !this.registerForm.valid && this.registerForm.dirty}">Register</button>
                     </div>
+
+                    <div class="signin">
+                      <p>Already have an account? <a routerLinkActive="border border-info rounded" routerLink="/login">Login</a>.</p>
+                    </div>
   
                   </form>
  

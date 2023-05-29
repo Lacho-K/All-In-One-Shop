@@ -78,7 +78,7 @@ namespace All_In_One_Shop.Controllers
 
         // POST: api/ProductTypes
         [HttpPost]
-        [Authorize]
+        //[Authorize]
 
         public async Task<ActionResult<ProductType>> PostProductType(ProductType productType)
         {
